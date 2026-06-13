@@ -1,0 +1,1420 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width,initial-scale=1.0">
+
+<title>Derm Assist AI Scan</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+html, body{
+height:100%;
+}
+
+body{
+margin:0;
+padding-bottom:80px;
+}
+
+body{
+background:url("background.jpg") no-repeat center center/cover;
+min-height:100vh;
+width:100%;
+overflow-x:hidden;
+}
+
+body::before{
+content:"";
+position:fixed;
+inset:0;
+background:rgba(255,240,248,0.45);
+z-index:-1;
+}
+
+.bottom{
+z-index:999;
+}
+
+.frame{
+max-width:560px;
+margin:auto;
+padding:18px 18px 120px;
+min-height:100vh;
+}
+
+.top{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:16px;
+}
+
+.top-btn{
+width:48px;
+height:48px;
+border:none;
+border-radius:50%;
+background:rgba(255,255,255,0.72);
+backdrop-filter:blur(10px);
+color:#8a2f66;
+font-size:18px;
+cursor:pointer;
+box-shadow:0 6px 18px rgba(0,0,0,0.08);
+}
+
+.logo{
+text-align:center;
+}
+
+.logo img{
+width:85px;
+}
+
+.title{
+font-size:34px;
+font-weight:900;
+color:#8a2f66;
+text-align:center;
+margin-top:8px;
+}
+
+.subtitle{
+text-align:center;
+color:#6f5b67;
+margin-top:8px;
+font-size:14px;
+margin-bottom:20px;
+line-height:24px;
+}
+
+.card{
+background:rgba(255,255,255,0.66);
+backdrop-filter:blur(14px);
+border-radius:28px;
+padding:18px;
+margin-bottom:18px;
+box-shadow:0 10px 25px rgba(0,0,0,0.08);
+border:1px solid rgba(255,255,255,0.45);
+}
+
+.card h3{
+color:#8a2f66;
+margin-bottom:16px;
+font-size:24px;
+}
+
+.methods{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+margin-bottom:14px;
+}
+
+.main-btn{
+border:none;
+border-radius:18px;
+padding:15px;
+background:linear-gradient(
+135deg,
+#ff7cab,
+#c894ff
+);
+color:white;
+font-weight:800;
+cursor:pointer;
+font-size:15px;
+width:100%;
+}
+
+.preview{
+height:320px;
+border-radius:22px;
+overflow:hidden;
+background:white;
+border:2px dashed #efbfd2;
+display:flex;
+align-items:center;
+justify-content:center;
+position:relative;
+}
+
+.preview img,
+.preview video{
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+.preview-text{
+font-weight:700;
+color:#8a2f66;
+}
+
+#capture{
+display:none;
+margin-top:14px;
+}
+
+.chips{
+display:flex;
+flex-wrap:wrap;
+gap:10px;
+margin-top:14px;
+}
+
+.chip{
+padding:12px 16px;
+border-radius:20px;
+background:#fff0f6;
+border:1px solid #efbfd2;
+font-weight:700;
+color:#8a2f66;
+cursor:pointer;
+transition:0.2s;
+}
+
+.chip.active{
+background:linear-gradient(
+135deg,
+#ff7cab,
+#c894ff
+);
+color:white;
+border:none;
+}
+
+.custom-input{
+width:100%;
+padding:15px;
+border:none;
+outline:none;
+border-radius:18px;
+margin-top:16px;
+border:1px solid #efbfd2;
+font-size:14px;
+}
+
+.loading-box{
+display:none;
+text-align:center;
+padding:20px;
+}
+
+.loader{
+width:72px;
+height:72px;
+border-radius:50%;
+border:6px solid #f3d4e2;
+border-top:6px solid #d95b96;
+margin:auto;
+animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+100%{
+transform:rotate(360deg);
+}
+}
+
+.loading-text{
+margin-top:18px;
+font-size:20px;
+font-weight:900;
+color:#8a2f66;
+}
+
+.scan-steps{
+margin-top:18px;
+line-height:30px;
+color:#755f69;
+font-weight:700;
+font-size:14px;
+}
+
+.result-box{
+display:none;
+}
+
+.result-image{
+width:100%;
+border-radius:24px;
+margin-top:16px;
+}
+
+.result-text{
+margin-top:16px;
+line-height:28px;
+font-weight:700;
+color:#5a3848;
+font-size:15px;
+}
+
+.score-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+margin-top:18px;
+}
+
+.score-card{
+background:#fff0f6;
+border-radius:20px;
+padding:16px;
+text-align:center;
+font-weight:800;
+color:#8a2f66;
+}
+
+.score-card span{
+display:block;
+margin-top:8px;
+font-size:24px;
+color:#222;
+}
+
+.severity-box{
+margin-top:20px;
+padding:18px;
+border-radius:22px;
+background:#fff0f6;
+border:1px solid #ffd6e6;
+}
+
+.severity-title{
+font-size:16px;
+font-weight:800;
+color:#8a2f66;
+margin-bottom:12px;
+}
+
+.severity-bar{
+height:18px;
+background:#ffe4ef;
+border-radius:30px;
+overflow:hidden;
+}
+
+.severity-fill{
+height:100%;
+width:0%;
+border-radius:30px;
+background:linear-gradient(
+90deg,
+#4cd964,
+#ffcc00,
+#ff3b30
+);
+transition:1s;
+}
+
+.severity-percent{
+margin-top:12px;
+text-align:center;
+font-size:28px;
+font-weight:900;
+color:#8a2f66;
+}
+
+.routine{
+margin-top:20px;
+padding:18px;
+background:#fff0f6;
+border-radius:22px;
+line-height:30px;
+font-weight:700;
+color:#5a3848;
+}
+
+.products{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:14px;
+margin-top:18px;
+}
+
+.product{
+background:white;
+border-radius:22px;
+padding:12px;
+box-shadow:0 5px 15px rgba(0,0,0,0.08);
+cursor:pointer;
+transition:0.3s;
+}
+
+.product:hover{
+transform:scale(1.03);
+}
+
+.product img{
+width:100%;
+height:155px;
+object-fit:cover;
+border-radius:16px;
+}
+
+.product-name{
+margin-top:10px;
+font-weight:900;
+color:#333;
+}
+
+.product-price{
+margin-top:5px;
+font-weight:900;
+color:#8a2f66;
+}
+
+.doctors{
+margin-top:24px;
+display:none;
+}
+
+.doctor-card{
+background:white;
+border-radius:24px;
+padding:18px;
+margin-top:16px;
+box-shadow:0 6px 18px rgba(0,0,0,0.08);
+cursor:pointer;
+transition:0.3s;
+}
+
+.doctor-card:hover{
+transform:translateY(-4px);
+}
+
+.doctor-name{
+font-size:19px;
+font-weight:900;
+color:#8a2f66;
+}
+
+.doctor-type{
+margin-top:6px;
+font-weight:700;
+color:#555;
+}
+
+.bottom{
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+max-width:560px;
+margin:auto;
+background:rgba(255,255,255,0.92);
+backdrop-filter:blur(14px);
+display:flex;
+justify-content:space-around;
+padding:12px 10px;
+height:70px;
+z-index:9999;
+}
+
+.bottom div{
+text-align:center;
+font-size:12px;
+color:#666;
+cursor:pointer;
+}
+
+.bottom i{
+display:block;
+font-size:20px;
+margin-bottom:4px;
+color:#d95b96;
+}
+
+.frame{
+min-height:100vh;
+padding-bottom:140px;
+}
+
+/* =========================
+   BACKGROUND FIX (SAFE ADD-ON)
+   ========================= */
+
+/* Force full viewport coverage */
+html, body {
+  height: 100vh;
+  width: 100vw;
+}
+
+/* Ensure background fully covers screen */
+body {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+/* Make overlay cover full page properly */
+body::before {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+/* Prevent frame clipping background visually */
+.frame {
+  min-height: 100vh;
+}
+
+
+</style>
+
+</head>
+
+<body>
+
+<div class="frame">
+
+<div class="top">
+
+<button class="top-btn"
+onclick="location='home.html'">
+<i class="fas fa-arrow-left"></i>
+</button>
+
+<div class="logo">
+<img src="logo.png">
+</div>
+
+<button class="top-btn"
+onclick="location='profile.html'">
+<i class="fas fa-user"></i>
+</button>
+
+</div>
+
+<div class="title">
+AI Skin Scan
+</div>
+
+<div class="subtitle">
+Advanced AI powered skin analysis,
+personalized skincare routine,
+recommended products,
+and dermatologist consultation✨
+</div>
+
+<div class="card">
+
+<h3>Choose Image</h3>
+
+<div class="methods">
+
+<button class="main-btn"
+onclick="openCamera()">
+<i class="fas fa-camera"></i>
+Camera
+</button>
+
+<button class="main-btn"
+onclick="openGallery()">
+<i class="fas fa-image"></i>
+Gallery
+</button>
+
+</div>
+
+<div class="preview">
+
+<div class="preview-text"
+id="previewText">
+No image selected
+</div>
+
+<video id="video"
+autoplay
+playsinline
+style="display:none">
+</video>
+
+<img id="previewImg"
+style="display:none">
+
+</div>
+
+<button
+id="capture"
+class="main-btn"
+onclick="capturePhoto()">
+Capture Photo
+</button>
+
+<input type="file"
+id="gallery"
+accept="image/*"
+style="display:none">
+
+</div>
+
+<div class="card">
+
+<h3>Select Skin Concerns</h3>
+
+<div class="chips">
+
+<div class="chip" onclick="toggleConcern(this)">Acne</div>
+<div class="chip" onclick="toggleConcern(this)">Dark Spots</div>
+<div class="chip" onclick="toggleConcern(this)">Pigmentation</div>
+<div class="chip" onclick="toggleConcern(this)">Dryness</div>
+<div class="chip" onclick="toggleConcern(this)">Oily Skin</div>
+<div class="chip" onclick="toggleConcern(this)">Sensitivity</div>
+<div class="chip" onclick="toggleConcern(this)">Open Pores</div>
+<div class="chip" onclick="toggleConcern(this)">Wrinkles</div>
+<div class="chip" onclick="toggleConcern(this)">Redness</div>
+<div class="chip" onclick="toggleConcern(this)">Dullness</div>
+<div class="chip" onclick="toggleConcern(this)">Tanning</div>
+<div class="chip" onclick="toggleConcern(this)">Uneven Tone</div>
+<div class="chip" onclick="toggleConcern(this)">Eye Bags</div>
+<div class="chip" onclick="toggleConcern(this)">Blackheads</div>
+<div class="chip" onclick="toggleConcern(this)">Whiteheads</div>
+<div class="chip" onclick="toggleConcern(this)">Sun Damage</div>
+
+</div>
+
+<input
+type="text"
+class="custom-input"
+id="customConcern"
+placeholder="Type custom concern if not listed">
+
+<button
+class="main-btn"
+style="margin-top:18px"
+onclick="analyzeSkin()">
+Analyze Skin
+</button>
+
+</div>
+
+<div class="card loading-box"
+id="loadingBox">
+
+<div class="loader"></div>
+
+<div class="loading-text">
+Analyzing Your Skin...
+</div>
+
+<div class="scan-steps">
+
+✔ Detecting skin texture<br>
+✔ Detecting acne & dark spots<br>
+✔ Measuring oil balance<br>
+✔ Measuring hydration level<br>
+✔ Detecting wrinkles & pores<br>
+✔ Generating skincare routine<br>
+✔ Finding dermatologist support<br>
+✔ Recommending products
+
+</div>
+
+</div>
+
+<div class="card result-box"
+id="resultBox">
+
+<h3>AI Analysis Result</h3>
+
+<img
+id="resultImage"
+class="result-image">
+
+<div
+id="resultText"
+class="result-text">
+</div>
+
+<div class="score-grid">
+
+<div class="score-card">
+Acne
+<span id="acneScore">0%</span>
+</div>
+
+<div class="score-card">
+Hydration
+<span id="hydrationScore">0%</span>
+</div>
+
+<div class="score-card">
+Oil Level
+<span id="oilScore">0%</span>
+</div>
+
+<div class="score-card">
+Glow
+<span id="glowScore">0%</span>
+</div>
+
+</div>
+
+<div class="severity-box">
+
+<div class="severity-title">
+Skin Severity Level
+</div>
+
+<div class="severity-bar">
+
+<div class="severity-fill"
+id="severityFill">
+</div>
+
+</div>
+
+<div class="severity-percent"
+id="severityPercent">
+0%
+</div>
+
+</div>
+
+<div
+class="routine"
+id="routine">
+</div>
+
+<div style="
+margin-top:20px;
+background:#fff0f6;
+padding:18px;
+border-radius:22px;
+line-height:30px;
+color:#5a3848;
+font-weight:600;
+">
+
+<h3 style="
+color:#8a2f66;
+margin-bottom:14px;
+">
+Extra AI Suggestions
+</h3>
+
+<div id="extraSuggestions">
+
+💧 Drink at least 3 liters of water daily.<br><br>
+🥗 Eat Vitamin C rich fruits.<br><br>
+😴 Sleep for 7–8 hours daily.<br><br>
+🧴 Remove makeup before sleeping.<br><br>
+☀️ Reapply sunscreen every 3–4 hours.<br><br>
+🚫 Avoid touching acne frequently.<br><br>
+🧼 Change pillow covers regularly.<br><br>
+🧘 Reduce stress levels.<br><br>
+🍔 Avoid oily foods if acne is high.<br><br>
+🌿 Use gentle alcohol-free skincare.
+
+</div>
+
+</div>
+
+<h3 style="margin-top:24px">
+Recommended Products
+</h3>
+
+<div
+class="products"
+id="products">
+</div>
+
+<div
+class="doctors"
+id="doctors">
+
+<h3 style="margin-top:24px">
+Dermatologist Consultation
+</h3>
+
+<p id="doctorMessage"
+style="
+line-height:28px;
+color:#6f5b67;
+font-weight:700;
+margin-top:10px;
+">
+</p>
+
+<div id="doctorList"></div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="bottom">
+
+<div onclick="location='home.html'">
+<i class="fas fa-home"></i>
+Home
+</div>
+
+<div>
+<i class="fas fa-camera"></i>
+Scan
+</div>
+
+<div onclick="location='cart.html'">
+<i class="fas fa-shopping-cart"></i>
+Cart
+</div>
+
+<div onclick="location='profile.html'">
+<i class="fas fa-user"></i>
+Profile
+</div>
+
+</div>
+
+<script>
+
+let stream = null;
+let selectedFile = null;
+let concerns = [];
+
+function openCamera(){
+
+navigator.mediaDevices
+.getUserMedia({
+video:true
+})
+
+.then(s=>{
+
+stream = s;
+
+const video =
+document.getElementById("video");
+
+video.srcObject = s;
+
+video.style.display = "block";
+
+document.getElementById(
+"previewImg"
+).style.display = "none";
+
+document.getElementById(
+"previewText"
+).style.display = "none";
+
+document.getElementById(
+"capture"
+).style.display = "block";
+
+});
+
+}
+
+function capturePhoto(){
+
+const video =
+document.getElementById("video");
+
+const canvas =
+document.createElement("canvas");
+
+canvas.width = video.videoWidth;
+
+canvas.height = video.videoHeight;
+
+canvas.getContext("2d")
+.drawImage(video,0,0);
+
+canvas.toBlob(blob=>{
+
+selectedFile =
+new File(
+[blob],
+"scan.png",
+{type:"image/png"}
+);
+
+const url =
+URL.createObjectURL(blob);
+
+document.getElementById(
+"previewImg"
+).src = url;
+
+document.getElementById(
+"previewImg"
+).style.display = "block";
+
+video.style.display = "none";
+
+document.getElementById(
+"capture"
+).style.display = "none";
+
+if(stream){
+
+stream.getTracks()
+.forEach(t=>t.stop());
+
+}
+
+});
+
+}
+
+function openGallery(){
+
+document.getElementById(
+"gallery"
+).click();
+
+}
+
+document.getElementById(
+"gallery"
+).addEventListener(
+"change",
+e=>{
+
+const file =
+e.target.files[0];
+
+if(!file) return;
+
+selectedFile = file;
+
+const reader =
+new FileReader();
+
+reader.onload = ev=>{
+
+document.getElementById(
+"previewImg"
+).src =
+ev.target.result;
+
+document.getElementById(
+"previewImg"
+).style.display = "block";
+
+document.getElementById(
+"previewText"
+).style.display = "none";
+
+};
+
+reader.readAsDataURL(file);
+
+});
+
+function toggleConcern(el){
+
+el.classList.toggle("active");
+
+const text = el.innerText;
+
+if(concerns.includes(text)){
+
+concerns =
+concerns.filter(
+c=>c!==text
+);
+
+}
+
+else{
+
+concerns.push(text);
+
+}
+
+}
+
+function analyzeSkin(){
+
+if(!selectedFile){
+
+alert("Please select image");
+
+return;
+
+}
+
+document.getElementById(
+"loadingBox"
+).style.display = "block";
+
+setTimeout(()=>{
+
+document.getElementById(
+"loadingBox"
+).style.display = "none";
+
+document.getElementById(
+"resultBox"
+).style.display = "block";
+
+document.getElementById(
+"doctors"
+).style.display = "block";
+
+const img =
+document.getElementById(
+"previewImg"
+).src;
+
+document.getElementById(
+"resultImage"
+).src = img;
+
+let severityValue = 45;
+
+if(concerns.includes("Acne")){
+severityValue = 78;
+}
+
+if(concerns.includes("Wrinkles")){
+severityValue = 88;
+}
+
+if(concerns.includes("Sensitivity")){
+severityValue = 82;
+}
+
+if(concerns.includes("Dark Spots")){
+severityValue = 66;
+}
+
+document.getElementById(
+"severityPercent"
+).innerText =
+severityValue + "%";
+
+document.getElementById(
+"severityFill"
+).style.width =
+severityValue + "%";
+
+document.getElementById(
+"resultText"
+).innerText =
+
+"AI detected concerns including "
++
+concerns.join(", ")
++
+". Your skin requires hydration balance, sun protection, oil control, and targeted treatment.";
+
+document.getElementById(
+"acneScore"
+).innerText = "72%";
+
+document.getElementById(
+"hydrationScore"
+).innerText = "58%";
+
+document.getElementById(
+"oilScore"
+).innerText = "69%";
+
+document.getElementById(
+"glowScore"
+).innerText = "63%";
+
+document.getElementById(
+"routine"
+).innerHTML =
+
+"🌞 Morning Routine:<br><br>" +
+"• Gentle Cleanser<br>" +
+"• Vitamin C Serum<br>" +
+"• Lightweight Moisturizer<br>" +
+"• SPF 50 Sunscreen<br><br>" +
+
+"🌙 Night Routine:<br><br>" +
+"• Salicylic Face Wash<br>" +
+"• Niacinamide Serum<br>" +
+"• Ceramide Moisturizer<br>" +
+"• Spot Treatment";
+
+const products = [
+
+[
+"Minimalist Niacinamide Serum",
+"₹599",
+"https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=500&q=80"
+],
+
+[
+"Derma Co Salicylic Face Wash",
+"₹299",
+"https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=500&q=80"
+],
+
+[
+"Aqualogica Sunscreen",
+"₹399",
+"https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=500&q=80"
+],
+
+[
+"Cetaphil Moisturizer",
+"₹699",
+"https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=500&q=80"
+]
+
+];
+
+document.getElementById(
+"products"
+).innerHTML =
+
+products.map(p=>`
+
+<div class="product"
+onclick="openProduct('${p[0]}')">
+
+<img src="${p[2]}">
+
+<div class="product-name">
+${p[0]}
+</div>
+
+<div class="product-price">
+${p[1]}
+</div>
+
+<button class="main-btn"
+style="margin-top:10px">
+View Product
+</button>
+
+</div>
+
+`).join("");
+
+if(severityValue >= 70){
+
+document.getElementById(
+"doctorMessage"
+).innerHTML =
+"⚠️ Severe skin concerns detected. Dermatologist consultation is highly recommended.";
+
+}
+
+else{
+
+document.getElementById(
+"doctorMessage"
+).innerHTML =
+"✨ Consultation is optional but can improve skin recovery.";
+
+}
+
+const doctors = [
+
+["Dr. Priya Sharma","Apollo Hospitals • Bangalore","₹700"],
+["Dr. Arjun Mehta","Practo Dermatologist • Hyderabad","₹500"],
+["Dr. Neha Kapoor","AIIMS Specialist • Delhi","₹900"],
+["Dr. Sneha Reddy","Skin Care Expert • Chennai","₹650"],
+["Dr. Rahul Verma","Acne Specialist • Mumbai","₹750"],
+["Dr. Kavya Iyer","Pigmentation Expert • Pune","₹600"],
+["Dr. Anjali Rao","Glow & Facial Specialist • Bangalore","₹800"],
+["Dr. Meera Nair","Cosmetic Dermatologist • Kochi","₹550"]
+
+];
+
+document.getElementById(
+"doctorList"
+).innerHTML =
+
+doctors.map(d=>`
+
+<div class="doctor-card"
+onclick="openDoctor('${d[0]}')">
+
+<div class="doctor-name">
+${d[0]}
+</div>
+
+<div class="doctor-type">
+${d[1]}
+</div>
+
+<div style="
+margin-top:10px;
+line-height:28px;
+font-weight:700;
+color:#555;
+">
+
+⭐ 4.9 Rating<br>
+💻 Online + Offline Consultation<br>
+💰 ${d[2]}
+
+</div>
+
+<button class="main-btn"
+style="margin-top:14px"
+onclick="event.stopPropagation();bookDoctor('${d[0]}')">
+Book Appointment
+</button>
+
+</div>
+
+`).join("");
+
+saveAnalysis();
+
+localStorage.setItem(
+"analysisImage",
+document.getElementById(
+"resultImage"
+).src
+);
+
+localStorage.setItem(
+"historyImage",
+document.getElementById(
+"resultImage"
+).src
+);
+
+window.scrollTo({
+top:document.body.scrollHeight,
+behavior:"smooth"
+});
+
+},4000);
+
+}
+
+function openProduct(name){
+
+localStorage.setItem(
+"selectedProduct",
+name
+);
+
+window.location =
+"products.html";
+
+}
+
+function openDoctor(name){
+
+localStorage.setItem(
+"selectedDoctor",
+name
+);
+
+window.location =
+"doctor-details.html";
+
+}
+
+function bookDoctor(name){
+
+localStorage.setItem(
+"bookedDoctor",
+name
+);
+
+alert(
+"Appointment booked with " + name
+);
+
+}
+
+function saveAnalysis(){
+
+localStorage.setItem(
+"savedResultImage",
+document.getElementById(
+"resultImage"
+).src
+);
+
+localStorage.setItem(
+"savedResultText",
+document.getElementById(
+"resultText"
+).innerHTML
+);
+
+localStorage.setItem(
+"savedRoutine",
+document.getElementById(
+"routine"
+).innerHTML
+);
+
+localStorage.setItem(
+"savedSeverity",
+document.getElementById(
+"severityPercent"
+).innerText
+);
+
+localStorage.setItem(
+"savedAcne",
+document.getElementById(
+"acneScore"
+).innerText
+);
+
+localStorage.setItem(
+"savedHydration",
+document.getElementById(
+"hydrationScore"
+).innerText
+);
+
+localStorage.setItem(
+"savedOil",
+document.getElementById(
+"oilScore"
+).innerText
+);
+
+localStorage.setItem(
+"savedGlow",
+document.getElementById(
+"glowScore"
+).innerText
+);
+
+localStorage.setItem(
+"savedProducts",
+document.getElementById(
+"products"
+).innerHTML
+);
+
+localStorage.setItem(
+"savedDoctors",
+document.getElementById(
+"doctorList"
+).innerHTML
+);
+
+}
+
+window.onload = ()=>{
+
+const savedImage =
+localStorage.getItem(
+"savedResultImage"
+);
+
+if(savedImage){
+
+document.getElementById(
+"resultBox"
+).style.display =
+"block";
+
+document.getElementById(
+"doctors"
+).style.display =
+"block";
+
+document.getElementById(
+"resultImage"
+).src =
+savedImage;
+
+document.getElementById(
+"resultText"
+).innerHTML =
+localStorage.getItem(
+"savedResultText"
+);
+
+document.getElementById(
+"routine"
+).innerHTML =
+localStorage.getItem(
+"savedRoutine"
+);
+
+document.getElementById(
+"severityPercent"
+).innerText =
+localStorage.getItem(
+"savedSeverity"
+);
+
+document.getElementById(
+"severityFill"
+).style.width =
+localStorage.getItem(
+"savedSeverity"
+);
+
+document.getElementById(
+"acneScore"
+).innerText =
+localStorage.getItem(
+"savedAcne"
+);
+
+document.getElementById(
+"hydrationScore"
+).innerText =
+localStorage.getItem(
+"savedHydration"
+);
+
+document.getElementById(
+"oilScore"
+).innerText =
+localStorage.getItem(
+"savedOil"
+);
+
+document.getElementById(
+"glowScore"
+).innerText =
+localStorage.getItem(
+"savedGlow"
+);
+
+document.getElementById(
+"products"
+).innerHTML =
+localStorage.getItem(
+"savedProducts"
+);
+
+document.getElementById(
+"doctorList"
+).innerHTML =
+localStorage.getItem(
+"savedDoctors"
+);
+
+}
+
+};
+
+</script>
+
+</body>
+</html>

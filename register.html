@@ -1,0 +1,1345 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#f7e9f1">
+
+<title>Register - Derm Assist</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html,body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#f7e9f1;
+}
+
+body{
+    background:url("background.jpg") no-repeat center center;
+    background-size:cover;
+    background-attachment:fixed;
+}
+
+
+.mobile-frame{
+    width:100vw;
+    height:100vh;
+    position:relative;
+
+    /* REMOVE CLIPPING EFFECT */
+    overflow:visible;
+
+    background:none;
+}
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+
+    background:url("background.jpg") no-repeat center center;
+    background-size:cover;
+
+    z-index:-1;
+}
+
+.mobile-frame::before{
+    content:"";
+    position:absolute;
+    inset:0;
+
+    background:transparent;
+
+    /* NO BLUR */
+    backdrop-filter:none;
+}
+
+.page{
+    position:relative;
+    z-index:1;
+    height:100%;
+    display:block;
+    padding:10px 10px 0;
+}
+
+.glass-card{
+    width:100%;
+    max-width:420px;
+    height:calc(100vh - 20px);
+    margin:0 auto;
+    overflow-y:auto;
+
+    background:rgba(255,255,255,0.80); /* slightly more solid for readability */
+    border:1px solid rgba(255,255,255,0.45);
+    border-radius:30px;
+
+    /* REMOVE BLUR */
+    backdrop-filter:none;
+    -webkit-backdrop-filter:none;
+
+    box-shadow:0 12px 30px rgba(200,120,180,0.25);
+    padding:18px 18px calc(70px + env(safe-area-inset-bottom));
+    animation:pageIn 0.5s ease;
+}
+
+.glass-card::-webkit-scrollbar{
+    width:0;
+    height:0;
+    display:none;
+}
+
+@keyframes pageIn{
+    from{
+        opacity:0;
+        transform:translateY(20px) scale(0.98);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0) scale(1);
+    }
+}
+
+.logo-wrap{
+    text-align:center;
+    margin-bottom:8px;
+}
+
+.logo-wrap img{
+    width:72px;
+    filter:drop-shadow(
+    0 0 10px
+    rgba(214,102,171,0.20)
+    );
+}
+
+.heading{
+    text-align:center;
+    font-size:25px;
+    font-weight:800;
+    color:#8a3e67;
+    margin-top:6px;
+}
+
+.subtitle{
+    text-align:center;
+    font-size:13px;
+    color:#8d7b95;
+    margin-top:8px;
+    margin-bottom:16px;
+    line-height:1.5;
+}
+
+.input-box{
+    position:relative;
+    margin:14px 0;
+    animation:fadeUp 0.45s ease;
+}
+
+@keyframes fadeUp{
+    from{
+        opacity:0;
+        transform:translateY(10px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+.input-box input,
+.input-box select{
+    width:100%;
+    border:none;
+    outline:none;
+    border-radius:20px;
+    background:rgba(255,255,255,0.92);
+    box-shadow:0 6px 16px rgba(194,121,155,0.10);
+    padding:19px 46px 15px 46px;
+    font-size:14px;
+    color:#4b2d3b;
+    border:1px solid #f0cade;
+    transition:0.25s ease;
+    caret-color:#c45b8f;
+
+    -webkit-appearance:none;
+    appearance:none;
+}
+
+.input-box input:focus,
+.input-box select:focus{
+    border-color:#d95b96;
+    box-shadow:none;
+    outline:none;
+    background:rgba(255,255,255,0.92);
+}
+
+.input-box input:-webkit-autofill,
+.input-box input:-webkit-autofill:hover,
+.input-box input:-webkit-autofill:focus,
+.input-box select:-webkit-autofill{
+    -webkit-box-shadow:0 0 0px 1000px white inset !important;
+    -webkit-text-fill-color:#4b2d3b !important;
+    transition:background-color 5000s ease-in-out 0s;
+}
+
+.input-box label{
+    position:absolute;
+    left:46px;
+    top:17px;
+    color:#9b7082;
+    font-size:14px;
+    pointer-events:none;
+    transition:0.25s ease;
+}
+
+.input-box input:focus + label,
+.input-box input:not(:placeholder-shown) + label,
+.input-box select:focus + label,
+.input-box select:valid + label{
+    top:6px;
+    font-size:11px;
+    color:#c45b8f;
+}
+
+.left-icon{
+    position:absolute;
+    left:16px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#c45b8f;
+    font-size:15px;
+}
+
+.mobile-box .left-icon{
+    color:#c45b8f !important;
+    opacity:1 !important;
+}
+
+.mobile-box .fa-phone-alt{
+    color:#c45b8f !important;
+    opacity:1 !important;
+    filter:none !important;
+    -webkit-text-fill-color:#c45b8f !important;
+}
+
+.eye{
+    position:absolute;
+    right:16px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#c45b8f;
+    cursor:pointer;
+}
+
+.input-box select{
+    appearance:none;
+    -webkit-appearance:none;
+    -moz-appearance:none;
+}
+
+.select-arrow{
+    position:absolute;
+    right:16px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#c45b8f;
+    pointer-events:none;
+    font-size:13px;
+}
+
+.file-label{
+    display:block;
+    font-size:13px;
+    color:#c45b8f;
+    margin:8px 0 6px 4px;
+    font-weight:700;
+}
+
+.file-box{
+    position:relative;
+    margin-top:2px;
+}
+
+.file-box i{
+    position:absolute;
+    left:16px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#c45b8f;
+    font-size:15px;
+}
+
+.file-box input[type="file"]{
+    width:100%;
+    border:none;
+    outline:none;
+    border-radius:20px;
+    background:rgba(255,255,255,0.92);
+    box-shadow:0 6px 16px rgba(194,121,155,0.10);
+    padding:15px 14px 15px 46px;
+    font-size:14px;
+    color:#6d5060;
+    border:1px solid #f0cade;
+}
+
+.file-box input[type="file"]:focus{
+    outline:none;
+    box-shadow:none;
+}
+
+button{
+    width:100%;
+    border:none;
+    border-radius:20px;
+    padding:15px;
+    font-size:15px;
+    font-weight:700;
+    cursor:pointer;
+    transition:transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+button:active{
+    transform:scale(0.98);
+}
+
+button:focus{
+    outline:none;
+    box-shadow:none;
+}
+
+.main-btn{
+    margin-top:14px;
+    background:linear-gradient(
+    135deg,
+    #ff7eae,
+    #c792ff
+    );
+    color:white;
+    box-shadow:0 10px 22px rgba(217,91,150,0.28);
+}
+
+.divider{
+    display:flex;
+    align-items:center;
+    margin:18px 0 14px;
+}
+
+.divider::before,
+.divider::after{
+    content:"";
+    flex:1;
+    height:1px;
+    background:#edcddd;
+}
+
+.divider span{
+    margin:0 10px;
+    color:#9b7082;
+    font-size:12px;
+    font-weight:600;
+}
+
+.social-btn{
+    margin-top:10px;
+    background:rgba(255,255,255,0.94);
+    color:#5a3848;
+    border:1px solid #efbfd2;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:10px;
+    box-shadow:0 6px 14px rgba(194,121,155,0.08);
+}
+
+.social-btn img{
+    width:18px;
+    height:18px;
+}
+
+#msg{
+    min-height:20px;
+    text-align:center;
+    color:#c23d72;
+    font-size:14px;
+    margin-top:10px;
+    font-weight:600;
+}
+
+.bottom-text{
+    text-align:center;
+    margin-top:18px;
+    margin-bottom:40px;
+    padding-bottom:10px;
+    font-size:14px;
+    color:#7c5b6a;
+}
+
+.bottom-text a{
+    color:#d95b96;
+    font-weight:700;
+    text-decoration:none;
+}
+
+.toast{
+    position:absolute;
+    top:18px;
+    left:50%;
+    transform:translateX(-50%) scale(0.95);
+    min-width:260px;
+    max-width:88%;
+    background:linear-gradient(
+    135deg,
+    #ff8eb9,
+    #c997ff
+    );
+    color:white;
+    padding:14px 18px;
+    border-radius:20px;
+    text-align:center;
+    box-shadow:0 10px 24px rgba(194,121,155,0.24);
+    opacity:0;
+    pointer-events:none;
+    transition:0.35s ease;
+    z-index:2;
+    font-size:14px;
+    font-weight:600;
+}
+
+.toast.show{
+    opacity:1;
+    transform:translateX(-50%) scale(1);
+}
+
+.fa-phone-alt{
+    color:#c45b8f !important;
+    opacity:1 !important;
+    filter:none !important;
+    transform:translateY(-50%) !important;
+}
+
+.input-box > .fa-phone-alt{
+    position:absolute;
+    left:16px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#c45b8f !important;
+    font-size:15px;
+    opacity:1 !important;
+}
+</style>
+</head>
+
+<body>
+
+<div class="mobile-frame">
+
+<div id="toast" class="toast"></div>
+
+<div class="page">
+
+<div class="glass-card">
+
+<div class="logo-wrap">
+<img src="logo.png" alt="Derm Assist Logo">
+</div>
+
+<div class="heading">
+Create Account
+</div>
+
+<div class="subtitle">
+Glow with confidence✨
+</div>
+
+<div class="input-box mobile-box">
+<i class="fas fa-user left-icon"></i>
+<input id="name" type="text" placeholder=" ">
+<label>Full Name</label>
+</div>
+
+<div class="input-box">
+
+<i 
+class="fas fa-phone-alt"
+style="
+position:absolute;
+left:16px;
+top:50%;
+transform:translateY(-50%);
+color:#c45b8f;
+font-size:15px;
+opacity:1;
+filter:none;
+z-index:10;
+"
+></i>
+
+<div style="position:relative; width:100%;">
+
+<span style="
+position:absolute;
+left:46px;
+top:50%;
+transform:translateY(-50%);
+font-size:14px;
+font-weight:600;
+color:#c45b8f;
+z-index:2;
+">
++91
+</span>
+
+<input
+id="mobile"
+type="tel"
+placeholder=" "
+maxlength="10"
+inputmode="numeric"
+style="
+padding-left:88px;
+"
+>
+
+<label style="left:88px;">
+Mobile Number
+</label>
+
+</div>
+
+</div>
+
+<div class="input-box">
+<i class="fas fa-calendar left-icon"></i>
+<input id="age" type="number" placeholder=" ">
+<label>Age</label>
+</div>
+
+<div class="input-box">
+<i class="fas fa-venus-mars left-icon"></i>
+
+<select id="gender" required>
+
+<option value=""></option>
+
+<option>Male</option>
+
+<option>Female</option>
+
+<option>Others</option>
+
+</select>
+
+<label>Gender</label>
+
+<i class="fas fa-chevron-down select-arrow"></i>
+
+</div>
+
+<div class="input-box">
+<i class="fas fa-spa left-icon"></i>
+
+<select id="skin" required>
+
+<option value=""></option>
+
+<option>Oily</option>
+
+<option>Dry</option>
+
+<option>Normal</option>
+
+<option>Combination</option>
+
+<option>Sensitive</option>
+
+<option>Acne Prone</option>
+
+<option>Dehydrated</option>
+
+<option>Mature Skin</option>
+
+<option>Allergic Skin</option>
+
+</select>
+
+<label>Skin Type</label>
+
+<i class="fas fa-chevron-down select-arrow"></i>
+
+</div>
+
+<div class="input-box">
+<i class="fas fa-envelope left-icon"></i>
+<input id="email" type="email" placeholder=" ">
+<label>Email</label>
+</div>
+
+<div class="input-box">
+<i class="fas fa-lock left-icon"></i>
+
+<input
+id="password"
+type="password"
+placeholder=" "
+maxlength="30"
+>
+
+<label>Password</label>
+
+<i class="fas fa-eye eye"
+onclick="togglePassword('password', this)">
+</i>
+
+</div>
+
+<div class="input-box">
+<i class="fas fa-lock left-icon"></i>
+
+<input
+id="confirmPassword"
+type="password"
+placeholder=" "
+maxlength="30"
+>
+
+<label>Confirm Password</label>
+
+<i class="fas fa-eye eye"
+onclick="togglePassword('confirmPassword', this)">
+</i>
+
+</div>
+
+<label class="file-label">
+Upload Image
+</label>
+
+<div class="file-box">
+
+<i class="fas fa-image"></i>
+
+<input
+type="file"
+id="image"
+accept="image/*"
+>
+
+</div>
+
+<button
+class="main-btn"
+onclick="register()">
+Register
+</button>
+
+<p id="msg"></p>
+
+<div class="divider">
+<span>OR</span>
+</div>
+
+<button
+class="social-btn"
+type="button"
+onclick="googleRegister()">
+
+<img
+src="https://developers.google.com/identity/images/g-logo.png"
+alt="Google">
+
+Google
+
+</button>
+
+<button
+class="social-btn"
+type="button"
+onclick="guestRegister()">
+
+<i class="fas fa-user-secret"></i>
+
+Continue as Guest
+
+</button>
+
+<div class="bottom-text">
+Already have an account?
+<a href="login.html">Login</a>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+/* =========================
+   FIREBASE CONFIG
+========================= */
+
+const firebaseConfig = {
+
+apiKey: "AIzaSyDz7K2UUPJuZy_x6UN8Gfkae_HUyw5zrkA",
+
+authDomain: "derm-assist-df5c7.firebaseapp.com",
+
+projectId: "derm-assist-df5c7",
+
+storageBucket: "derm-assist-df5c7.firebasestorage.app",
+
+messagingSenderId: "581788899919",
+
+appId: "1:581788899919:web:02cbc2f78e83cb91d9a83a",
+
+measurementId: "G-RS8E8WQ6Y9"
+
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const auth = firebase.auth();
+
+/* =========================
+   PASSWORD TOGGLE
+========================= */
+
+function togglePassword(id, icon){
+
+const input =
+document.getElementById(id);
+
+if(input.type === "password"){
+
+input.type = "text";
+
+icon.classList.remove("fa-eye");
+
+icon.classList.add("fa-eye-slash");
+
+}
+
+else{
+
+input.type = "password";
+
+icon.classList.remove("fa-eye-slash");
+
+icon.classList.add("fa-eye");
+
+}
+
+}
+
+/* =========================
+   TOAST
+========================= */
+
+function showToast(message){
+
+const toast =
+document.getElementById("toast");
+
+toast.innerText = message;
+
+toast.classList.add("show");
+
+setTimeout(()=>{
+
+toast.classList.remove("show");
+
+},1800);
+
+}
+
+/* =========================
+   EMAIL VALIDATION
+========================= */
+
+function isValidEmail(email){
+
+const emailRegex =
+/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+
+if(!emailRegex.test(email)){
+return false;
+}
+
+if(
+email.includes("..") ||
+email.startsWith(".") ||
+email.endsWith(".") ||
+email.includes("@.") ||
+email.includes(".@")
+){
+return false;
+}
+
+const allowedDomains = [
+"gmail.com",
+"yahoo.com",
+"outlook.com",
+"hotmail.com",
+"icloud.com"
+];
+
+const domain =
+email.split("@")[1];
+
+if(!allowedDomains.includes(domain)){
+return false;
+}
+
+return true;
+
+}
+
+/* =========================
+   MOBILE VALIDATION
+========================= */
+
+function validIndianMobile(mobile){
+
+return /^[6-9]\d{9}$/
+.test(mobile);
+
+}
+
+/* =========================
+   IMAGE VALIDATION
+========================= */
+
+function validImage(file){
+
+if(!file){
+
+return "Please upload image";
+
+}
+
+const allowedTypes = [
+"image/jpeg",
+"image/jpg",
+"image/png",
+"image/webp"
+];
+
+const maxSize = 2 * 1024 * 1024;
+
+if(!allowedTypes.includes(file.type)){
+
+return "Only JPG, PNG, WEBP images allowed";
+
+}
+
+if(file.size > maxSize){
+
+return "Image size must be below 2MB";
+
+}
+
+return true;
+
+}
+
+/* =========================
+   REGISTER
+========================= */
+
+function register(){
+
+const nameVal =
+document.getElementById("name")
+.value.trim();
+
+const mobileVal =
+document.getElementById("mobile")
+.value.trim();
+
+const ageVal =
+document.getElementById("age")
+.value.trim();
+
+const genderVal =
+document.getElementById("gender")
+.value;
+
+const skinVal =
+document.getElementById("skin")
+.value;
+
+const emailVal =
+document.getElementById("email")
+.value.trim();
+
+const pass =
+document.getElementById("password")
+.value;
+
+const confirmPass =
+document.getElementById("confirmPassword")
+.value;
+
+const imageFile =
+document.getElementById("image")
+.files[0];
+
+const msg =
+document.getElementById("msg");
+
+msg.innerText = "";
+
+if(
+nameVal === "" ||
+mobileVal === "" ||
+ageVal === "" ||
+genderVal === "" ||
+skinVal === "" ||
+emailVal === "" ||
+pass === "" ||
+confirmPass === ""
+){
+
+msg.innerText =
+"Please fill all fields";
+
+return;
+
+}
+
+if(!/^[A-Za-z ]+$/.test(nameVal)){
+
+msg.innerText =
+"Name should contain only alphabets";
+
+return;
+
+}
+
+if(nameVal.length < 3){
+
+msg.innerText =
+"Enter valid full name";
+
+return;
+
+}
+
+if(!validIndianMobile(mobileVal)){
+
+msg.innerText =
+"Enter valid Indian mobile number";
+
+return;
+
+}
+
+if(
+!/^\d+$/.test(ageVal) ||
+parseInt(ageVal) < 10 ||
+parseInt(ageVal) > 100
+){
+
+msg.innerText =
+"Enter valid age";
+
+return;
+
+}
+
+if(!isValidEmail(emailVal)){
+
+msg.innerText =
+"Please enter valid email";
+
+return;
+
+}
+
+if(pass.length < 6){
+
+msg.innerText =
+"Password must be at least 6 characters";
+
+return;
+
+}
+
+if(!/[A-Z]/.test(pass)){
+
+msg.innerText =
+"Password needs one capital letter";
+
+return;
+
+}
+
+if(!/[0-9]/.test(pass)){
+
+msg.innerText =
+"Password needs one number";
+
+return;
+
+}
+
+if(!/[!@#$%^&*]/.test(pass)){
+
+msg.innerText =
+"Password needs one special character";
+
+return;
+
+}
+
+if(pass !== confirmPass){
+
+msg.innerText =
+"Passwords do not match";
+
+return;
+
+}
+
+const imageValidation =
+validImage(imageFile);
+
+if(imageValidation !== true){
+
+msg.innerText =
+imageValidation;
+
+return;
+
+}
+
+const imageInput =
+document.getElementById("image");
+
+const file =
+imageInput.files[0];
+
+if(imageInput.files.length > 0){
+
+const reader = new FileReader();
+
+reader.onload = function(e){
+
+localStorage.setItem(
+"profileImage",
+e.target.result
+);
+
+localStorage.setItem(
+"analysisImage",
+e.target.result
+);
+
+localStorage.setItem(
+"historyImage",
+e.target.result
+);
+
+};
+
+reader.readAsDataURL(
+imageInput.files[0]
+);
+
+}
+
+auth.createUserWithEmailAndPassword(
+emailVal,
+pass
+)
+
+.then((userCredential)=>{
+
+const user =
+userCredential.user;
+
+localStorage.removeItem(
+"guestUser"
+);
+
+localStorage.setItem(
+"user",
+user.email
+);
+
+/* SAVE USER DETAILS */
+
+const userData = {
+
+name: nameVal,
+email: emailVal,
+mobile: mobileVal,
+age: ageVal,
+gender: genderVal,
+skin: skinVal
+
+};
+
+/* SAVE USING EMAIL */
+
+localStorage.setItem(
+`user_${emailVal}`,
+JSON.stringify(userData)
+);
+
+/* CURRENT USER */
+
+localStorage.setItem(
+"currentUser",
+emailVal
+);
+
+localStorage.setItem(
+`registered_${emailVal}`,
+nameVal
+);
+
+localStorage.setItem(
+"userName",
+nameVal
+);
+
+localStorage.setItem(
+"userMobile",
+"+91 " + mobileVal
+);
+
+localStorage.setItem(
+"skinType",
+skinVal
+);
+
+localStorage.setItem(
+"userAge",
+ageVal
+);
+
+localStorage.setItem(
+"userGender",
+genderVal
+);
+
+if(file){
+
+const reader = new FileReader();
+
+reader.onload = function(e){
+
+localStorage.setItem(
+"profileImage",
+e.target.result
+);
+
+};
+
+reader.readAsDataURL(file);
+
+}
+
+showToast(
+"🌸 Registration Successful"
+);
+
+setTimeout(()=>{
+
+window.location =
+"login.html";
+
+},1500);
+
+})
+
+.catch((error)=>{
+
+if(error.code === "auth/email-already-in-use"){
+
+msg.innerText =
+"Email already registered";
+
+}
+
+else if(error.code === "auth/invalid-email"){
+
+msg.innerText =
+"Invalid email address";
+
+}
+
+else if(error.code === "auth/weak-password"){
+
+msg.innerText =
+"Weak password";
+
+}
+
+else{
+
+msg.innerText =
+error.message;
+
+}
+
+});
+
+}
+
+/* =========================
+   GOOGLE REGISTER
+========================= */
+
+function googleRegister(){
+
+const provider =
+new firebase.auth.GoogleAuthProvider();
+
+auth.signInWithPopup(provider)
+
+.then((result)=>{
+
+const user =
+result.user;
+
+localStorage.setItem(
+"user",
+user.email
+);
+
+localStorage.setItem(
+"userName",
+user.displayName
+);
+
+showToast(
+"✅ Google Register Success"
+);
+
+setTimeout(()=>{
+
+window.location =
+"home.html";
+
+},1200);
+
+})
+
+.catch((error)=>{
+
+document.getElementById("msg")
+.innerText =
+error.message;
+
+});
+
+}
+
+/* =========================
+   GUEST REGISTER
+========================= */
+
+function guestRegister(){
+
+showToast(
+"✨ Entering Guest Mode..."
+);
+
+localStorage.setItem(
+"guestUser",
+"true"
+);
+
+localStorage.setItem(
+"userName",
+"Guest User"
+);
+
+localStorage.setItem(
+"loginType",
+"guest"
+);
+
+setTimeout(()=>{
+
+window.location =
+"home.html";
+
+},1500);
+
+}
+
+/* =========================
+   REMOVE AUTO FILL
+========================= */
+
+window.onload = ()=>{
+
+document.getElementById("name").value = "";
+
+document.getElementById("mobile").value = "";
+
+document.getElementById("age").value = "";
+
+document.getElementById("gender").selectedIndex = 0;
+
+document.getElementById("skin").selectedIndex = 0;
+
+document.getElementById("email").value = "";
+
+document.getElementById("password").value = "";
+
+document.getElementById("confirmPassword").value = "";
+
+};
+
+/* =========================
+   LIVE INPUT VALIDATIONS
+========================= */
+
+document.getElementById("name")
+.addEventListener("input", function(){
+
+this.value =
+this.value.replace(/[^A-Za-z ]/g,'');
+
+});
+
+document.getElementById("mobile")
+.addEventListener("input", function(){
+
+this.value =
+this.value.replace(/\D/g,'');
+
+});
+
+document.getElementById("email")
+.addEventListener("input", function(){
+
+this.value =
+this.value.replace(/\s/g,'');
+
+});
+</script>
+
+</body>
+</html>

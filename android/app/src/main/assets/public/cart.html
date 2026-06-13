@@ -1,0 +1,109 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Cart</title>
+<style>
+*{box-sizing:border-box;font-family:Arial}
+body{margin:0;background:#f7e9f1}
+.frame{max-width:520px;margin:auto;min-height:100vh;padding:18px 18px 120px;background:linear-gradient(#fff5fa,#f7e9f1)}
+h2{text-align:center;color:#8a2f66}
+.item{display:grid;grid-template-columns:95px 1fr;gap:12px;background:white;border-radius:20px;padding:12px;margin:12px 0;box-shadow:0 8px 18px #0001}
+.item img{width:95px;height:95px;border-radius:16px;object-fit:cover}
+.name{font-weight:900}
+.price{font-size:22px;font-weight:900;color:#2c2335}
+button{border:none;border-radius:14px;padding:10px;background:linear-gradient(135deg,#ff7cab,#c894ff);color:white;font-weight:800;margin-top:8px}
+.summary{position:fixed;bottom:0;left:0;right:0;max-width:520px;margin:auto;background:white;padding:15px;border-radius:20px 20px 0 0;box-shadow:0 -5px 15px #0001}
+input,textarea{width:100%;padding:12px;border:1px solid #f0cade;border-radius:14px;margin:7px 0}
+</style>
+</head>
+<body>
+<div class="frame">
+<h2>Your Cart ðŸ›’</h2>
+<div id="cartList"></div>
+
+<div id="checkout" style="display:none;background:white;border-radius:20px;padding:14px;margin-top:15px">
+<h3 style="color:#8a2f66">Delivery Details</h3>
+<input id="buyer" placeholder="Full Name">
+<input id="phone" placeholder="Mobile Number">
+<textarea id="address" placeholder="Address"></textarea>
+<button style="width:100%" onclick="placeOrder()">Place Order</button>
+</div>
+</div>
+
+<div class="summary">
+<h3>Total: <span id="total">â‚¹0</span></h3>
+<button style="width:100%" onclick="showCheckout()">Proceed to Buy</button>
+<button style="width:100%;background:#999" onclick="location='home.html'">Continue Shopping</button>
+</div>
+
+<script>const API_BASE = window.location.protocol === "file:" ? "http://127.0.0.1:5000" : window.location.origin;
+let cart=JSON.parse(localStorage.getItem("cart") || "[]");
+
+function num(price){
+    return Number(String(price).replace("â‚¹","")) || 0;
+}
+
+function render(){
+    const box=document.getElementById("cartList");
+
+    if(cart.length===0){
+        box.innerHTML="<p style='text-align:center;color:#8a2f66;font-weight:900'>Cart is empty</p>";
+        document.getElementById("total").innerText="â‚¹0";
+        return;
+    }
+
+    box.innerHTML=cart.map((p,i)=>`
+    <div class="item">
+        <img src="${p.img}">
+        <div>
+            <div class="name">${p.name}</div>
+            <div>${p.type}</div>
+            <div class="price">${p.price}</div>
+            <button onclick="removeItem(${i})">Remove</button>
+        </div>
+    </div>
+    `).join("");
+
+    const total=cart.reduce((s,p)=>s+num(p.price),0);
+    document.getElementById("total").innerText="â‚¹"+total;
+}
+
+function removeItem(i){
+    cart.splice(i,1);
+    localStorage.setItem("cart",JSON.stringify(cart));
+    render();
+}
+
+function showCheckout(){
+    if(cart.length===0){
+        alert("Cart is empty");
+        return;
+    }
+    document.getElementById("checkout").style.display="block";
+}
+
+function placeOrder(){
+    const buyer=document.getElementById("buyer").value.trim();
+    const phone=document.getElementById("phone").value.trim();
+    const address=document.getElementById("address").value.trim();
+
+    if(!buyer || !phone || !address){
+        alert("Fill delivery details");
+        return;
+    }
+
+    localStorage.setItem("lastOrder",JSON.stringify({
+        buyer,phone,address,items:cart,date:new Date().toLocaleString()
+    }));
+
+    localStorage.removeItem("cart");
+    alert("Order placed successfully ðŸŽ‰");
+    location="home.html";
+}
+
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,1342 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Profile - Derm Assist</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+
+background:
+linear-gradient(
+rgba(255,255,255,0.65),
+rgba(255,255,255,0.65)
+),
+
+url("background.jpg");
+
+background-size:cover;
+background-position:center;
+background-attachment:fixed;
+
+backdrop-filter:blur(8px);
+
+min-height:100vh;
+overflow-x:hidden;
+
+}
+
+/* MAIN */
+
+.frame{
+
+max-width:560px;
+margin:auto;
+padding:20px 18px 120px;
+
+}
+
+/* LOGO */
+
+.logo-box{
+
+text-align:center;
+margin-bottom:20px;
+
+}
+
+.logo{
+
+width:200px;
+margin-bottom:10px;
+
+}
+
+/* CARD */
+
+.card{
+
+background:rgba(255,255,255,0.88);
+border-radius:28px;
+padding:20px;
+margin-bottom:18px;
+backdrop-filter:blur(10px);
+
+box-shadow:
+0 10px 25px rgba(0,0,0,0.08);
+
+}
+
+/* PROFILE */
+
+.profile{
+
+display:flex;
+align-items:center;
+gap:18px;
+
+}
+
+.profile-img{
+
+width:110px;
+height:110px;
+border-radius:50%;
+object-fit:cover;
+border:4px solid #f7c4dc;
+background:#eee;
+
+}
+
+.user-name{
+
+font-size:24px;
+font-weight:900;
+color:#8a2f66;
+margin-bottom:10px;
+
+}
+
+.info{
+
+font-size:15px;
+margin-bottom:8px;
+color:#555;
+
+}
+
+/* BUTTON */
+
+.edit-btn{
+
+padding:11px 18px;
+border:none;
+border-radius:18px;
+
+background:linear-gradient(
+135deg,
+#ff7cab,
+#c894ff
+);
+
+color:white;
+font-weight:700;
+cursor:pointer;
+margin-top:10px;
+
+}
+
+/* TITLES */
+
+.section-title{
+
+font-size:22px;
+font-weight:900;
+color:#8a2f66;
+margin-bottom:14px;
+
+}
+
+/* ANALYSIS IMAGE */
+
+.analysis-img{
+
+width:100%;
+height:260px;
+border-radius:20px;
+object-fit:cover;
+margin-top:12px;
+background:#eee;
+
+}
+
+/* HISTORY */
+
+.history-card{
+
+background:#fff6fb;
+padding:14px;
+border-radius:20px;
+margin-top:12px;
+
+}
+
+.history-title{
+
+font-size:18px;
+font-weight:800;
+color:#8a2f66;
+margin-bottom:6px;
+
+}
+
+.history-date{
+
+font-size:13px;
+color:#888;
+margin-bottom:8px;
+
+}
+
+.history-text{
+
+font-size:14px;
+line-height:1.6;
+color:#555;
+
+}
+
+/* ORDER HISTORY */
+
+.order-card{
+
+background:#fff6fb;
+padding:16px;
+border-radius:20px;
+margin-top:14px;
+
+display:flex;
+align-items:center;
+gap:14px;
+cursor:pointer;
+
+}
+
+.order-img{
+
+width:90px;
+height:90px;
+border-radius:16px;
+object-fit:cover;
+
+}
+
+.order-details{
+
+flex:1;
+
+}
+
+.order-name{
+
+font-size:17px;
+font-weight:800;
+color:#8a2f66;
+margin-bottom:8px;
+
+}
+
+.order-price{
+
+font-size:18px;
+font-weight:900;
+color:#d95b96;
+margin-bottom:6px;
+
+}
+
+.order-status{
+
+font-size:13px;
+font-weight:700;
+color:#4caf50;
+
+}
+
+.order-date{
+
+font-size:13px;
+color:#777;
+margin-top:6px;
+
+}
+
+/* PROGRESS */
+
+.bar-title{
+
+margin-top:12px;
+margin-bottom:7px;
+font-weight:700;
+
+}
+
+.bar{
+
+height:12px;
+background:#ffe1ee;
+border-radius:30px;
+overflow:hidden;
+
+}
+
+.fill{
+
+height:100%;
+border-radius:30px;
+
+background:linear-gradient(
+90deg,
+#ff7cab,
+#c894ff
+);
+
+}
+
+/* SETTINGS */
+
+.settings-list{
+margin-top:10px;
+}
+
+.setting-item{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:16px;
+border-radius:18px;
+background:#fff6fb;
+margin-bottom:12px;
+cursor:pointer;
+transition:0.2s;
+}
+
+.setting-item:active{
+transform:scale(0.98);
+}
+
+.setting-left{
+display:flex;
+align-items:center;
+gap:14px;
+}
+
+.setting-left i{
+width:42px;
+height:42px;
+border-radius:14px;
+display:flex;
+justify-content:center;
+align-items:center;
+background:#ffe1ee;
+color:#d95b96;
+font-size:17px;
+}
+
+.setting-left span{
+font-size:15px;
+font-weight:700;
+color:#5f4d58;
+}
+
+.setting-item .fa-chevron-right{
+color:#c792ff;
+font-size:14px;
+}
+
+/* LOGOUT */
+
+.logout-btn{
+
+width:100%;
+padding:16px;
+border:none;
+border-radius:22px;
+
+background:linear-gradient(
+135deg,
+#ff7cab,
+#c894ff
+);
+
+color:white;
+font-size:16px;
+font-weight:800;
+cursor:pointer;
+
+}
+
+/* BOTTOM NAV */
+
+.bottom-nav{
+
+position:fixed;
+left:0;
+right:0;
+bottom:0;
+
+max-width:560px;
+margin:auto;
+
+background:white;
+
+display:flex;
+justify-content:space-around;
+
+padding:14px 8px;
+
+border-radius:28px 28px 0 0;
+
+box-shadow:
+0 -4px 16px rgba(0,0,0,0.08);
+
+}
+
+.nav-item{
+
+text-align:center;
+font-size:12px;
+color:#777;
+cursor:pointer;
+
+}
+
+.nav-item i{
+
+display:block;
+font-size:20px;
+margin-bottom:4px;
+color:#d95b96;
+
+}
+
+.active{
+
+color:#d95b96;
+font-weight:700;
+
+}
+
+.copy{
+
+text-align:center;
+
+font-size:13px;
+
+color:#777;
+
+margin-top:22px;
+margin-bottom:20px;
+
+}
+
+/* ORDER POPUP */
+
+.order-popup{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.55);
+display:none;
+justify-content:center;
+align-items:flex-end;
+z-index:9999;
+}
+
+.popup-content{
+width:100%;
+max-width:560px;
+background:white;
+border-radius:30px 30px 0 0;
+padding:22px;
+max-height:90vh;
+overflow-y:auto;
+position:relative;
+animation:popupUp 0.3s ease;
+}
+
+@keyframes popupUp{
+from{
+transform:translateY(100%);
+}
+to{
+transform:translateY(0);
+}
+}
+
+.close-popup{
+position:absolute;
+top:18px;
+right:18px;
+width:42px;
+height:42px;
+border:none;
+border-radius:50%;
+background:#fff0f7;
+color:#d95b96;
+font-size:18px;
+cursor:pointer;
+}
+
+.popup-img{
+width:100%;
+height:260px;
+object-fit:cover;
+border-radius:22px;
+}
+
+.popup-name{
+font-size:28px;
+font-weight:900;
+color:#8a2f66;
+margin-top:18px;
+}
+
+.popup-price{
+font-size:30px;
+font-weight:900;
+color:#d95b96;
+margin-top:10px;
+}
+
+.tracking-box{
+margin-top:18px;
+background:#fff6fb;
+padding:16px;
+border-radius:20px;
+}
+
+.track-item{
+display:flex;
+align-items:center;
+gap:12px;
+margin-bottom:14px;
+}
+
+.track-dot{
+width:16px;
+height:16px;
+border-radius:50%;
+background:#4caf50;
+}
+
+.buy-again{
+width:100%;
+margin-top:22px;
+border:none;
+padding:16px;
+border-radius:20px;
+background:linear-gradient(
+135deg,
+#ff7cab,
+#c894ff
+);
+color:white;
+font-size:15px;
+font-weight:900;
+cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="frame">
+
+<!-- LOGO -->
+
+<div class="logo-box">
+
+<img
+src="logo.png"
+class="logo">
+
+</div>
+
+<!-- PROFILE CARD -->
+
+<div class="card">
+
+<div class="profile">
+
+<img
+id="profileImage"
+class="profile-img"
+src="https://cdn-icons-png.flaticon.com/512/847/847969.png">
+
+<div>
+
+<div
+class="user-name"
+id="userName">
+
+Derm Assist User
+
+</div>
+
+<div
+class="info"
+id="userEmail">
+
+📧 user@gmail.com
+
+</div>
+
+<div
+class="info"
+id="userMobile">
+
+📞 9876543210
+
+</div>
+
+<div
+class="info"
+id="userAge">
+
+🎂 Age : 21
+
+</div>
+
+<div
+class="info"
+id="userGender">
+
+⚧ Gender : Female
+
+</div>
+
+<div
+class="info"
+id="userSkin">
+
+✨ Skin Type : Combination
+
+</div>
+
+<button
+class="edit-btn"
+onclick="location.href='edit-profile.html'">
+
+Edit Profile
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ANALYSIS -->
+
+<div class="card">
+
+<div class="section-title">
+Latest Skin Analysis
+</div>
+
+<p style="
+font-size:14px;
+line-height:1.7;
+color:#555;
+">
+
+AI analyzed your uploaded skin image.
+
+</p>
+
+<img
+id="analysisImage"
+class="analysis-img"
+src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?q=80&w=800">
+
+</div>
+
+<!-- HISTORY -->
+
+<div class="card">
+
+<div class="section-title">
+Scan History
+</div>
+
+<div class="history-card">
+
+<div class="history-title">
+Latest Skin Scan
+</div>
+
+<div class="history-date">
+Recently Analyzed
+</div>
+
+<div class="history-text">
+
+Your latest uploaded skin image
+is stored for tracking progress.
+
+</div>
+
+<img
+id="historyImage"
+class="analysis-img"
+src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?q=80&w=800">
+
+</div>
+
+</div>
+
+<!-- ORDER HISTORY -->
+
+<div class="card">
+
+<div class="section-title">
+Order History
+</div>
+
+<div
+id="emptyOrders"
+style="
+display:none;
+text-align:center;
+padding:30px 10px;
+">
+
+<i class="fas fa-box-open"
+style="
+font-size:55px;
+color:#d9a6c2;
+margin-bottom:14px;
+"></i>
+
+<div style="
+font-size:22px;
+font-weight:900;
+color:#8a2f66;
+margin-bottom:8px;
+">
+No Orders Yet
+</div>
+
+<div style="
+font-size:14px;
+line-height:1.7;
+color:#777;
+max-width:280px;
+margin:auto;
+">
+You haven’t purchased any skincare
+products yet.
+</div>
+
+<button
+onclick="location.href='home.html'"
+style="
+margin-top:20px;
+border:none;
+padding:14px 22px;
+border-radius:18px;
+background:linear-gradient(
+135deg,
+#ff7cab,
+#c894ff
+);
+color:white;
+font-weight:800;
+cursor:pointer;
+">
+
+Start Shopping
+
+</button>
+
+</div>
+
+<div id="ordersContainer"></div>
+
+</div>
+
+<!-- PROGRESS -->
+
+<div class="card">
+
+<div class="section-title">
+Progress Analysis
+</div>
+
+<div class="bar-title">
+Hydration - 80%
+</div>
+
+<div class="bar">
+<div class="fill"
+style="width:80%">
+</div>
+</div>
+
+<div class="bar-title">
+Oil Level - 60%
+</div>
+
+<div class="bar">
+<div class="fill"
+style="width:60%">
+</div>
+</div>
+
+<div class="bar-title">
+Glow Score - 92%
+</div>
+
+<div class="bar">
+<div class="fill"
+style="width:92%">
+</div>
+</div>
+
+<div style="
+margin-top:16px;
+font-weight:700;
+color:#555;
+">
+
+Acne Severity : Mild
+
+</div>
+
+</div>
+
+<!-- SETTINGS -->
+
+<div class="card">
+
+<div class="section-title">
+Settings
+</div>
+
+<div class="settings-list">
+
+<div
+class="setting-item"
+onclick="location.href='edit-profile.html'">
+
+<div class="setting-left">
+<i class="fas fa-user-edit"></i>
+<span>Edit Profile</span>
+</div>
+
+<i class="fas fa-chevron-right"></i>
+
+</div>
+
+<div
+class="setting-item"
+onclick="location.href='notifications.html'">
+
+<div class="setting-left">
+<i class="fas fa-bell"></i>
+<span>Notifications</span>
+</div>
+
+<i class="fas fa-chevron-right"></i>
+
+</div>
+
+<div
+class="setting-item"
+onclick="location.href='privacy-security.html'">
+
+<div class="setting-left">
+<i class="fas fa-shield-alt"></i>
+<span>Privacy & Security</span>
+</div>
+
+<i class="fas fa-chevron-right"></i>
+
+</div>
+
+<div
+class="setting-item"
+onclick="location.href='appointments.html'">
+
+<div class="setting-left">
+<i class="fas fa-calendar-check"></i>
+<span>Appointments</span>
+</div>
+
+<i class="fas fa-chevron-right"></i>
+
+</div>
+
+<div
+class="setting-item"
+onclick="location.href='skin-reports.html'">
+
+<div class="setting-left">
+<i class="fas fa-file-medical"></i>
+<span>Skin Reports</span>
+</div>
+
+<i class="fas fa-chevron-right"></i>
+
+</div>
+
+<div
+class="setting-item"
+onclick="location.href='help-center.html'">
+
+<div class="setting-left">
+<i class="fas fa-headset"></i>
+<span>Help Center</span>
+</div>
+
+<i class="fas fa-chevron-right"></i>
+
+</div>
+
+<div
+class="setting-item"
+onclick="location.href='about.html'">
+
+<div class="setting-left">
+<i class="fas fa-circle-info"></i>
+<span>About App</span>
+</div>
+
+<i class="fas fa-chevron-right"></i>
+
+</div>
+
+<div
+class="setting-item"
+onclick="location.href='contact.html'">
+
+<div class="setting-left">
+<i class="fas fa-phone"></i>
+<span>Contact Us</span>
+</div>
+
+<i class="fas fa-chevron-right"></i>
+
+</div>
+
+<div
+class="setting-item"
+onclick="location.href='chatbot.html'">
+
+<div class="setting-left">
+<i class="fas fa-robot"></i>
+<span>AI Chatbot</span>
+</div>
+
+<i class="fas fa-chevron-right"></i>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- LOGOUT -->
+
+<button
+class="logout-btn"
+onclick="logout()">
+
+Logout
+
+</button>
+
+</div>
+
+<!-- ORDER POPUP -->
+
+<div
+class="order-popup"
+id="orderPopup">
+
+<div class="popup-content">
+
+<button
+class="close-popup"
+onclick="closeOrderPopup()">
+
+<i class="fas fa-times"></i>
+
+</button>
+
+<img
+id="popupOrderImg"
+class="popup-img">
+
+<div
+id="popupOrderName"
+class="popup-name">
+
+</div>
+
+<div
+id="popupOrderPrice"
+class="popup-price">
+
+</div>
+
+<div class="tracking-box">
+
+<div style="
+font-size:18px;
+font-weight:900;
+color:#8a2f66;
+margin-bottom:16px;
+">
+
+Order Tracking
+
+</div>
+
+<div class="track-item">
+<div class="track-dot"></div>
+<div>Order Confirmed</div>
+</div>
+
+<div class="track-item">
+<div class="track-dot"></div>
+<div>Packed Successfully</div>
+</div>
+
+<div class="track-item">
+<div class="track-dot"></div>
+<div>Out For Delivery</div>
+</div>
+
+<div class="track-item">
+<div class="track-dot"></div>
+<div>Delivered Successfully</div>
+</div>
+
+</div>
+
+<div class="tracking-box">
+
+<div style="
+font-size:18px;
+font-weight:900;
+color:#8a2f66;
+margin-bottom:16px;
+">
+
+Purchase Details
+
+</div>
+
+<div style="
+font-size:14px;
+line-height:1.9;
+color:#555;
+">
+
+• Payment Method : UPI Payment<br>
+• Delivery Charge : Free Delivery<br>
+• Delivery Time : 2 Days<br>
+• Return Policy : 7 Days Return<br>
+• Ordered Via Derm Assist AI Shop
+
+</div>
+
+</div>
+
+<button
+class="buy-again"
+onclick="location.href='home.html'">
+
+Buy Again
+
+</button>
+
+</div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+
+<div class="bottom-nav">
+
+<div
+class="nav-item"
+onclick="location.href='home.html'">
+
+<i class="fas fa-home"></i>
+Home
+
+</div>
+
+<div
+class="nav-item"
+onclick="location.href='scan.html'">
+
+<i class="fas fa-camera"></i>
+Scan
+
+</div>
+
+<div
+class="nav-item"
+onclick="location.href='cart.html'">
+
+<i class="fas fa-shopping-cart"></i>
+Cart
+
+</div>
+
+<div class="nav-item active">
+
+<i class="fas fa-user"></i>
+Profile
+
+</div>
+
+</div>
+
+<script>
+
+/* PROFILE DATA */
+
+document.getElementById("userName").innerHTML =
+
+localStorage.getItem("userName") ||
+"Derm Assist User";
+
+document.getElementById("userEmail").innerHTML =
+
+"📧 " +
+
+(
+localStorage.getItem("userEmail") ||
+"user@gmail.com"
+);
+
+document.getElementById("userMobile").innerHTML =
+
+"📞 " +
+
+(
+localStorage.getItem("userMobile") ||
+"9876543210"
+);
+
+document.getElementById("userAge").innerHTML =
+
+"🎂 Age : " +
+
+(
+localStorage.getItem("userAge") ||
+"21"
+);
+
+document.getElementById("userGender").innerHTML =
+
+"⚧ Gender : " +
+
+(
+localStorage.getItem("userGender") ||
+"Female"
+);
+
+document.getElementById("userSkin").innerHTML =
+
+"✨ Skin Type : " +
+
+(
+localStorage.getItem("skinType") ||
+"Combination"
+);
+
+/* IMAGES */
+
+const defaultImage =
+"https://cdn-icons-png.flaticon.com/512/847/847969.png";
+
+let profileImage =
+localStorage.getItem("profileImage");
+
+let analysisImage =
+localStorage.getItem("analysisImage");
+
+let historyImage =
+localStorage.getItem("historyImage");
+
+/* FIX EMPTY */
+
+if(
+!profileImage ||
+profileImage === "null" ||
+profileImage === "undefined"
+){
+profileImage = defaultImage;
+}
+
+if(
+!analysisImage ||
+analysisImage === "null" ||
+analysisImage === "undefined"
+){
+analysisImage = profileImage;
+}
+
+if(
+!historyImage ||
+historyImage === "null" ||
+historyImage === "undefined"
+){
+historyImage = analysisImage;
+}
+
+/* SHOW */
+
+document.getElementById(
+"profileImage"
+).src = profileImage;
+
+document.getElementById(
+"analysisImage"
+).src = analysisImage;
+
+document.getElementById(
+"historyImage"
+).src = historyImage;
+
+/* ORDER HISTORY */
+
+const ordersContainer =
+document.getElementById(
+"ordersContainer"
+);
+
+const emptyOrders =
+document.getElementById(
+"emptyOrders"
+);
+
+let orders =
+JSON.parse(
+localStorage.getItem("cart")
+|| "[]"
+);
+
+if(orders.length === 0){
+
+emptyOrders.style.display =
+"block";
+
+}else{
+
+orders.reverse().forEach(order=>{
+
+ordersContainer.innerHTML += `
+
+<div
+class="order-card"
+onclick='openOrderDetails(
+${JSON.stringify(order)}
+)'>
+
+<img
+class="order-img"
+src="${order.img}">
+
+<div class="order-details">
+
+<div class="order-name">
+${order.name}
+</div>
+
+<div class="order-price">
+${order.price}
+</div>
+
+<div class="order-status">
+Delivered Successfully
+</div>
+
+<div class="order-date">
+Ordered Recently
+</div>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+}
+
+/* ORDER DETAILS */
+
+function openOrderDetails(order){
+
+document.getElementById(
+"orderPopup"
+).style.display =
+"flex";
+
+document.getElementById(
+"popupOrderImg"
+).src =
+order.img;
+
+document.getElementById(
+"popupOrderName"
+).innerText =
+order.name;
+
+document.getElementById(
+"popupOrderPrice"
+).innerText =
+order.price;
+
+}
+
+function closeOrderPopup(){
+
+document.getElementById(
+"orderPopup"
+).style.display =
+"none";
+
+}
+
+/* LOGOUT */
+
+function logout(){
+
+localStorage.clear();
+
+window.location.href =
+"login.html";
+
+}
+
+</script>
+
+</div>
+
+<div class="copy">
+© 2026 Derm Assist • Designed by Sree
+</div>
+
+</body>
+</html>

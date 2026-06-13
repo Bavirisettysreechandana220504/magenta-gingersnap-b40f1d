@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#f7e9f1">
+<title>Derm Assist - Routine</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;-webkit-tap-highlight-color:transparent}
+html,body{width:100%;height:100%;overflow:hidden}
+.mobile-frame{width:100vw;height:100vh;position:relative;overflow:hidden;background:url("background.jpg") no-repeat center center/cover}
+.mobile-frame::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg, rgba(255,240,248,.50), rgba(245,230,255,.60));backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.container{position:relative;z-index:1;height:100%;overflow-y:auto;padding:20px;padding-bottom:110px;scrollbar-width:none}
+.container::-webkit-scrollbar{display:none}
+.top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.back-btn{width:42px;height:42px;border-radius:50%;border:none;background:rgba(255,255,255,.88);color:#8a3e67;font-size:16px;box-shadow:0 4px 10px rgba(0,0,0,.08)}
+.page-title{color:#8a3e67;font-size:26px;font-weight:800}
+.profile{width:42px;height:42px;border-radius:50%;background:white;display:flex;align-items:center;justify-content:center;color:#8a3e67;box-shadow:0 4px 10px rgba(0,0,0,.08)}
+.card{background:rgba(255,255,255,.74);border-radius:24px;padding:18px;margin-top:16px;box-shadow:0 6px 15px rgba(0,0,0,.08);backdrop-filter:blur(8px)}
+.card h3{color:#8a3e67;margin-bottom:8px;font-size:18px}
+.card p{color:#6d5a75;font-size:14px;line-height:1.5}
+.selector{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.option{background:white;border:1px solid #efbfd2;border-radius:18px;padding:14px 10px;text-align:center;color:#8a3e67;font-weight:700;box-shadow:0 4px 10px rgba(0,0,0,.06);cursor:pointer}
+.option.active{background:linear-gradient(135deg,#ff7cab,#c894ff);color:white;border-color:transparent}
+.main-btn{width:100%;border:none;border-radius:22px;padding:15px;margin-top:14px;background:linear-gradient(135deg,#ff7cab,#c894ff);color:white;font-size:15px;font-weight:700;box-shadow:0 10px 22px rgba(217,91,150,.28)}
+.routine-box{display:none;margin-top:14px;background:white;border-radius:20px;padding:16px;box-shadow:0 5px 12px rgba(0,0,0,.06)}
+.step{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid #f0dbe5}
+.step:last-child{border-bottom:none}
+.step-no{min-width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#ff7cab,#c894ff);color:white;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
+.step-content h4{color:#8a3e67;font-size:15px;margin-bottom:4px}
+.step-content p{color:#6d5a75;font-size:13px;line-height:1.5}
+.tip-card{margin-top:14px;background:rgba(255,255,255,.92);border-radius:18px;padding:14px;color:#7b5f71;font-size:13px;line-height:1.6;box-shadow:0 4px 10px rgba(0,0,0,.06)}
+.bottom-nav{position:absolute;bottom:0;left:0;width:100%;background:rgba(255,255,255,.95);display:flex;justify-content:space-around;padding:14px 8px calc(14px + env(safe-area-inset-bottom));border-top-left-radius:24px;border-top-right-radius:24px;box-shadow:0 -4px 14px rgba(0,0,0,.06);z-index:2}
+.nav-item{text-align:center;color:#888;font-size:12px}
+.nav-item i{font-size:18px;margin-bottom:4px}
+.nav-item.active{color:#d95b96}
+</style>
+</head>
+<body>
+<div class="mobile-frame">
+    <div class="container">
+        <div class="top-bar">
+            <button class="back-btn" onclick="goHome()"><i class="fas fa-arrow-left"></i></button>
+            <div class="page-title">Routine</div>
+            <div class="profile" onclick="goProfile()"><i class="fas fa-user"></i></div>
+        </div>
+
+        <div class="card">
+            <h3>Build your skincare routine</h3>
+            <p>Select your skin type to get a simple morning and night routine.</p>
+
+            <div class="selector">
+                <div class="option" onclick="selectSkin(this,'Oily')">Oily</div>
+                <div class="option" onclick="selectSkin(this,'Dry')">Dry</div>
+                <div class="option" onclick="selectSkin(this,'Normal')">Normal</div>
+                <div class="option" onclick="selectSkin(this,'Combination')">Combination</div>
+            </div>
+
+            <button class="main-btn" onclick="generateRoutine()">Generate Routine</button>
+
+            <div class="routine-box" id="morningBox"><h3>Morning Routine ☀️</h3><div id="morningSteps"></div></div>
+            <div class="routine-box" id="nightBox"><h3>Night Routine 🌙</h3><div id="nightSteps"></div></div>
+            <div class="tip-card" id="routineTip" style="display:none;"></div>
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <div class="nav-item" onclick="goHome()"><i class="fas fa-home"></i><div>Home</div></div>
+        <div class="nav-item" onclick="goScan()"><i class="fas fa-camera"></i><div>Scan</div></div>
+        <div class="nav-item active"><i class="fas fa-heart"></i><div>Care</div></div>
+        <div class="nav-item" onclick="goProfile()"><i class="fas fa-user"></i><div>Profile</div></div>
+    </div>
+</div>
+
+<script>
+let selectedSkin = "";
+function goHome(){ window.location = "home.html"; }
+function goScan(){ window.location = "scan.html"; }
+function goProfile(){ window.location = "profile.html"; }
+
+function selectSkin(element, skin){
+    document.querySelectorAll(".option").forEach(opt => opt.classList.remove("active"));
+    element.classList.add("active");
+    selectedSkin = skin;
+}
+function renderSteps(targetId, steps){
+    document.getElementById(targetId).innerHTML = steps.map((step, index) => `
+        <div class="step">
+            <div class="step-no">${index + 1}</div>
+            <div class="step-content">
+                <h4>${step.title}</h4>
+                <p>${step.desc}</p>
+            </div>
+        </div>
+    `).join("");
+}
+function generateRoutine(){
+    if(!selectedSkin){ alert("Please select your skin type."); return; }
+
+    let morning = [], night = [], tip = "";
+
+    if(selectedSkin === "Oily"){
+        morning = [
+            {title:"Cleanser", desc:"Use an oil-control gentle cleanser."},
+            {title:"Serum", desc:"Apply niacinamide or lightweight balancing serum."},
+            {title:"Moisturizer", desc:"Choose a gel-based moisturizer."},
+            {title:"Sunscreen", desc:"Use matte finish SPF 50 sunscreen."}
+        ];
+        night = [
+            {title:"Cleanser", desc:"Wash away excess oil and dirt."},
+            {title:"Treatment", desc:"Use salicylic acid or acne-control product if needed."},
+            {title:"Moisturizer", desc:"Finish with a lightweight gel moisturizer."}
+        ];
+        tip = "Tip: Do not over-wash your face. Too much cleansing can increase oil production.";
+    } else if(selectedSkin === "Dry"){
+        morning = [
+            {title:"Cleanser", desc:"Use a hydrating gentle cleanser."},
+            {title:"Serum", desc:"Apply hyaluronic acid or hydrating serum."},
+            {title:"Moisturizer", desc:"Use a rich cream moisturizer."},
+            {title:"Sunscreen", desc:"Use moisturizing SPF 50 sunscreen."}
+        ];
+        night = [
+            {title:"Cleanser", desc:"Use a non-stripping cleanser."},
+            {title:"Serum", desc:"Layer a hydrating serum."},
+            {title:"Moisturizer", desc:"Seal in moisture with ceramide cream."}
+        ];
+        tip = "Tip: Avoid hot water and harsh soaps if your skin feels tight or flaky.";
+    } else if(selectedSkin === "Normal"){
+        morning = [
+            {title:"Cleanser", desc:"Use a mild everyday cleanser."},
+            {title:"Serum", desc:"Apply antioxidant serum for glow."},
+            {title:"Moisturizer", desc:"Use a balanced light moisturizer."},
+            {title:"Sunscreen", desc:"Finish with daily SPF 50."}
+        ];
+        night = [
+            {title:"Cleanser", desc:"Remove dirt and sunscreen gently."},
+            {title:"Serum", desc:"Use a repairing or hydrating serum."},
+            {title:"Moisturizer", desc:"Apply a nourishing night moisturizer."}
+        ];
+        tip = "Tip: Keep your routine simple and consistent to maintain healthy skin.";
+    } else if(selectedSkin === "Combination"){
+        morning = [
+            {title:"Cleanser", desc:"Use a balancing gentle cleanser."},
+            {title:"Serum", desc:"Apply niacinamide or light hydrating serum."},
+            {title:"Moisturizer", desc:"Use lightweight moisturizer on all areas."},
+            {title:"Sunscreen", desc:"Apply non-greasy SPF 50 sunscreen."}
+        ];
+        night = [
+            {title:"Cleanser", desc:"Cleanse gently without overdrying cheeks."},
+            {title:"Treatment", desc:"Target oily zones with oil-control products if needed."},
+            {title:"Moisturizer", desc:"Use a balanced moisturizer for both dry and oily areas."}
+        ];
+        tip = "Tip: Treat the T-zone and dry areas differently if needed.";
+    }
+
+    renderSteps("morningSteps", morning);
+    renderSteps("nightSteps", night);
+    document.getElementById("morningBox").style.display = "block";
+    document.getElementById("nightBox").style.display = "block";
+    document.getElementById("routineTip").style.display = "block";
+    document.getElementById("routineTip").innerText = tip;
+}
+</script>
+</body>
+</html>

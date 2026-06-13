@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<meta name="theme-color"
+content="#f7e9f1">
+
+<title>Chatbot - Derm Assist</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+-webkit-tap-highlight-color:transparent;
+}
+
+html,body{
+width:100%;
+height:100%;
+overflow:hidden;
+}
+
+/* BODY */
+
+body{
+
+background:
+linear-gradient(
+rgba(255,255,255,0.60),
+rgba(255,255,255,0.60)
+),
+
+url("background.jpg");
+
+background-size:cover;
+background-position:center;
+background-attachment:fixed;
+
+overscroll-behavior:none;
+
+}
+
+/* MAIN FRAME */
+
+.frame{
+
+max-width:560px;
+margin:auto;
+
+height:100vh;
+
+display:flex;
+flex-direction:column;
+
+position:relative;
+
+background:
+rgba(255,255,255,0.04);
+
+backdrop-filter:blur(8px);
+
+}
+
+/* HEADER */
+
+.header{
+
+padding:18px;
+
+display:flex;
+align-items:center;
+gap:14px;
+
+background:
+rgba(255,255,255,0.88);
+
+backdrop-filter:blur(10px);
+
+box-shadow:
+0 4px 16px rgba(0,0,0,0.08);
+
+z-index:10;
+
+}
+
+/* BACK BUTTON */
+
+.back-btn{
+
+width:48px;
+height:48px;
+
+border:none;
+border-radius:16px;
+
+background:white;
+
+font-size:18px;
+color:#d95b96;
+
+cursor:pointer;
+
+box-shadow:
+0 4px 12px rgba(0,0,0,0.08);
+
+transition:0.2s;
+
+}
+
+.back-btn:active{
+transform:scale(0.95);
+}
+
+/* LOGO */
+
+.logo{
+
+width:52px;
+height:52px;
+
+border-radius:16px;
+
+background:#fff6fb;
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+}
+
+.logo img{
+width:36px;
+}
+
+/* TEXT */
+
+.head-text{
+flex:1;
+}
+
+.title{
+
+font-size:22px;
+font-weight:900;
+
+color:#8a2f66;
+
+}
+
+.sub{
+
+font-size:13px;
+color:#777;
+
+margin-top:3px;
+
+}
+
+/* QUICK BUTTONS */
+
+.quick{
+
+display:flex;
+gap:10px;
+
+overflow-x:auto;
+
+padding:14px 18px;
+
+}
+
+.quick::-webkit-scrollbar{
+display:none;
+}
+
+.quick button{
+
+border:none;
+
+padding:12px 16px;
+
+border-radius:16px;
+
+background:white;
+
+font-size:13px;
+font-weight:700;
+
+color:#8a2f66;
+
+cursor:pointer;
+
+white-space:nowrap;
+
+box-shadow:
+0 4px 12px rgba(0,0,0,0.08);
+
+transition:0.2s;
+
+}
+
+.quick button:active{
+transform:scale(0.96);
+}
+
+/* CHAT AREA */
+
+.chat-area{
+
+flex:1;
+
+overflow-y:auto;
+
+padding:10px 18px 120px;
+
+display:flex;
+flex-direction:column;
+
+gap:14px;
+
+scroll-behavior:smooth;
+
+}
+
+.chat-area::-webkit-scrollbar{
+width:0;
+}
+
+/* MESSAGE */
+
+.msg{
+
+max-width:82%;
+
+padding:15px 16px;
+
+border-radius:22px;
+
+font-size:15px;
+line-height:1.7;
+
+animation:fade 0.2s ease;
+
+word-wrap:break-word;
+
+}
+
+/* ANIMATION */
+
+@keyframes fade{
+
+from{
+opacity:0;
+transform:translateY(12px);
+}
+
+to{
+opacity:1;
+transform:translateY(0);
+}
+
+}
+
+/* BOT MESSAGE */
+
+.bot{
+
+align-self:flex-start;
+
+background:
+rgba(255,255,255,0.92);
+
+color:#444;
+
+border-top-left-radius:8px;
+
+box-shadow:
+0 6px 18px rgba(0,0,0,0.06);
+
+}
+
+/* USER MESSAGE */
+
+.user{
+
+align-self:flex-end;
+
+background:
+linear-gradient(
+135deg,
+#ff7cab,
+#c894ff
+);
+
+color:white;
+
+border-top-right-radius:8px;
+
+box-shadow:
+0 6px 18px rgba(217,91,150,0.18);
+
+}
+
+/* INPUT BAR */
+
+.bottom{
+
+position:fixed;
+
+bottom:0;
+left:0;
+right:0;
+
+max-width:560px;
+margin:auto;
+
+padding:14px;
+
+background:
+rgba(255,255,255,0.92);
+
+backdrop-filter:blur(12px);
+
+display:flex;
+gap:12px;
+
+box-shadow:
+0 -5px 20px rgba(0,0,0,0.08);
+
+z-index:999;
+
+}
+
+/* INPUT */
+
+.input{
+
+flex:1;
+
+border:none;
+outline:none;
+
+padding:16px;
+
+border-radius:18px;
+
+background:#fff6fb;
+
+font-size:15px;
+
+box-shadow:
+inset 0 2px 8px rgba(0,0,0,0.04);
+
+}
+
+/* SEND BUTTON */
+
+.send-btn{
+
+width:58px;
+height:58px;
+
+border:none;
+border-radius:18px;
+
+background:
+linear-gradient(
+135deg,
+#ff7cab,
+#c894ff
+);
+
+color:white;
+
+font-size:20px;
+
+cursor:pointer;
+
+box-shadow:
+0 8px 18px rgba(217,91,150,0.25);
+
+transition:0.2s;
+
+}
+
+.send-btn:active{
+transform:scale(0.95);
+}
+
+/* MOBILE */
+
+@media(max-width:600px){
+
+.title{
+font-size:20px;
+}
+
+.msg{
+max-width:88%;
+font-size:14px;
+}
+
+}
+
+.copy{
+text-align:center;
+font-size:11px;
+color:#999;
+margin-top:10px;
+margin-bottom:8px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="frame">
+
+<!-- HEADER -->
+
+<div class="header">
+
+<button
+class="back-btn"
+onclick="location.href='profile.html'">
+
+<i class="fas fa-arrow-left"></i>
+
+</button>
+
+<div class="logo">
+
+<img src="logo.png">
+
+</div>
+
+<div class="head-text">
+
+<div class="title">
+Derm Assist AI
+</div>
+
+<div class="sub">
+Your skincare chatbot assistant
+</div>
+
+</div>
+
+</div>
+
+<!-- QUICK BUTTONS -->
+
+<div class="quick">
+
+<button onclick="quickMsg('How to reduce acne?')">
+Acne Tips
+</button>
+
+<button onclick="quickMsg('Best skincare routine')">
+Routine
+</button>
+
+<button onclick="quickMsg('How to remove dark spots?')">
+Dark Spots
+</button>
+
+<button onclick="quickMsg('Best moisturizer')">
+Moisturizer
+</button>
+
+<button onclick="quickMsg('Best sunscreen?')">
+Sunscreen
+</button>
+
+</div>
+
+<!-- CHAT AREA -->
+
+<div
+class="chat-area"
+id="chatArea">
+
+<!-- BOT -->
+
+<div class="msg bot">
+
+Hello 👋
+
+<br><br>
+
+I am your Derm Assist AI chatbot.
+
+<br><br>
+
+Ask me anything about skincare,
+acne, glow, hydration,
+sunscreen, dark spots and routines 💖
+
+</div>
+
+<!-- EXTRA -->
+
+<div class="msg bot">
+
+✨ Try asking:
+
+<br><br>
+
+• How to remove acne?<br>
+• Best skincare routine?<br>
+• How to reduce oily skin?<br>
+• Which sunscreen is best?<br>
+• How to improve glow naturally?
+
+</div>
+
+</div>
+
+<!-- INPUT -->
+
+<div class="bottom">
+
+<input
+type="text"
+id="input"
+class="input"
+placeholder="Ask your skincare question...">
+
+<button
+class="send-btn"
+onclick="sendMessage()">
+
+<i class="fas fa-paper-plane"></i>
+
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+/* CHAT AREA */
+
+const chatArea =
+document.getElementById("chatArea");
+
+/* SEND MESSAGE */
+
+function sendMessage(){
+
+const input =
+document.getElementById("input");
+
+const text =
+input.value.trim();
+
+if(!text){
+return;
+}
+
+/* USER MESSAGE */
+
+chatArea.innerHTML += `
+
+<div class="msg user">
+${text}
+</div>
+
+`;
+
+input.value = "";
+
+/* SCROLL */
+
+chatArea.scrollTop =
+chatArea.scrollHeight;
+
+/* BOT REPLY */
+
+setTimeout(()=>{
+
+let reply =
+getReply(text);
+
+chatArea.innerHTML += `
+
+<div class="msg bot">
+${reply}
+</div>
+
+`;
+
+chatArea.scrollTop =
+chatArea.scrollHeight;
+
+},700);
+
+}
+
+/* QUICK MESSAGE */
+
+function quickMsg(message){
+
+document.getElementById("input")
+.value = message;
+
+sendMessage();
+
+}
+
+/* AI RESPONSE */
+
+function getReply(text){
+
+text = text.toLowerCase();
+
+/* ACNE */
+
+if(
+text.includes("acne")
+){
+
+return `
+
+✨ Acne Care Tips
+
+<br><br>
+
+• Wash face twice daily<br>
+• Use salicylic acid cleanser<br>
+• Avoid touching pimples<br>
+• Drink enough water<br>
+• Use oil-free moisturizer
+
+`;
+
+}
+
+/* DARK SPOTS */
+
+if(
+text.includes("dark")
+||
+text.includes("spots")
+){
+
+return `
+
+🌸 Dark Spot Treatment
+
+<br><br>
+
+• Use Vitamin C serum<br>
+• Apply SPF 50 sunscreen<br>
+• Niacinamide helps pigmentation<br>
+• Avoid direct sunlight
+
+`;
+
+}
+
+/* OILY SKIN */
+
+if(
+text.includes("oil")
+||
+text.includes("oily")
+){
+
+return `
+
+💧 Oily Skin Routine
+
+<br><br>
+
+• Gel-based face wash<br>
+• Oil-free moisturizer<br>
+• Clay mask twice weekly<br>
+• Avoid harsh scrubbing
+
+`;
+
+}
+
+/* GLOW */
+
+if(
+text.includes("glow")
+){
+
+return `
+
+✨ Natural Glow Tips
+
+<br><br>
+
+• Sleep 7-8 hours daily<br>
+• Stay hydrated<br>
+• Eat fruits regularly<br>
+• Use Vitamin C serum<br>
+• Apply sunscreen everyday
+
+`;
+
+}
+
+/* SUNSCREEN */
+
+if(
+text.includes("sunscreen")
+){
+
+return `
+
+☀ Sunscreen Recommendation
+
+<br><br>
+
+• SPF 50 recommended<br>
+• Reapply every 2-3 hours<br>
+• Gel sunscreen for oily skin<br>
+• Cream sunscreen for dry skin
+
+`;
+
+}
+
+/* ROUTINE */
+
+if(
+text.includes("routine")
+){
+
+return `
+
+🧴 Basic Skincare Routine
+
+<br><br>
+
+Morning:<br>
+• Cleanser<br>
+• Moisturizer<br>
+• Sunscreen
+
+<br><br>
+
+Night:<br>
+• Cleanser<br>
+• Serum<br>
+• Moisturizer
+
+`;
+
+}
+
+/* MOISTURIZER */
+
+if(
+text.includes("moisturizer")
+){
+
+return `
+
+💖 Moisturizer Tips
+
+<br><br>
+
+• Gel moisturizer for oily skin<br>
+• Ceramide cream for dry skin<br>
+• Apply twice daily<br>
+• Use after cleansing
+
+`;
+
+}
+
+/* DEFAULT */
+
+return `
+
+🤖 Derm Assist AI
+
+<br><br>
+
+Healthy skin needs proper hydration,
+good sleep, sunscreen protection
+and a consistent skincare routine 💖
+
+`;
+
+}
+
+/* ENTER KEY */
+
+document.getElementById("input")
+.addEventListener(
+"keypress",
+function(e){
+
+if(e.key === "Enter"){
+sendMessage();
+}
+
+}
+);
+
+</script>
+
+</div>
+
+<div class="copy">
+© 2026 Derm Assist • Designed by Sree
+</div>
+
+</body>
+
+</body>
+
+</html>

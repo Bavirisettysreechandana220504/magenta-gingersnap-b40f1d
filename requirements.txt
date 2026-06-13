@@ -1,0 +1,5 @@
+Flask>=3.0,<4
+flask-cors>=4.0,<5
+numpy>=1.26
+opencv-python>=4.9
+Werkzeug>=3.0,<4

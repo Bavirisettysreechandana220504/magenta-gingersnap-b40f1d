@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>AI Skin Result</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:url("background.jpg")
+no-repeat center center/cover;
+min-height:100vh;
+}
+
+body::before{
+content:"";
+position:fixed;
+inset:0;
+background:rgba(255,240,248,0.82);
+backdrop-filter:blur(10px);
+z-index:-1;
+}
+
+.frame{
+max-width:550px;
+margin:auto;
+padding:20px 18px 120px;
+}
+
+.card{
+background:white;
+border-radius:28px;
+padding:18px;
+margin-bottom:18px;
+box-shadow:0 8px 20px rgba(0,0,0,0.08);
+}
+
+.result-img{
+width:100%;
+height:320px;
+object-fit:cover;
+border-radius:22px;
+}
+
+.title{
+font-size:30px;
+font-weight:900;
+color:#8a2f66;
+text-align:center;
+margin:20px 0;
+}
+
+.score{
+font-size:55px;
+font-weight:900;
+text-align:center;
+color:#d95b96;
+}
+
+.label{
+text-align:center;
+font-weight:700;
+margin-top:10px;
+color:#666;
+}
+
+.analysis{
+margin-top:18px;
+line-height:1.8;
+color:#555;
+font-size:15px;
+}
+
+.progress{
+margin-top:16px;
+}
+
+.bar{
+height:12px;
+background:#eee;
+border-radius:20px;
+overflow:hidden;
+margin-top:8px;
+}
+
+.fill{
+height:100%;
+background:linear-gradient(
+90deg,
+#ff7cab,
+#c894ff
+);
+}
+
+.btn{
+width:100%;
+padding:16px;
+border:none;
+border-radius:20px;
+margin-top:18px;
+font-weight:900;
+font-size:16px;
+background:linear-gradient(
+135deg,
+#ff7cab,
+#c894ff
+);
+color:white;
+}
+
+.copy{
+
+text-align:center;
+
+font-size:13px;
+
+color:#777;
+
+margin-top:22px;
+margin-bottom:20px;
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="frame">
+
+<div class="title">
+AI Skin Analysis
+</div>
+
+<div class="card">
+
+<img
+id="skinImage"
+class="result-img"
+src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?q=80&w=800">
+
+</div>
+
+<div class="card">
+
+<div class="score">
+92%
+</div>
+
+<div class="label">
+Healthy Glow Score ✨
+</div>
+
+<div class="analysis">
+
+Your skin appears hydrated with mild acne and low pigmentation.
+AI recommends daily sunscreen, hydration, and Vitamin-C serum.
+
+</div>
+
+<div class="progress">
+
+Hydration
+
+<div class="bar">
+<div class="fill" style="width:88%"></div>
+</div>
+
+</div>
+
+<div class="progress">
+
+Oil Control
+
+<div class="bar">
+<div class="fill" style="width:70%"></div>
+</div>
+
+</div>
+
+<div class="progress">
+
+Acne Level
+
+<div class="bar">
+<div class="fill" style="width:35%"></div>
+</div>
+
+</div>
+
+<button
+class="btn"
+onclick="location='home.html'">
+
+Back To Home
+
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+const uploadedImage =
+localStorage.getItem("analysisImage");
+
+if(uploadedImage){
+
+document.getElementById(
+"skinImage"
+).src = uploadedImage;
+
+}
+
+</script>
+
+.copy{
+
+text-align:center;
+
+font-size:13px;
+
+color:#777;
+
+margin-top:22px;
+margin-bottom:20px;
+
+}
+
+</body>
+</html>

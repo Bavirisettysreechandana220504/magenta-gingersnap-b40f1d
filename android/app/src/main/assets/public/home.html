@@ -1,0 +1,156 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Derm Assist Home</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+*{box-sizing:border-box;font-family:Arial}
+body{margin:0;background:#f7e9f1}
+.frame{max-width:650px;margin:auto;min-height:100vh;padding:18px 18px 90px;background:linear-gradient(#fff5fa,#f7e9f1)}
+.top{display:flex;justify-content:space-between;align-items:center}
+h2{color:#8a2f66}
+.card{background:white;border-radius:24px;padding:16px;margin:14px 0;box-shadow:0 8px 18px #0001}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.product{background:#fff;border-radius:20px;padding:12px;box-shadow:0 5px 12px #0001}
+.product img{width:100%;height:155px;object-fit:cover;border-radius:16px}
+.name{font-weight:900;color:#333;margin-top:8px}
+.price{font-size:22px;font-weight:900;color:#2c2335}
+button{width:100%;border:none;border-radius:14px;padding:11px;margin-top:8px;background:linear-gradient(135deg,#ff7cab,#c894ff);color:white;font-weight:800}
+.bottom{position:fixed;bottom:0;left:0;right:0;max-width:650px;margin:auto;background:white;display:flex;justify-content:space-around;padding:14px;border-radius:20px 20px 0 0}
+.bottom div{text-align:center;font-size:12px;color:#777}
+.bottom i{display:block;font-size:19px;color:#d95b96}
+</style>
+</head>
+<body>
+
+<div class="frame">
+<div class="top">
+<div>
+<h2>Welcome ðŸ‘‹</h2>
+<p id="userName"></p>
+</div>
+<button style="width:48px;height:48px;border-radius:50%" onclick="location='cart.html'"><i class="fas fa-shopping-cart"></i></button>
+</div>
+
+<div class="card">
+<h3 style="color:#8a2f66">Latest Analysis</h3>
+<p id="analysisText">No scan yet.</p>
+<button onclick="location='scan.html'">Scan Your Skin</button>
+</div>
+
+<div class="card">
+<h3 style="color:#8a2f66">Recommended Indian Products</h3>
+<div class="grid" id="products"></div>
+</div>
+</div>
+
+<div class="bottom">
+<div><i class="fas fa-home"></i>Home</div>
+<div onclick="location='scan.html'"><i class="fas fa-camera"></i>Scan</div>
+<div onclick="location='cart.html'"><i class="fas fa-shopping-cart"></i>Cart</div>
+<div onclick="location='profile.html'"><i class="fas fa-user"></i>Profile</div>
+</div>
+
+<script>const API_BASE = window.location.protocol === "file:" ? "http://127.0.0.1:5000" : window.location.origin;
+document.getElementById("userName").innerText =
+localStorage.getItem("userName") ? "Hi, "+localStorage.getItem("userName")+" ðŸ’–" : "Hi, beautiful ðŸ’–";
+
+const concern=localStorage.getItem("analysisConcern") || "default";
+const analysis=localStorage.getItem("analysisShortResult") || "";
+const tip=localStorage.getItem("analysisTip") || "";
+
+document.getElementById("analysisText").innerText = analysis ? analysis+" "+tip : "No scan yet. Start your AI scan.";
+
+const images=[
+"https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=500&q=80",
+"https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=500&q=80",
+"https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=500&q=80",
+"https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=500&q=80",
+"https://images.unsplash.com/photo-1612817288484-6f916006741a?auto=format&fit=crop&w=500&q=80"
+];
+
+const products={
+"Acne":[
+["Minimalist 2% Salicylic Acid Serum","â‚¹599","Serum"],
+["Derma Co Sali-Cinamide Face Wash","â‚¹299","Cleanser"],
+["Sebamed Clear Face Gel","â‚¹550","Moisturizer"],
+["Re'equil Ultra Matte Sunscreen","â‚¹695","Sunscreen"],
+["Dot & Key Cica Night Gel","â‚¹499","Treatment"]
+],
+"Dark Spots":[
+["Minimalist Alpha Arbutin Serum","â‚¹699","Serum"],
+["Derma Co Vitamin C Serum","â‚¹649","Serum"],
+["Aqualogica Glow Sunscreen","â‚¹399","Sunscreen"],
+["Plum Niacinamide Serum","â‚¹550","Serum"],
+["Dot & Key Vitamin C Moisturizer","â‚¹495","Moisturizer"]
+],
+"Dryness":[
+["Re'equil Ceramide Moisturizer","â‚¹650","Moisturizer"],
+["Cetaphil Gentle Cleanser","â‚¹699","Cleanser"],
+["Minimalist Hyaluronic Acid Serum","â‚¹699","Serum"],
+["Bioderma Atoderm Creme","â‚¹599","Moisturizer"],
+["Aqualogica Hydrate Sunscreen","â‚¹399","Sunscreen"]
+],
+"Oily Skin":[
+["Plum Green Tea Face Wash","â‚¹345","Cleanser"],
+["Minimalist Niacinamide Serum","â‚¹599","Serum"],
+["Neutrogena Hydro Boost Gel","â‚¹950","Moisturizer"],
+["Re'equil Ultra Matte Sunscreen","â‚¹695","Sunscreen"],
+["Mamaearth Tea Tree Face Mask","â‚¹499","Mask"]
+],
+"Sensitivity":[
+["Cetaphil Gentle Cleanser","â‚¹699","Cleanser"],
+["Bioderma Sensibio Gel","â‚¹799","Cleanser"],
+["Re'equil Ceramide Cream","â‚¹650","Moisturizer"],
+["Minimalist Sepicalm Moisturizer","â‚¹345","Moisturizer"],
+["Fixderma Shadow SPF 50","â‚¹495","Sunscreen"]
+],
+"default":[
+["Cetaphil Gentle Cleanser","â‚¹699","Cleanser"],
+["Minimalist Niacinamide Serum","â‚¹599","Serum"],
+["Re'equil Ceramide Moisturizer","â‚¹650","Moisturizer"],
+["Aqualogica Sunscreen SPF 50","â‚¹399","Sunscreen"],
+["Dot & Key Glow Moisturizer","â‚¹495","Moisturizer"]
+]
+};
+
+let selectedProducts=products[concern] || products.default;
+
+document.getElementById("products").innerHTML=selectedProducts.map((p,i)=>`
+<div class="product">
+<img src="${images[i%images.length]}">
+<div class="name">${p[0]}</div>
+<p>${p[2]}</p>
+<div class="price">${p[1]}</div>
+<button onclick="addToCart(${i})">Add to Cart</button>
+<button onclick="buyNow(${i})">Buy Now</button>
+</div>
+`).join("");
+
+function getCart(){
+    return JSON.parse(localStorage.getItem("cart") || "[]");
+}
+
+function addToCart(i){
+    let cart=getCart();
+    const p=selectedProducts[i];
+    cart.push({
+        name:p[0],
+        price:p[1],
+        type:p[2],
+        img:images[i%images.length],
+        qty:1
+    });
+    localStorage.setItem("cart",JSON.stringify(cart));
+    alert("Added to cart");
+}
+
+function buyNow(i){
+    addToCart(i);
+    location="cart.html";
+}
+</script>
+</body>
+</html>

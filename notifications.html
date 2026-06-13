@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Notifications - Derm Assist</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+-webkit-tap-highlight-color:transparent;
+}
+
+body{
+min-height:100vh;
+background:
+linear-gradient(
+rgba(255,245,250,0.72),
+rgba(255,245,250,0.82)
+),
+url("background.jpg");
+background-size:cover;
+background-position:center;
+background-attachment:fixed;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:20px;
+overflow-x:hidden;
+}
+
+.back-btn{
+position:fixed;
+top:18px;
+left:18px;
+width:48px;
+height:48px;
+border:none;
+border-radius:16px;
+background:white;
+color:#d95b96;
+font-size:18px;
+cursor:pointer;
+z-index:1000;
+box-shadow:0 8px 20px rgba(0,0,0,0.08);
+}
+
+.container{
+width:100%;
+max-width:620px;
+background:rgba(255,255,255,0.90);
+border-radius:34px;
+padding:28px;
+box-shadow:0 18px 40px rgba(0,0,0,0.10);
+backdrop-filter:blur(18px);
+}
+
+.logo{
+width:90px;
+display:block;
+margin:0 auto 18px;
+}
+
+.top-row{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+}
+
+.top-row h1{
+font-size:34px;
+font-weight:900;
+color:#8a2f66;
+}
+
+.save-btn{
+border:none;
+padding:13px 22px;
+border-radius:16px;
+background:linear-gradient(135deg,#ff7cab,#c894ff);
+color:white;
+font-size:14px;
+font-weight:900;
+cursor:pointer;
+box-shadow:0 8px 18px rgba(217,91,150,0.25);
+}
+
+.summary{
+background:linear-gradient(135deg,#ff8fba,#c999ff);
+border-radius:26px;
+padding:20px;
+color:white;
+margin-bottom:20px;
+box-shadow:0 12px 24px rgba(217,91,150,0.25);
+}
+
+.summary h2{
+font-size:22px;
+font-weight:900;
+margin-bottom:8px;
+}
+
+.summary p{
+font-size:14px;
+line-height:1.7;
+}
+
+.setting-item{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:17px 0;
+border-bottom:1px solid #f1dce8;
+}
+
+.setting-left{
+display:flex;
+align-items:center;
+gap:14px;
+}
+
+.setting-left i{
+width:44px;
+height:44px;
+border-radius:16px;
+background:#ffe1ee;
+display:flex;
+justify-content:center;
+align-items:center;
+color:#d95b96;
+font-size:18px;
+}
+
+.setting-left span{
+font-size:17px;
+font-weight:800;
+color:#4d3a45;
+}
+
+.switch{
+position:relative;
+display:inline-block;
+width:58px;
+height:31px;
+}
+
+.switch input{
+opacity:0;
+width:0;
+height:0;
+}
+
+.slider{
+position:absolute;
+cursor:pointer;
+top:0;
+left:0;
+right:0;
+bottom:0;
+background:#ffd3e6;
+transition:.4s;
+border-radius:40px;
+}
+
+.slider:before{
+position:absolute;
+content:"";
+height:23px;
+width:23px;
+left:4px;
+bottom:4px;
+background:white;
+transition:.4s;
+border-radius:50%;
+}
+
+input:checked + .slider{
+background:#d95b96;
+}
+
+input:checked + .slider:before{
+transform:translateX(27px);
+}
+
+.reminder-box{
+margin-top:26px;
+background:#fff6fb;
+padding:20px;
+border-radius:26px;
+}
+
+.reminder-title{
+font-size:22px;
+font-weight:900;
+color:#8a2f66;
+margin-bottom:14px;
+}
+
+.reminder-input,
+.time-input,
+.priority-input{
+width:100%;
+padding:15px;
+border:none;
+outline:none;
+border-radius:16px;
+background:white;
+margin-bottom:13px;
+font-size:15px;
+box-shadow:0 5px 14px rgba(0,0,0,0.05);
+}
+
+.add-btn{
+width:100%;
+padding:15px;
+border:none;
+border-radius:18px;
+background:linear-gradient(135deg,#ff7cab,#c894ff);
+color:white;
+font-size:15px;
+font-weight:900;
+cursor:pointer;
+margin-bottom:15px;
+box-shadow:0 8px 18px rgba(217,91,150,0.22);
+}
+
+.reminder-list{
+margin-top:10px;
+max-height:250px;
+overflow-y:auto;
+}
+
+.reminder-item{
+background:white;
+padding:15px;
+border-radius:18px;
+margin-bottom:12px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+box-shadow:0 6px 16px rgba(0,0,0,0.06);
+border-left:6px solid #d95b96;
+}
+
+.reminder-item.done{
+opacity:0.65;
+}
+
+.reminder-item.done .reminder-text{
+text-decoration:line-through;
+}
+
+.reminder-text{
+font-size:15px;
+font-weight:900;
+color:#5f4d58;
+}
+
+.reminder-meta{
+font-size:12px;
+font-weight:800;
+color:#d95b96;
+margin-top:6px;
+line-height:1.6;
+}
+
+.reminder-actions{
+display:flex;
+gap:8px;
+}
+
+.done-btn,
+.delete-btn{
+border:none;
+width:36px;
+height:36px;
+border-radius:12px;
+cursor:pointer;
+font-size:15px;
+}
+
+.done-btn{
+background:#e5f8e9;
+color:#19964c;
+}
+
+.delete-btn{
+background:#ffe1ee;
+color:#d95b96;
+}
+
+.empty-reminder{
+text-align:center;
+padding:25px 15px;
+background:white;
+border-radius:18px;
+color:#8a2f66;
+font-size:15px;
+font-weight:900;
+}
+
+.toast{
+position:fixed;
+top:20px;
+left:50%;
+transform:translateX(-50%);
+background:linear-gradient(135deg,#ff7cab,#c894ff);
+color:white;
+padding:14px 24px;
+border-radius:18px;
+font-weight:900;
+font-size:14px;
+display:none;
+z-index:9999;
+box-shadow:0 8px 20px rgba(0,0,0,0.18);
+}
+
+.copy{
+text-align:center;
+font-size:13px;
+color:#777;
+margin-top:22px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="toast" id="toast"></div>
+
+<button
+class="back-btn"
+onclick="history.back()">
+
+<i class="fas fa-arrow-left"></i>
+
+</button>
+
+<div class="container">
+
+<img
+src="logo.png"
+class="logo">
+
+<div class="top-row">
+
+<h1>Notifications</h1>
+
+<button
+class="save-btn"
+onclick="saveSettings()">
+
+Save
+
+</button>
+
+</div>
+
+<div class="summary">
+
+<h2>Smart Skin Care Alerts</h2>
+
+<p>
+Manage product offers, appointment reminders, daily skincare routines, and personal beauty reminders in one place.
+</p>
+
+</div>
+
+<div class="setting-item">
+
+<div class="setting-left">
+<i class="fas fa-bell"></i>
+<span>Push Notifications</span>
+</div>
+
+<label class="switch">
+<input type="checkbox" id="pushToggle" checked>
+<span class="slider"></span>
+</label>
+
+</div>
+
+<div class="setting-item">
+
+<div class="setting-left">
+<i class="fas fa-envelope"></i>
+<span>Email Alerts</span>
+</div>
+
+<label class="switch">
+<input type="checkbox" id="emailToggle" checked>
+<span class="slider"></span>
+</label>
+
+</div>
+
+<div class="setting-item">
+
+<div class="setting-left">
+<i class="fas fa-calendar-check"></i>
+<span>Appointment Reminders</span>
+</div>
+
+<label class="switch">
+<input type="checkbox" id="appointmentToggle" checked>
+<span class="slider"></span>
+</label>
+
+</div>
+
+<div class="setting-item">
+
+<div class="setting-left">
+<i class="fas fa-tags"></i>
+<span>Offers & Discounts</span>
+</div>
+
+<label class="switch">
+<input type="checkbox" id="offersToggle">
+<span class="slider"></span>
+</label>
+
+</div>
+
+<div class="reminder-box">
+
+<div class="reminder-title">
+Daily Skin Care Reminders
+</div>
+
+<input
+type="text"
+id="reminderInput"
+class="reminder-input"
+placeholder="Example: Apply sunscreen, Drink water, Night serum...">
+
+<input
+type="time"
+id="reminderTime"
+class="time-input">
+
+<select
+id="priorityInput"
+class="priority-input">
+
+<option value="Normal">Normal Priority</option>
+<option value="Important">Important</option>
+<option value="Very Important">Very Important</option>
+
+</select>
+
+<button
+class="add-btn"
+onclick="addReminder()">
+
+Add Reminder
+
+</button>
+
+<div
+class="reminder-list"
+id="reminderList">
+
+</div>
+
+</div>
+
+<div class="copy">
+© 2026 Derm Assist • Designed by Sree
+</div>
+
+</div>
+
+<script>
+
+function showToast(message){
+
+const toast =
+document.getElementById("toast");
+
+toast.innerText =
+message;
+
+toast.style.display =
+"block";
+
+setTimeout(()=>{
+
+toast.style.display =
+"none";
+
+},1800);
+
+}
+
+function loadSettings(){
+
+const settings =
+JSON.parse(
+localStorage.getItem("notificationSettings")
+) || {
+push:true,
+email:true,
+appointment:true,
+offers:false
+};
+
+document.getElementById("pushToggle").checked =
+settings.push;
+
+document.getElementById("emailToggle").checked =
+settings.email;
+
+document.getElementById("appointmentToggle").checked =
+settings.appointment;
+
+document.getElementById("offersToggle").checked =
+settings.offers;
+
+}
+
+function saveSettings(){
+
+const settings = {
+push:document.getElementById("pushToggle").checked,
+email:document.getElementById("emailToggle").checked,
+appointment:document.getElementById("appointmentToggle").checked,
+offers:document.getElementById("offersToggle").checked
+};
+
+localStorage.setItem(
+"notificationSettings",
+JSON.stringify(settings)
+);
+
+showToast(
+"Settings Saved Successfully 💖"
+);
+
+}
+
+let reminders =
+JSON.parse(
+localStorage.getItem("reminders")
+) || [];
+
+const reminderList =
+document.getElementById("reminderList");
+
+function displayReminders(){
+
+reminderList.innerHTML = "";
+
+if(reminders.length === 0){
+
+reminderList.innerHTML = `
+
+<div class="empty-reminder">
+No reminders yet 💖 Add your first skincare reminder.
+</div>
+
+`;
+
+return;
+
+}
+
+reminders.forEach((reminder,index)=>{
+
+reminderList.innerHTML += `
+
+<div class="reminder-item ${reminder.done ? 'done' : ''}">
+
+<div>
+
+<div class="reminder-text">
+${reminder.text}
+</div>
+
+<div class="reminder-meta">
+⏰ ${reminder.time || "Anytime"} <br>
+⭐ ${reminder.priority || "Normal"}
+</div>
+
+</div>
+
+<div class="reminder-actions">
+
+<button
+class="done-btn"
+onclick="markDone(${index})">
+
+<i class="fas fa-check"></i>
+
+</button>
+
+<button
+class="delete-btn"
+onclick="deleteReminder(${index})">
+
+<i class="fas fa-trash"></i>
+
+</button>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+}
+
+function addReminder(){
+
+const input =
+document.getElementById("reminderInput");
+
+const time =
+document.getElementById("reminderTime");
+
+const priority =
+document.getElementById("priorityInput");
+
+const text =
+input.value.trim();
+
+if(text === ""){
+
+showToast(
+"Please Enter Reminder"
+);
+
+return;
+
+}
+
+reminders.push({
+text:text,
+time:time.value || "Anytime",
+priority:priority.value,
+done:false,
+notified:false
+});
+
+localStorage.setItem(
+"reminders",
+JSON.stringify(reminders)
+);
+
+input.value = "";
+time.value = "";
+priority.value = "Normal";
+
+displayReminders();
+
+showToast(
+"Reminder Added Successfully 💖"
+);
+
+}
+
+function markDone(index){
+
+reminders[index].done =
+!reminders[index].done;
+
+localStorage.setItem(
+"reminders",
+JSON.stringify(reminders)
+);
+
+displayReminders();
+
+}
+
+function deleteReminder(index){
+
+reminders.splice(index,1);
+
+localStorage.setItem(
+"reminders",
+JSON.stringify(reminders)
+);
+
+displayReminders();
+
+showToast(
+"Reminder Deleted"
+);
+
+}
+
+function checkReminderTime(){
+
+const settings =
+JSON.parse(
+localStorage.getItem("notificationSettings")
+) || {
+push:true
+};
+
+if(!settings.push){
+return;
+}
+
+const now =
+new Date();
+
+const currentTime =
+String(now.getHours()).padStart(2,"0") + ":" +
+String(now.getMinutes()).padStart(2,"0");
+
+let changed = false;
+
+reminders.forEach((reminder,index)=>{
+
+if(
+reminder.time === currentTime &&
+reminder.done === false &&
+reminder.notified === false
+){
+
+showToast(
+"⏰ " + reminder.text
+);
+
+alert(
+"⏰ Derm Assist Reminder\n\n" + reminder.text
+);
+
+reminders[index].notified = true;
+
+changed = true;
+
+}
+
+});
+
+if(changed){
+
+localStorage.setItem(
+"reminders",
+JSON.stringify(reminders)
+);
+
+displayReminders();
+
+}
+
+}
+
+document
+.getElementById("reminderInput")
+.addEventListener("keydown",function(event){
+
+if(event.key === "Enter"){
+
+addReminder();
+
+}
+
+});
+
+loadSettings();
+
+displayReminders();
+
+setInterval(
+checkReminderTime,
+1000
+);
+
+</script>
+
+</body>
+</html>

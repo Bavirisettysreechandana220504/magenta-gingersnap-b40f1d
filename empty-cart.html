@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width,initial-scale=1.0">
+
+<title>Empty Cart - Derm Assist</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+
+min-height:100vh;
+
+background:url("background.jpg")
+no-repeat center center/cover;
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+padding:20px;
+
+}
+
+body::before{
+
+content:"";
+position:fixed;
+inset:0;
+
+background:
+rgba(255,240,248,0.78);
+
+backdrop-filter:blur(8px);
+
+z-index:-1;
+
+}
+
+/* CARD */
+
+.card{
+
+width:100%;
+max-width:420px;
+
+background:rgba(255,255,255,0.95);
+
+border-radius:32px;
+
+padding:35px 25px;
+
+text-align:center;
+
+box-shadow:
+0 10px 25px rgba(0,0,0,0.08);
+
+animation:fade .5s ease;
+
+}
+
+/* ANIMATION */
+
+@keyframes fade{
+
+from{
+opacity:0;
+transform:translateY(20px);
+}
+
+to{
+opacity:1;
+transform:translateY(0);
+}
+
+}
+
+/* ICON */
+
+.icon{
+
+width:120px;
+height:120px;
+
+margin:auto auto 20px;
+
+border-radius:50%;
+
+background:
+linear-gradient(
+135deg,
+#ffe0ef,
+#f3e2ff
+);
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+font-size:55px;
+
+color:#d95b96;
+
+}
+
+/* TITLE */
+
+.title{
+
+font-size:30px;
+font-weight:900;
+
+color:#8a2f66;
+
+margin-bottom:12px;
+
+}
+
+/* TEXT */
+
+.text{
+
+font-size:15px;
+line-height:1.7;
+
+color:#666;
+
+margin-bottom:25px;
+
+}
+
+/* BUTTON */
+
+.shop-btn{
+
+width:100%;
+
+border:none;
+
+padding:16px;
+
+border-radius:20px;
+
+background:
+linear-gradient(
+135deg,
+#ff7cab,
+#c894ff
+);
+
+color:white;
+
+font-size:16px;
+font-weight:900;
+
+cursor:pointer;
+
+transition:0.2s;
+
+}
+
+.shop-btn:active{
+
+transform:scale(0.97);
+
+}
+
+/* SMALL */
+
+.small{
+
+margin-top:18px;
+font-size:13px;
+color:#999;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+<div class="icon">
+🛒
+</div>
+
+<div class="title">
+Your Cart is Empty
+</div>
+
+<div class="text">
+
+Looks like you haven’t added
+any skincare products yet.
+
+Start exploring products
+recommended for your skin.
+
+</div>
+
+<button
+class="shop-btn"
+onclick="location.href='home.html'">
+
+Continue Shopping
+
+</button>
+
+<div class="small">
+
+Derm Assist © Sree
+
+</div>
+
+</div>
+
+</body>
+</html>

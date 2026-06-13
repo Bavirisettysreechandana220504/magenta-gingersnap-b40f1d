@@ -1,0 +1,370 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>Derm Assist Cart</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, sans-serif;
+}
+
+body{
+min-height:100vh;
+background:url("background.jpg") no-repeat center center/cover;
+}
+
+body::before{
+content:"";
+position:fixed;
+inset:0;
+background:rgba(255,240,248,0.75);
+backdrop-filter:blur(8px);
+z-index:-1;
+}
+
+/* FRAME */
+.frame{
+max-width:520px;
+margin:auto;
+padding:18px 18px 140px;
+}
+
+/* TOP */
+.top{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:14px;
+}
+
+.top-btn{
+width:48px;
+height:48px;
+border:none;
+border-radius:50%;
+background:rgba(255,255,255,0.8);
+backdrop-filter:blur(10px);
+color:#8a2f66;
+font-size:18px;
+cursor:pointer;
+}
+
+.logo img{
+width:80px;
+}
+
+/* TITLE */
+h2{
+text-align:center;
+color:#8a2f66;
+margin:10px 0 20px;
+}
+
+/* CART ITEM */
+.item{
+display:flex;
+gap:12px;
+background:white;
+border-radius:20px;
+padding:12px;
+margin:12px 0;
+box-shadow:0 8px 18px #0001;
+align-items:center;
+}
+
+.item img{
+width:90px;
+height:90px;
+border-radius:16px;
+object-fit:cover;
+}
+
+/* DETAILS */
+.details{
+flex:1;
+}
+
+.name{
+font-weight:900;
+font-size:15px;
+}
+
+.price{
+color:#8a2f66;
+font-weight:900;
+margin-top:4px;
+}
+
+/* QTY */
+.qty-box{
+display:flex;
+align-items:center;
+gap:10px;
+margin-top:10px;
+}
+
+/* PERFECT CENTER BUTTON */
+.qty-btn{
+width:32px;
+height:32px;
+border:none;
+border-radius:8px;
+background:#8a2f66;
+color:white;
+font-size:20px;
+font-weight:900;
+display:flex;
+align-items:center;
+justify-content:center;
+line-height:1;
+cursor:pointer;
+}
+
+/* NUMBER */
+.qty-number{
+min-width:24px;
+text-align:center;
+font-weight:900;
+}
+
+/* REMOVE */
+.remove-btn{
+margin-top:8px;
+border:none;
+padding:6px 10px;
+border-radius:10px;
+background:#ff4d6d;
+color:white;
+font-weight:700;
+cursor:pointer;
+}
+
+/* EMPTY */
+.empty{
+text-align:center;
+font-weight:900;
+color:#8a2f66;
+padding:30px;
+}
+
+/* SUMMARY */
+.summary{
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+max-width:520px;
+margin:auto;
+background:rgba(255,255,255,0.92);
+backdrop-filter:blur(10px);
+padding:15px;
+border-radius:20px 20px 0 0;
+box-shadow:0 -5px 15px #0001;
+}
+
+.summary h3{
+color:#8a2f66;
+margin-bottom:10px;
+}
+
+button{
+width:100%;
+border:none;
+border-radius:14px;
+padding:12px;
+margin-top:8px;
+font-weight:800;
+background:linear-gradient(135deg,#ff7cab,#c894ff);
+color:white;
+cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="frame">
+
+<!-- TOP -->
+<div class="top">
+
+<button class="top-btn" onclick="location='home.html'">
+<i class="fas fa-arrow-left"></i>
+</button>
+
+<div class="logo">
+<img src="logo.png">
+</div>
+
+<button class="top-btn" onclick="location='profile.html'">
+<i class="fas fa-user"></i>
+</button>
+
+</div>
+
+<h2>Your Cart 🛒</h2>
+
+<div id="cartList"></div>
+
+</div>
+
+<!-- SUMMARY -->
+<div class="summary">
+
+<h3>Total: ₹ <span id="total">0</span></h3>
+
+<button onclick="checkout()">Proceed to Buy</button>
+
+<button style="background:#888" onclick="location='home.html'">
+Continue Shopping
+</button>
+
+</div>
+
+<script>
+
+let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+
+cart = cart.map(p=>{
+if(!p.qty) p.qty = 1;
+return p;
+});
+
+function save(){
+localStorage.setItem("cart", JSON.stringify(cart));
+}
+
+/* PRICE CLEAN */
+function price(p){
+return Number(String(p).replace("₹","").trim()) || 0;
+}
+
+/* RENDER */
+function render(){
+
+const box = document.getElementById("cartList");
+
+if(cart.length === 0){
+box.innerHTML = `<div class="empty">Cart is empty</div>`;
+document.getElementById("total").innerText = "0";
+return;
+}
+
+box.innerHTML = cart.map((p,i)=>`
+
+<div class="item">
+
+<img src="${p.img}">
+
+<div class="details">
+
+<div class="name">${p.name}</div>
+
+<div class="price">₹ ${p.price}</div>
+
+<div class="qty-box">
+
+<button class="qty-btn" onclick="dec(${i})">−</button>
+
+<div class="qty-number">${p.qty}</div>
+
+<button class="qty-btn" onclick="inc(${i})">+</button>
+
+</div>
+
+<button class="remove-btn" onclick="removeItem(${i})">
+Remove
+</button>
+
+</div>
+
+</div>
+
+`).join("");
+
+updateTotal();
+}
+
+/* + */
+function inc(i){
+cart[i].qty++;
+save();
+render();
+}
+
+/* - */
+function dec(i){
+if(cart[i].qty > 1){
+cart[i].qty--;
+}else{
+cart.splice(i,1);
+}
+save();
+render();
+}
+
+/* REMOVE */
+function removeItem(i){
+cart.splice(i,1);
+save();
+render();
+}
+
+/* TOTAL */
+function updateTotal(){
+
+let total = 0;
+
+cart.forEach(p=>{
+total += price(p.price) * p.qty;
+});
+
+document.getElementById("total").innerText = total;
+
+}
+
+/* CHECKOUT */
+function checkout(){
+
+if(cart.length === 0){
+
+location.href = "empty-cart.html";
+return;
+
+}
+
+/* SAVE CART */
+
+localStorage.setItem(
+"checkoutCart",
+JSON.stringify(cart)
+);
+
+/* OPEN CHECKOUT PAGE */
+
+window.location.href =
+"checkout.html";
+
+}
+
+render();
+
+</script>
+
+</body>
+</html>

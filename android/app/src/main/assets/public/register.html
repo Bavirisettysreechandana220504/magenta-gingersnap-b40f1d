@@ -1,0 +1,361 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register - Derm Assist</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:url("background.jpg") no-repeat center/cover;
+}
+
+/* Blur Background */
+body::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    backdrop-filter:blur(12px);
+    background:rgba(255,240,248,0.4);
+}
+
+/* Glass Card */
+.container{
+    position:relative;
+    width:360px;
+    padding:25px;
+    border-radius:25px;
+    background:rgba(255,255,255,0.6);
+    backdrop-filter:blur(15px);
+    box-shadow:0 10px 30px rgba(0,0,0,0.1);
+}
+
+/* Logo */
+.logo{
+    text-align:center;
+}
+.logo img{
+    width:70px;
+}
+.caption{
+    text-align:center;
+    font-size:13px;
+    color:#c45b8f;
+    margin-top:5px;
+}
+
+/* Heading */
+h2{
+    text-align:center;
+    margin:10px 0 20px;
+    color:#8a3e67;
+}
+
+/* Input Box */
+.input-box{
+    position:relative;
+    margin:12px 0;
+}
+.input-box input, .input-box select{
+    width:100%;
+    padding:14px 45px;
+    border-radius:20px;
+    border:1px solid #f0cade;
+    outline:none;
+}
+
+/* Remove grey dropdown */
+select{
+    appearance:none;
+}
+
+/* Icons */
+.input-box i{
+    position:absolute;
+    left:15px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#c45b8f;
+}
+
+/* Eye icon */
+.eye{
+    right:15px;
+    left:auto;
+    cursor:pointer;
+}
+
+/* Phone */
+.phone{
+    display:flex;
+    align-items:center;
+}
+.phone span{
+    margin-left:45px;
+    margin-right:5px;
+    color:#777;
+}
+.phone input{
+    padding-left:10px;
+    border:none;
+    outline:none;
+    width:100%;
+}
+
+/* File */
+.file-box{
+    position:relative;
+}
+.file-box i{
+    position:absolute;
+    left:15px;
+    top:50%;
+    transform:translateY(-50%);
+}
+
+/* Button */
+button{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:20px;
+    margin-top:12px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+/* Register button */
+.register{
+    background:linear-gradient(135deg,#ff7eae,#c792ff);
+    color:white;
+}
+
+/* Divider */
+.divider{
+    text-align:center;
+    margin:15px 0;
+    position:relative;
+}
+.divider::before,.divider::after{
+    content:"";
+    position:absolute;
+    top:50%;
+    width:40%;
+    height:1px;
+    background:#ddd;
+}
+.divider::before{left:0}
+.divider::after{right:0}
+
+/* Social */
+.social{
+    background:white;
+    border:1px solid #ddd;
+}
+.social i{
+    margin-right:10px;
+}
+
+/* Bottom text */
+.bottom{
+    text-align:center;
+    margin-top:10px;
+}
+.bottom a{
+    color:#d95b96;
+    text-decoration:none;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="logo">
+    <img src="logo.png">
+</div>
+
+<div class="caption">Glow with confidence âœ¨</div>
+
+<h2>Create Account</h2>
+
+<!-- Name -->
+<div class="input-box">
+    <i class="fa fa-user"></i>
+    <input id="name" placeholder="Full Name">
+</div>
+
+<!-- Mobile -->
+<div class="input-box phone">
+    <i class="fa fa-phone"></i>
+    <span>+91</span>
+    <input id="mobile" maxlength="10" placeholder="Mobile Number">
+</div>
+
+<!-- Age -->
+<div class="input-box">
+    <i class="fa fa-calendar"></i>
+    <input id="age" type="number" placeholder="Age">
+</div>
+
+<!-- Gender -->
+<div class="input-box">
+    <i class="fa fa-venus-mars"></i>
+    <select id="gender">
+        <option value="">Gender</option>
+        <option>Male</option>
+        <option>Female</option>
+    </select>
+</div>
+
+<!-- Skin -->
+<div class="input-box">
+    <i class="fa fa-spa"></i>
+    <select id="skin">
+        <option value="">Skin Type</option>
+        <option>Oily</option>
+        <option>Dry</option>
+    </select>
+</div>
+
+<!-- Email -->
+<div class="input-box">
+    <i class="fa fa-envelope"></i>
+    <input id="email" placeholder="Email">
+</div>
+
+<!-- Password -->
+<div class="input-box">
+    <i class="fa fa-lock"></i>
+    <input id="password" type="password" placeholder="Password">
+    <i class="fa fa-eye eye" onclick="toggle('password',this)"></i>
+</div>
+
+<!-- Confirm -->
+<div class="input-box">
+    <i class="fa fa-lock"></i>
+    <input id="confirm" type="password" placeholder="Confirm Password">
+    <i class="fa fa-eye eye" onclick="toggle('confirm',this)"></i>
+</div>
+
+<!-- File -->
+<div class="input-box file-box">
+    <i class="fa fa-image"></i>
+    <input type="file" id="image">
+</div>
+
+<!-- Register -->
+<button class="register" onclick="register()">Register</button>
+
+<div class="divider">OR</div>
+
+<button class="social">
+    <img src="https://developers.google.com/identity/images/g-logo.png" width="18"> Google
+</button>
+
+<button class="social">
+    <i class="fab fa-apple"></i> Apple
+</button>
+
+<div class="bottom">
+    Already have an account? <a href="login.html">Login</a>
+</div>
+
+</div>
+
+<script>
+const API_BASE = window.location.protocol === "file:" ? "http://127.0.0.1:5000" : window.location.origin;
+
+function toggle(id,icon){
+    const input=document.getElementById(id);
+    input.type=input.type==="password"?"text":"password";
+    icon.classList.toggle("fa-eye-slash");
+}
+
+async function register(){
+    const name=document.getElementById("name").value.trim();
+    const mobile=document.getElementById("mobile").value;
+    const age=document.getElementById("age").value;
+    const gender=document.getElementById("gender").value;
+    const skin=document.getElementById("skin").value;
+    const email=document.getElementById("email").value.trim();
+    const pass=document.getElementById("password").value;
+    const confirm=document.getElementById("confirm").value;
+    const image=document.getElementById("image").files[0];
+
+    if(!/^[A-Za-z ]{2,50}$/.test(name)){
+        alert("Name should contain only letters and spaces");
+        return;
+    }
+
+    if(!/^[6-9]\d{9}$/.test(mobile)){
+        alert("Invalid mobile number");
+        return;
+    }
+
+    if(!age || Number(age) <= 0 || Number(age) > 120){
+        alert("Enter valid age");
+        return;
+    }
+
+    if(!gender || !skin){
+        alert("Select gender and skin type");
+        return;
+    }
+
+    if(!/^[A-Za-z0-9._%+-]+@gmail\.com$/.test(email)){
+        alert("Use a valid Gmail address");
+        return;
+    }
+
+    if(!/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&]).{6,}$/.test(pass)){
+        alert("Password must include uppercase, lowercase, number and special character");
+        return;
+    }
+
+    if(pass!==confirm){
+        alert("Passwords do not match");
+        return;
+    }
+
+    if(!image){
+        alert("Upload image");
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("mobile", "+91" + mobile);
+    formData.append("age", age);
+    formData.append("gender", gender);
+    formData.append("skin", skin);
+    formData.append("email", email);
+    formData.append("password", pass);
+    formData.append("image", image);
+
+    try{
+        const res = await fetch(API_BASE + "/register", { method:"POST", body:formData });
+        const data = await res.json();
+        alert(data.message);
+        if(data.status === "success"){
+            localStorage.setItem("userEmail", email);
+            localStorage.setItem("userName", name);
+            location = "home.html";
+        }
+    }catch(e){
+        alert("Server not connected");
+    }
+}
+</script>
+
+</body>
+</html>

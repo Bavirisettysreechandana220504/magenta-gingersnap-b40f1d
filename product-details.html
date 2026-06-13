@@ -1,0 +1,996 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width,
+initial-scale=1.0,
+maximum-scale=1.0,
+user-scalable=no">
+
+<meta name="theme-color" content="#f7e9f1">
+
+<title>Derm Assist Product</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+-webkit-tap-highlight-color:transparent;
+}
+
+html,body{
+width:100%;
+min-height:100%;
+overflow-x:hidden;
+background:#f7e9f1;
+}
+
+body{
+background:url("background.jpg")
+no-repeat center center/cover;
+position:relative;
+}
+
+body::before{
+content:"";
+position:fixed;
+inset:0;
+background:linear-gradient(
+180deg,
+rgba(255,240,248,0.45),
+rgba(245,230,255,0.48)
+);
+backdrop-filter:blur(5px);
+z-index:0;
+}
+
+.frame{
+position:relative;
+z-index:1;
+max-width:650px;
+margin:auto;
+padding:18px 18px 110px;
+min-height:100vh;
+}
+
+.top{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:18px;
+}
+
+.back-btn{
+width:48px;
+height:48px;
+border:none;
+border-radius:16px;
+background:rgba(255,255,255,0.55);
+backdrop-filter:blur(14px);
+font-size:18px;
+color:#d95b96;
+box-shadow:0 8px 20px rgba(0,0,0,0.08);
+cursor:pointer;
+}
+
+.logo{
+width:62px;
+height:62px;
+border-radius:18px;
+background:rgba(255,255,255,0.55);
+display:flex;
+justify-content:center;
+align-items:center;
+backdrop-filter:blur(14px);
+box-shadow:0 8px 20px rgba(0,0,0,0.08);
+}
+
+.logo img{
+width:42px;
+}
+
+.cart-btn{
+width:48px;
+height:48px;
+border:none;
+border-radius:16px;
+background:linear-gradient(
+135deg,
+#ff7cab,
+#c894ff
+);
+color:white;
+font-size:18px;
+box-shadow:0 10px 22px rgba(217,91,150,0.25);
+cursor:pointer;
+}
+
+.card{
+background:rgba(255,255,255,0.58);
+border:1px solid rgba(255,255,255,0.4);
+backdrop-filter:blur(16px);
+border-radius:30px;
+overflow:hidden;
+box-shadow:0 10px 30px rgba(0,0,0,0.08);
+animation:fade 0.4s ease;
+position:relative;
+}
+
+@keyframes fade{
+from{
+opacity:0;
+transform:translateY(15px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+.product-image{
+width:100%;
+height:340px;
+object-fit:cover;
+display:block;
+}
+
+.content{
+padding:20px;
+}
+
+.badge{
+display:inline-block;
+padding:8px 14px;
+border-radius:20px;
+background:#fff0f7;
+color:#d95b96;
+font-size:13px;
+font-weight:800;
+margin-bottom:14px;
+}
+
+.name{
+font-size:28px;
+font-weight:900;
+color:#8a2f66;
+line-height:1.4;
+}
+
+.price{
+font-size:32px;
+font-weight:900;
+color:#2d2335;
+margin-top:14px;
+}
+
+.rating{
+margin-top:10px;
+color:#ffb400;
+font-size:15px;
+font-weight:700;
+}
+
+.desc{
+margin-top:18px;
+font-size:15px;
+line-height:1.8;
+color:#5f4b58;
+}
+
+.features{
+margin-top:22px;
+}
+
+.feature{
+display:flex;
+align-items:center;
+gap:10px;
+background:white;
+padding:14px;
+border-radius:18px;
+margin-bottom:12px;
+box-shadow:0 6px 14px rgba(0,0,0,0.05);
+}
+
+.feature i{
+width:38px;
+height:38px;
+border-radius:12px;
+display:flex;
+justify-content:center;
+align-items:center;
+background:#fff0f7;
+color:#d95b96;
+font-size:16px;
+}
+
+.feature span{
+font-size:14px;
+font-weight:700;
+color:#5f4b58;
+}
+
+.actions{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:14px;
+margin-top:24px;
+}
+
+.actions button{
+border:none;
+padding:15px;
+border-radius:18px;
+font-size:15px;
+font-weight:800;
+cursor:pointer;
+transition:0.2s;
+}
+
+.actions button:active{
+transform:scale(0.98);
+}
+
+.add-cart{
+background:white;
+border:2px solid #f1cade !important;
+color:#d95b96;
+}
+
+.buy-now{
+background:linear-gradient(
+135deg,
+#ff7cab,
+#c894ff
+);
+color:white;
+box-shadow:0 10px 22px rgba(217,91,150,0.25);
+}
+
+.recommended{
+margin-top:22px;
+}
+
+.recommended h3{
+font-size:22px;
+color:#8a2f66;
+margin-bottom:16px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:14px;
+}
+
+.product{
+background:white;
+border-radius:22px;
+overflow:hidden;
+box-shadow:0 8px 18px rgba(0,0,0,0.08);
+cursor:pointer;
+position:relative;
+}
+
+.product img{
+width:100%;
+height:150px;
+object-fit:cover;
+}
+
+.product-content{
+padding:12px;
+}
+
+.product-name{
+font-size:14px;
+font-weight:900;
+color:#333;
+line-height:1.5;
+min-height:44px;
+}
+
+.product-price{
+font-size:20px;
+font-weight:900;
+color:#8a2f66;
+margin-top:8px;
+}
+
+.quick-cart{
+margin-top:10px;
+width:100%;
+border:none;
+padding:10px;
+border-radius:14px;
+background:linear-gradient(
+135deg,
+#ff7cab,
+#c894ff
+);
+color:white;
+font-size:13px;
+font-weight:800;
+cursor:pointer;
+}
+
+.wishlist-btn{
+position:absolute;
+top:10px;
+right:10px;
+width:40px;
+height:40px;
+border:none;
+border-radius:50%;
+background:white;
+color:#bbb;
+font-size:18px;
+cursor:pointer;
+box-shadow:0 4px 12px rgba(0,0,0,0.15);
+z-index:10;
+transition:0.2s;
+}
+
+.wishlist-btn.active{
+color:red;
+}
+
+.toast{
+position:fixed;
+top:18px;
+left:50%;
+transform:translateX(-50%);
+background:linear-gradient(
+135deg,
+#ff8eb9,
+#c997ff
+);
+color:white;
+padding:14px 18px;
+border-radius:18px;
+font-size:14px;
+font-weight:700;
+opacity:0;
+pointer-events:none;
+transition:0.3s;
+z-index:9999;
+}
+
+.toast.show{
+opacity:1;
+}
+
+.bottom{
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+max-width:650px;
+margin:auto;
+background:rgba(255,255,255,0.95);
+backdrop-filter:blur(14px);
+display:flex;
+justify-content:space-around;
+padding:14px 8px;
+border-radius:26px 26px 0 0;
+box-shadow:0 -5px 20px rgba(0,0,0,0.08);
+z-index:99;
+}
+
+.bottom div{
+text-align:center;
+font-size:12px;
+font-weight:700;
+color:#777;
+cursor:pointer;
+}
+
+.bottom i{
+display:block;
+font-size:20px;
+margin-bottom:5px;
+color:#d95b96;
+}
+
+@media(max-width:480px){
+
+.product-image{
+height:290px;
+}
+
+.name{
+font-size:24px;
+}
+
+.price{
+font-size:28px;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="toast" id="toast"></div>
+
+<div class="frame">
+
+<div class="top">
+
+<button
+class="back-btn"
+onclick="history.back()">
+
+<i class="fas fa-arrow-left"></i>
+
+</button>
+
+<div class="logo">
+<img src="logo.png">
+</div>
+
+<button
+class="cart-btn"
+onclick="location='cart.html'">
+
+<i class="fas fa-shopping-cart"></i>
+
+</button>
+
+</div>
+
+<div class="card">
+
+<button
+id="mainWishlistBtn"
+class="wishlist-btn"
+style="
+top:20px;
+right:20px;
+position:absolute;
+"
+onclick="toggleMainWishlist(this)">
+
+<i class="fas fa-heart"></i>
+
+</button>
+
+<img
+id="productImage"
+class="product-image"
+src="">
+
+<div class="content">
+
+<div
+class="badge"
+id="productType">
+Skincare
+</div>
+
+<div
+class="name"
+id="productName">
+Product Name
+</div>
+
+<div
+class="price"
+id="productPrice">
+₹599
+</div>
+
+<div class="rating">
+★★★★★ 4.8 Rating
+</div>
+
+<div
+class="desc"
+id="productDesc">
+
+Derm Assist AI recommends this product
+for healthier and glowing skin.
+
+</div>
+
+<div class="features">
+
+<div class="feature">
+<i class="fas fa-check"></i>
+<span>Dermatologically Tested</span>
+</div>
+
+<div class="feature">
+<i class="fas fa-leaf"></i>
+<span>Suitable For Indian Skin</span>
+</div>
+
+<div class="feature">
+<i class="fas fa-shield-heart"></i>
+<span>Safe Daily Usage</span>
+</div>
+
+</div>
+
+<div class="actions">
+
+<button
+class="add-cart"
+onclick="addToCart()">
+
+Add To Cart
+
+</button>
+
+<button
+class="buy-now"
+onclick="buyNow()">
+
+Buy Now
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="recommended">
+
+<h3>More Products</h3>
+
+<div
+class="grid"
+id="moreProducts">
+
+</div>
+
+</div>
+
+</div>
+
+<div class="bottom">
+
+<div onclick="location='home.html'">
+<i class="fas fa-home"></i>
+Home
+</div>
+
+<div onclick="location='scan.html'">
+<i class="fas fa-camera"></i>
+Scan
+</div>
+
+<div onclick="location='cart.html'">
+<i class="fas fa-shopping-cart"></i>
+Cart
+</div>
+
+<div onclick="location='profile.html'">
+<i class="fas fa-user"></i>
+Profile
+</div>
+
+</div>
+
+<script>
+
+const name =
+localStorage.getItem("productName");
+
+const price =
+localStorage.getItem("productPrice");
+
+const type =
+localStorage.getItem("productType");
+
+const image =
+localStorage.getItem("productImage");
+
+const desc =
+localStorage.getItem("productDesc");
+
+document.getElementById(
+"productName"
+).innerText =
+name || "Minimalist Serum";
+
+document.getElementById(
+"productPrice"
+).innerText =
+price || "₹599";
+
+document.getElementById(
+"productType"
+).innerText =
+type || "Serum";
+
+document.getElementById(
+"productImage"
+).src =
+image ||
+"https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=800&q=80";
+
+document.getElementById(
+"productDesc"
+).innerText =
+desc ||
+"Vitamin C brightening serum for glowing and healthy skin.";
+
+function getCart(){
+
+return JSON.parse(
+localStorage.getItem("cart")
+|| "[]"
+);
+
+}
+
+function addToCart(){
+
+let cart = getCart();
+
+cart.push({
+name:name,
+price:price,
+type:type,
+img:image,
+qty:1
+});
+
+localStorage.setItem(
+"cart",
+JSON.stringify(cart)
+);
+
+showToast(
+"🛒 Added To Cart"
+);
+
+}
+
+function buyNow(){
+
+addToCart();
+
+showToast(
+"✅ Order Placed"
+);
+
+setTimeout(()=>{
+
+window.location =
+"cart.html";
+
+},1000);
+
+}
+
+function showToast(message){
+
+const toast =
+document.getElementById("toast");
+
+toast.innerText =
+message;
+
+toast.classList.add("show");
+
+setTimeout(()=>{
+
+toast.classList.remove("show");
+
+},1800);
+
+}
+
+const products = [
+
+{
+name:"Cetaphil Cleanser",
+price:"₹699",
+type:"Cleanser",
+desc:"Gentle daily cleanser",
+img:"https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=800&q=80"
+},
+
+{
+name:"Dot & Key Moisturizer",
+price:"₹495",
+type:"Moisturizer",
+desc:"Hydrating moisturizer",
+img:"https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=800&q=80"
+},
+
+{
+name:"Aqualogica Sunscreen",
+price:"₹399",
+type:"Sunscreen",
+desc:"SPF protection",
+img:"https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=800&q=80"
+},
+
+{
+name:"Mamaearth Face Wash",
+price:"₹349",
+type:"Face Wash",
+desc:"Deep cleansing face wash",
+img:"https://images.unsplash.com/photo-1612817288484-6f916006741a?auto=format&fit=crop&w=800&q=80"
+}
+
+];
+
+document.getElementById(
+"moreProducts"
+).innerHTML =
+
+products.map((p)=>`
+
+<div
+class="product"
+onclick="openProduct(
+\`${p.name}\`,
+\`${p.price}\`,
+\`${p.type}\`,
+\`${p.desc}\`,
+\`${p.img}\`
+)">
+
+<button
+class="wishlist-btn ${
+(JSON.parse(localStorage.getItem("wishlist") || "[]")
+.find(item => item.name === p.name))
+? "active" : ""
+}"
+onclick="event.stopPropagation();
+toggleWishlist(
+\`${p.name}\`,
+\`${p.price}\`,
+\`${p.type}\`,
+\`${p.desc}\`,
+\`${p.img}\`,
+this
+)">
+
+<i class="fas fa-heart"></i>
+
+</button>
+
+<img src="${p.img}">
+
+<div class="product-content">
+
+<div class="product-name">
+${p.name}
+</div>
+
+<div class="product-price">
+${p.price}
+</div>
+
+<button
+class="quick-cart"
+onclick="event.stopPropagation();
+quickAddToCart(
+\`${p.name}\`,
+\`${p.price}\`,
+\`${p.type}\`,
+\`${p.img}\`
+)">
+
+Add To Cart
+
+</button>
+
+</div>
+
+</div>
+
+`).join("");
+
+function openProduct(
+name,
+price,
+type,
+desc,
+img
+){
+
+localStorage.setItem(
+"productName",
+name
+);
+
+localStorage.setItem(
+"productPrice",
+price
+);
+
+localStorage.setItem(
+"productType",
+type
+);
+
+localStorage.setItem(
+"productDesc",
+desc
+);
+
+localStorage.setItem(
+"productImage",
+img
+);
+
+location.reload();
+
+}
+
+function quickAddToCart(
+name,
+price,
+type,
+img
+){
+
+let cart = getCart();
+
+cart.push({
+name:name,
+price:price,
+type:type,
+img:img,
+qty:1
+});
+
+localStorage.setItem(
+"cart",
+JSON.stringify(cart)
+);
+
+showToast(
+"🛒 Added To Cart"
+);
+
+}
+
+function toggleWishlist(
+name,
+price,
+type,
+desc,
+img,
+btn
+){
+
+let wishlist = JSON.parse(
+localStorage.getItem("wishlist")
+|| "[]"
+);
+
+const exists = wishlist.find(
+item => item.name === name
+);
+
+if(exists){
+
+wishlist = wishlist.filter(
+item => item.name !== name
+);
+
+btn.classList.remove("active");
+
+showToast(
+"❌ Removed From Wishlist"
+);
+
+}else{
+
+wishlist.push({
+name:name,
+price:price,
+type:type,
+desc:desc,
+img:img
+});
+
+btn.classList.add("active");
+
+showToast(
+"❤️ Added To Wishlist"
+);
+
+}
+
+localStorage.setItem(
+"wishlist",
+JSON.stringify(wishlist)
+);
+
+}
+
+function toggleMainWishlist(btn){
+
+let wishlist = JSON.parse(
+localStorage.getItem("wishlist")
+|| "[]"
+);
+
+const currentProduct = {
+name:name,
+price:price,
+type:type,
+desc:desc,
+img:image
+};
+
+const exists = wishlist.find(
+item => item.name === name
+);
+
+if(exists){
+
+wishlist = wishlist.filter(
+item => item.name !== name
+);
+
+btn.classList.remove("active");
+
+showToast(
+"❌ Removed From Wishlist"
+);
+
+}else{
+
+wishlist.push(currentProduct);
+
+btn.classList.add("active");
+
+showToast(
+"❤️ Added To Wishlist"
+);
+
+}
+
+localStorage.setItem(
+"wishlist",
+JSON.stringify(wishlist)
+);
+
+}
+
+const wishlistData = JSON.parse(
+localStorage.getItem("wishlist")
+|| "[]"
+);
+
+const alreadyWishlisted =
+wishlistData.find(
+item => item.name === name
+);
+
+if(alreadyWishlisted){
+
+document.getElementById(
+"mainWishlistBtn"
+).classList.add("active");
+
+}
+
+</script>
+
+</body>
+</html>

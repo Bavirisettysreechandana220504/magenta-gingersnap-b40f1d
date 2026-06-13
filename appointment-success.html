@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Appointment Success - Derm Assist</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+
+background:
+linear-gradient(
+135deg,
+#ffe8f3,
+#f3e8ff
+);
+
+min-height:100vh;
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+padding:20px;
+
+}
+
+.card{
+
+background:white;
+
+width:100%;
+max-width:460px;
+
+padding:28px;
+
+border-radius:35px;
+
+text-align:center;
+
+box-shadow:
+0 10px 30px rgba(0,0,0,0.08);
+
+animation:pop 0.4s ease;
+
+}
+
+@keyframes pop{
+
+from{
+opacity:0;
+transform:scale(0.9);
+}
+
+to{
+opacity:1;
+transform:scale(1);
+}
+
+}
+
+.success{
+
+width:120px;
+height:120px;
+
+margin:auto;
+margin-bottom:20px;
+
+border-radius:50%;
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+background:
+linear-gradient(
+135deg,
+#ff7cab,
+#c894ff
+);
+
+color:white;
+
+font-size:55px;
+
+box-shadow:
+0 10px 25px rgba(217,91,150,0.25);
+
+}
+
+h1{
+
+font-size:32px;
+color:#8a2f66;
+margin-bottom:12px;
+
+}
+
+.sub{
+
+font-size:15px;
+line-height:1.8;
+color:#666;
+margin-bottom:24px;
+
+}
+
+.info-card{
+
+background:#fff6fb;
+
+padding:18px;
+
+border-radius:22px;
+
+text-align:left;
+
+margin-bottom:18px;
+
+}
+
+.row{
+
+display:flex;
+justify-content:space-between;
+
+margin-bottom:14px;
+
+font-size:15px;
+
+}
+
+.row:last-child{
+margin-bottom:0;
+}
+
+.label{
+
+font-weight:700;
+color:#777;
+
+}
+
+.value{
+
+font-weight:900;
+color:#8a2f66;
+
+}
+
+.status{
+
+display:inline-block;
+
+margin-top:6px;
+
+padding:8px 16px;
+
+border-radius:30px;
+
+background:#dff6e5;
+
+color:#1f8b4d;
+
+font-size:13px;
+font-weight:800;
+
+}
+
+.btn{
+
+width:100%;
+
+padding:16px;
+
+border:none;
+
+border-radius:20px;
+
+font-size:16px;
+font-weight:900;
+
+cursor:pointer;
+
+margin-top:14px;
+
+transition:0.2s;
+
+}
+
+.btn:active{
+transform:scale(0.98);
+}
+
+.home{
+
+background:
+linear-gradient(
+135deg,
+#ff7cab,
+#c894ff
+);
+
+color:white;
+
+}
+
+.appointments{
+
+background:#fff0f7;
+color:#d95b96;
+
+}
+
+.note{
+
+margin-top:18px;
+
+font-size:13px;
+line-height:1.7;
+
+color:#777;
+
+}
+
+.copy{
+
+margin-top:20px;
+
+font-size:13px;
+color:#888;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+<div class="success">
+<i class="fas fa-check"></i>
+</div>
+
+<h1>
+Appointment Booked
+</h1>
+
+<div class="sub">
+
+Your dermatologist appointment
+has been confirmed successfully.
+
+</div>
+
+<div class="info-card">
+
+<div class="row">
+
+<div class="label">
+Doctor
+</div>
+
+<div
+class="value"
+id="doctorName">
+
+Dr. Priya Sharma
+
+</div>
+
+</div>
+
+<div class="row">
+
+<div class="label">
+Hospital
+</div>
+
+<div
+class="value"
+id="hospitalName">
+
+Apollo Hospital
+
+</div>
+
+</div>
+
+<div class="row">
+
+<div class="label">
+Appointment Date
+</div>
+
+<div
+class="value"
+id="appointmentDate">
+
+25 May 2026
+
+</div>
+
+</div>
+
+<div class="row">
+
+<div class="label">
+Time
+</div>
+
+<div
+class="value"
+id="appointmentTime">
+
+10:30 AM
+
+</div>
+
+</div>
+
+<div class="row">
+
+<div class="label">
+Payment
+</div>
+
+<div
+class="value"
+id="paymentMethod">
+
+Paid Online
+
+</div>
+
+</div>
+
+<div class="status">
+Confirmed
+</div>
+
+</div>
+
+<button
+class="btn home"
+onclick="location.href='home.html'">
+
+Back To Home
+
+</button>
+
+<button
+class="btn appointments"
+onclick="location.href='appointments.html'">
+
+View My Appointments
+
+</button>
+
+<div class="note">
+
+Please arrive 10 minutes before
+your scheduled appointment time.
+
+</div>
+
+<div class="copy">
+© 2026 Derm Assist • Designed by Sree
+</div>
+
+</div>
+
+<script>
+
+/* =========================
+   LOAD APPOINTMENT
+========================= */
+
+let appointments = [];
+
+try{
+
+appointments = JSON.parse(
+localStorage.getItem("appointments")
+) || [];
+
+}catch{
+
+appointments = [];
+
+}
+
+/* =========================
+   LATEST APPOINTMENT
+========================= */
+
+if(appointments.length > 0){
+
+const latest =
+appointments[
+appointments.length - 1
+];
+
+document.getElementById(
+"doctorName"
+).innerText =
+latest.doctor;
+
+document.getElementById(
+"hospitalName"
+).innerText =
+latest.hospital;
+
+document.getElementById(
+"appointmentDate"
+).innerText =
+latest.date;
+
+document.getElementById(
+"appointmentTime"
+).innerText =
+latest.time;
+
+document.getElementById(
+"paymentMethod"
+).innerText =
+latest.payment;
+
+}
+
+</script>
+
+</body>
+</html>

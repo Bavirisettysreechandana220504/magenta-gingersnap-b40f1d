@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">dermassist</string>
+    <string name="title_activity_main">dermassist</string>
+    <string name="package_name">com.dermassist.app</string>
+    <string name="custom_url_scheme">com.dermassist.app</string>
+</resources>

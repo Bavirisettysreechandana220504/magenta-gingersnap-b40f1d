@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+
+<title>Doctor Details</title>
+
+<meta name="viewport"
+content="width=device-width,initial-scale=1.0">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#fff0f6;
+padding:20px;
+display:flex;
+flex-direction:column;
+justify-content:space-between;
+min-height:100vh;
+}
+
+.main{
+flex:1;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:25px;
+box-shadow:0 8px 25px rgba(0,0,0,0.1);
+max-width:500px;
+width:100%;
+animation:fade 0.4s ease;
+}
+
+@keyframes fade{
+from{
+opacity:0;
+transform:translateY(20px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+.doctor-img{
+width:100%;
+height:300px;
+object-fit:cover;
+border-radius:20px;
+margin-bottom:18px;
+background:#f3f3f3;
+}
+
+h2{
+color:#8a2f66;
+margin-bottom:10px;
+font-size:28px;
+}
+
+.info{
+margin-top:10px;
+}
+
+.info p{
+font-size:15px;
+color:#555;
+margin:12px 0;
+line-height:1.5;
+background:#fff6fa;
+padding:12px;
+border-radius:14px;
+}
+
+.info i{
+color:#d95b96;
+margin-right:8px;
+}
+
+button{
+width:100%;
+padding:15px;
+border:none;
+border-radius:16px;
+background:linear-gradient(
+135deg,
+#ff7cab,
+#c894ff
+);
+color:white;
+font-size:16px;
+font-weight:bold;
+margin-top:20px;
+cursor:pointer;
+transition:0.2s;
+}
+
+button:active{
+transform:scale(0.98);
+}
+
+.toast{
+position:fixed;
+top:20px;
+left:50%;
+transform:translateX(-50%);
+background:linear-gradient(
+135deg,
+#ff8eb9,
+#c997ff
+);
+color:white;
+padding:14px 18px;
+border-radius:18px;
+font-size:14px;
+font-weight:700;
+opacity:0;
+pointer-events:none;
+transition:0.3s;
+z-index:9999;
+}
+
+.toast.show{
+opacity:1;
+}
+
+.copy{
+text-align:center;
+font-size:13px;
+color:#777;
+margin-top:25px;
+padding-bottom:10px;
+}
+
+.not-found{
+text-align:center;
+padding:40px 20px;
+}
+
+.not-found h2{
+margin-bottom:15px;
+}
+
+.not-found p{
+color:#666;
+font-size:15px;
+line-height:1.6;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="toast" id="toast"></div>
+
+<div class="main">
+
+<div class="card" id="docCard"></div>
+
+</div>
+
+<div class="copy">
+© 2026 Derm Assist • Designed by Sree
+</div>
+
+<script>
+
+/* =========================
+   DOCTOR DATA
+========================= */
+
+const doctors = {
+
+"Dr. Priya Sharma":{
+img:"https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=800&q=80",
+hospital:"Apollo Hospitals, Bangalore",
+exp:"12+ Years",
+fee:700,
+email:"priyasharma@apollo.com",
+phone:"+91 9876543210"
+},
+
+"Dr. Arjun Mehta":{
+img:"https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=800&q=80",
+hospital:"Practo Clinic, Hyderabad",
+exp:"10+ Years",
+fee:500,
+email:"arjunmehta@practo.com",
+phone:"+91 9123456780"
+},
+
+"Dr. Neha Kapoor":{
+img:"https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=800&q=80",
+hospital:"AIIMS, Delhi",
+exp:"15+ Years",
+fee:900,
+email:"nehakapoor@aiims.com",
+phone:"+91 9988776655"
+},
+
+"Dr. Sneha Reddy":{
+img:"https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=800&q=80",
+hospital:"Rainbow Hospitals, Hyderabad",
+exp:"9+ Years",
+fee:650,
+email:"snehareddy@rainbow.com",
+phone:"+91 9001122334"
+},
+
+"Dr. Kavya Iyer":{
+img:"https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=800&q=80",
+hospital:"Fortis Hospital, Chennai",
+exp:"11+ Years",
+fee:750,
+email:"kavyaiyer@fortis.com",
+phone:"+91 9011223344"
+},
+
+"Dr. Anjali Rao":{
+img:"https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=800&q=80",
+hospital:"Manipal Hospital, Bangalore",
+exp:"14+ Years",
+fee:850,
+email:"anjalirao@manipal.com",
+phone:"+91 9033445566"
+},
+
+"Dr. Meera Nair":{
+img:"https://images.unsplash.com/photo-1591604021695-0c69b7c05981?auto=format&fit=crop&w=800&q=80",
+hospital:"Aster Medcity, Kochi",
+exp:"13+ Years",
+fee:800,
+email:"meeranair@aster.com",
+phone:"+91 9044556677"
+},
+
+"Dr. Rahul Verma":{
+img:"https://images.unsplash.com/photo-1622902046580-2b47f47f5471?auto=format&fit=crop&w=800&q=80",
+hospital:"Care Hospitals, Mumbai",
+exp:"16+ Years",
+fee:950,
+email:"rahulverma@care.com",
+phone:"+91 9077889900"
+}
+
+};
+
+/* =========================
+   GET SELECTED DOCTOR
+========================= */
+
+const name =
+localStorage.getItem("selectedDoctor");
+
+const d = doctors[name];
+
+/* =========================
+   SHOW DETAILS
+========================= */
+
+if(d){
+
+document.getElementById("docCard")
+.innerHTML = `
+
+<img
+class="doctor-img"
+src="${d.img}"
+onerror="this.src='https://cdn-icons-png.flaticon.com/512/3774/3774299.png'">
+
+<h2>${name}</h2>
+
+<div class="info">
+
+<p>
+<i class="fas fa-hospital"></i>
+<b>Hospital:</b>
+${d.hospital}
+</p>
+
+<p>
+<i class="fas fa-briefcase-medical"></i>
+<b>Experience:</b>
+${d.exp}
+</p>
+
+<p>
+<i class="fas fa-wallet"></i>
+<b>Consultation Fee:</b>
+₹${d.fee}
+</p>
+
+<p>
+<i class="fas fa-envelope"></i>
+<b>Email:</b>
+${d.email}
+</p>
+
+<p>
+<i class="fas fa-phone-alt"></i>
+<b>Contact:</b>
+${d.phone}
+</p>
+
+</div>
+
+<button onclick="pay()">
+Book Appointment & Pay
+</button>
+
+`;
+
+}else{
+
+document.getElementById("docCard")
+.innerHTML = `
+
+<div class="not-found">
+
+<img
+src="https://cdn-icons-png.flaticon.com/512/3774/3774299.png"
+style="
+width:120px;
+margin-bottom:20px;
+">
+
+<h2>Doctor Not Found</h2>
+
+<p>
+Selected doctor details are unavailable.
+Please go back and select a valid doctor.
+</p>
+
+<button onclick="history.back()">
+Go Back
+</button>
+
+</div>
+
+`;
+
+}
+
+/* =========================
+   PAYMENT
+========================= */
+
+function pay(){
+
+showToast(
+"💳 Redirecting to Payment..."
+);
+
+setTimeout(()=>{
+
+let appointments = [];
+
+try{
+
+appointments = JSON.parse(
+localStorage.getItem("appointments")
+) || [];
+
+}catch{
+
+appointments = [];
+
+}
+
+appointments.push({
+
+doctor:name,
+hospital:d.hospital,
+date:"25 May 2026",
+time:"10:30 AM",
+payment:"Paid Online",
+phone:d.phone,
+status:"Confirmed"
+
+});
+
+localStorage.setItem(
+"appointments",
+JSON.stringify(appointments)
+);
+
+alert(
+"Appointment Booked Successfully ✅"
+);
+
+window.location.href =
+"appointment-success.html";
+
+},1500);
+
+}
+
+/* =========================
+   TOAST
+========================= */
+
+function showToast(message){
+
+const toast =
+document.getElementById("toast");
+
+toast.innerText =
+message;
+
+toast.classList.add("show");
+
+setTimeout(()=>{
+
+toast.classList.remove("show");
+
+},1800);
+
+}
+
+</script>
+
+</body>
+</html>

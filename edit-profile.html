@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Edit Profile</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+}
+
+body{
+
+background:
+linear-gradient(
+rgba(255,255,255,0.7),
+rgba(255,255,255,0.7)
+),
+url("background.jpg");
+
+background-size:cover;
+background-position:center;
+min-height:100vh;
+
+display:flex;
+justify-content:center;
+align-items:center;
+padding:20px;
+
+}
+
+.card{
+
+width:100%;
+max-width:500px;
+
+background:rgba(255,255,255,0.9);
+
+padding:25px;
+
+border-radius:30px;
+
+box-shadow:
+0 10px 25px rgba(0,0,0,0.08);
+
+backdrop-filter:blur(10px);
+
+}
+
+.logo{
+
+width:170px;
+display:block;
+margin:auto;
+margin-bottom:15px;
+
+}
+
+.title{
+
+text-align:center;
+font-size:28px;
+font-weight:900;
+color:#8a2f66;
+margin-bottom:20px;
+
+}
+
+.input-box{
+
+margin-bottom:15px;
+
+}
+
+.input-box label{
+
+display:block;
+margin-bottom:8px;
+font-weight:700;
+color:#555;
+
+}
+
+.input-box input,
+.input-box select{
+
+width:100%;
+padding:14px;
+
+border:none;
+outline:none;
+
+background:#fff6fb;
+
+border-radius:15px;
+
+font-size:15px;
+
+}
+
+.profile-preview{
+
+width:120px;
+height:120px;
+border-radius:50%;
+object-fit:cover;
+display:block;
+margin:auto;
+margin-bottom:18px;
+border:4px solid #f7c4dc;
+
+}
+
+.save-btn{
+
+width:100%;
+padding:15px;
+
+border:none;
+border-radius:20px;
+
+background:linear-gradient(
+135deg,
+#ff7cab,
+#c894ff
+);
+
+color:white;
+font-size:16px;
+font-weight:800;
+cursor:pointer;
+
+}
+
+.back{
+
+margin-top:15px;
+text-align:center;
+
+}
+
+.back a{
+
+color:#8a2f66;
+font-weight:700;
+text-decoration:none;
+
+}
+
+.back-btn{
+width:42px;
+height:42px;
+border:none;
+border-radius:14px;
+background:white;
+color:#d95b96;
+font-size:18px;
+cursor:pointer;
+box-shadow:0 4px 12px rgba(0,0,0,0.08);
+
+position:fixed;
+top:18px;
+left:18px;
+z-index:999;
+}
+
+.copy{
+
+text-align:center;
+
+font-size:13px;
+
+color:#777;
+
+margin-top:22px;
+margin-bottom:20px;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<button
+class="back-btn"
+onclick="history.back()">
+
+<i class="fas fa-arrow-left"></i>
+
+</button>
+
+<div class="card">
+
+<img
+src="logo.png"
+class="logo">
+
+<div class="title">
+Edit Profile
+</div>
+
+<img
+id="preview"
+class="profile-preview"
+src="https://cdn-icons-png.flaticon.com/512/847/847969.png">
+
+<div class="input-box">
+
+<label>Profile Photo</label>
+
+<input
+type="file"
+id="imageInput"
+accept="image/*">
+
+</div>
+
+<div class="input-box">
+
+<label>Full Name</label>
+
+<input
+type="text"
+id="name">
+
+</div>
+
+<div class="input-box">
+
+<label>Email</label>
+
+<input
+type="email"
+id="email">
+
+</div>
+
+<div class="input-box">
+
+<label>Mobile Number</label>
+
+<input
+type="text"
+id="mobile">
+
+</div>
+
+<div class="input-box">
+
+<label>Age</label>
+
+<input
+type="number"
+id="age">
+
+</div>
+
+<div class="input-box">
+
+<label>Gender</label>
+
+<select id="gender">
+
+<option>Female</option>
+<option>Male</option>
+<option>Other</option>
+
+</select>
+
+</div>
+
+<div class="input-box">
+
+<label>Skin Type</label>
+
+<select id="skin">
+
+<option>Dry</option>
+<option>Oily</option>
+<option>Combination</option>
+<option>Sensitive</option>
+
+</select>
+
+</div>
+
+<button
+class="save-btn"
+onclick="saveProfile()">
+
+Save Changes
+
+</button>
+
+<div class="back">
+
+<a href="profile.html">
+
+← Back to Profile
+
+</a>
+
+</div>
+
+</div>
+
+<script>
+
+/* LOAD OLD DATA */
+
+document.getElementById("name").value =
+
+localStorage.getItem("userName") || "";
+
+document.getElementById("email").value =
+
+localStorage.getItem("userEmail") || "";
+
+document.getElementById("mobile").value =
+
+localStorage.getItem("userMobile") || "";
+
+document.getElementById("age").value =
+
+localStorage.getItem("userAge") || "";
+
+document.getElementById("gender").value =
+
+localStorage.getItem("userGender") || "Female";
+
+document.getElementById("skin").value =
+
+localStorage.getItem("skinType") || "Combination";
+
+/* PROFILE IMAGE */
+
+const oldImage =
+localStorage.getItem("profileImage");
+
+if(oldImage){
+
+document.getElementById("preview").src =
+oldImage;
+
+}
+
+/* IMAGE UPLOAD */
+
+document.getElementById("imageInput")
+.addEventListener("change", function(){
+
+const file = this.files[0];
+
+const reader = new FileReader();
+
+reader.onload = function(e){
+
+document.getElementById("preview").src =
+e.target.result;
+
+localStorage.setItem(
+"profileImage",
+e.target.result
+);
+
+};
+
+reader.readAsDataURL(file);
+
+});
+
+/* SAVE */
+
+function saveProfile(){
+
+localStorage.setItem(
+"userName",
+document.getElementById("name").value
+);
+
+localStorage.setItem(
+"userEmail",
+document.getElementById("email").value
+);
+
+localStorage.setItem(
+"userMobile",
+document.getElementById("mobile").value
+);
+
+localStorage.setItem(
+"userAge",
+document.getElementById("age").value
+);
+
+localStorage.setItem(
+"userGender",
+document.getElementById("gender").value
+);
+
+localStorage.setItem(
+"skinType",
+document.getElementById("skin").value
+);
+
+window.location.href =
+"profile.html";
+
+}
+
+</script>
+
+</div>
+
+<div class="copy">
+© 2026 Derm Assist • Designed by Sree
+</div>
+
+</body>
+
+</body>
+</html>

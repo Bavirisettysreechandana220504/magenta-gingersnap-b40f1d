@@ -1,0 +1,231 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AI Skin Scan</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+*{box-sizing:border-box;font-family:Arial}
+body{margin:0;background:#f7e9f1}
+.frame{max-width:520px;margin:0 auto;min-height:100vh;padding:18px 18px 90px;background:linear-gradient(#fff5fa,#f7e9f1)}
+.top{display:flex;justify-content:space-between;align-items:center}
+.top button{width:42px;height:42px;border:none;border-radius:50%;background:white;color:#8a2f66}
+h2{color:#8a2f66;text-align:center}
+.card{background:white;border-radius:24px;padding:16px;margin:16px 0;box-shadow:0 8px 18px #0001}
+.methods{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.methods button,.main{border:none;border-radius:18px;padding:14px;background:linear-gradient(135deg,#ff7cab,#c894ff);color:white;font-weight:800}
+.preview{height:300px;border:2px dashed #efbfd2;border-radius:20px;display:flex;align-items:center;justify-content:center;overflow:hidden;margin-top:14px;background:#fff}
+.preview img,.preview video{width:100%;height:100%;object-fit:cover}
+#capture{display:none}
+.chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.chip{padding:10px 12px;border-radius:18px;background:#fff0f6;color:#8a2f66;font-weight:700;border:1px solid #efbfd2;cursor:pointer}
+.chip.active{background:#f56fa6;color:white}
+.result{display:none}
+.result img{width:100%;border-radius:18px;margin:12px 0}
+.score{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.score div{background:#fff0f6;border-radius:16px;padding:12px;text-align:center;font-weight:800;color:#8a2f66}
+.score span{display:block;color:#222;font-size:22px;margin-top:5px}
+.bottom{position:fixed;bottom:0;left:0;right:0;max-width:520px;margin:auto;background:white;display:flex;justify-content:space-around;padding:14px;border-radius:20px 20px 0 0}
+.bottom div{text-align:center;color:#777;font-size:12px}
+.bottom i{display:block;font-size:19px;color:#d95b96}
+</style>
+</head>
+<body>
+
+<div class="frame">
+<div class="top">
+<button onclick="location='home.html'"><i class="fas fa-arrow-left"></i></button>
+<h2>AI Skin Scan</h2>
+<button onclick="location='profile.html'"><i class="fas fa-user"></i></button>
+</div>
+
+<div class="card">
+<h3>Choose Image</h3>
+<div class="methods">
+<button onclick="openCamera()"><i class="fas fa-camera"></i> Camera</button>
+<button onclick="openGallery()"><i class="fas fa-image"></i> Gallery</button>
+</div>
+
+<div class="preview" id="preview">
+<div id="previewText">No image selected</div>
+<video id="video" autoplay playsinline style="display:none"></video>
+<img id="previewImg" style="display:none">
+</div>
+
+<button class="main" id="capture" onclick="capturePhoto()">Capture Photo</button>
+<input type="file" id="gallery" accept="image/*" style="display:none">
+</div>
+
+<div class="card">
+<h3>Select Main Skin Concern</h3>
+<p style="color:#6d5a75">You can select multiple options.</p>
+
+<div class="chips" id="chips">
+<div class="chip" onclick="toggleConcern(this)">Acne</div>
+<div class="chip" onclick="toggleConcern(this)">Dark Spots</div>
+<div class="chip" onclick="toggleConcern(this)">Pigmentation</div>
+<div class="chip" onclick="toggleConcern(this)">Dryness</div>
+<div class="chip" onclick="toggleConcern(this)">Oily Skin</div>
+<div class="chip" onclick="toggleConcern(this)">Sensitivity</div>
+<div class="chip" onclick="toggleConcern(this)">Dullness</div>
+<div class="chip" onclick="toggleConcern(this)">Open Pores</div>
+<div class="chip" onclick="toggleConcern(this)">Redness</div>
+<div class="chip" onclick="toggleConcern(this)">Wrinkles</div>
+</div>
+
+<button class="main" onclick="analyze()">Analyze Skin</button>
+<div id="loading" style="display:none;text-align:center;color:#8a2f66;font-weight:800;margin-top:12px">Analyzing...</div>
+</div>
+
+<div class="card result" id="resultBox">
+<h3>AI Analysis Result</h3>
+<img id="markedImage">
+<p id="resultText"></p>
+
+<div class="score">
+<div>Acne Spots <span id="acneCount">0</span></div>
+<div>Severity <span id="severity">--</span></div>
+<div>Hydration <span id="hydration">--</span></div>
+<div>Oil Level <span id="oil">--</span></div>
+<div>Sensitivity <span id="sensitivity">--</span></div>
+<div>Glow <span id="glow">--</span></div>
+</div>
+
+<h4>Personalized Routine</h4>
+<p id="routine"></p>
+
+<h4>Doctor Advice</h4>
+<p id="doctor"></p>
+
+<button class="main" onclick="location='profile.html'">View Progress</button>
+<button class="main" onclick="location='home.html'">View Products</button>
+</div>
+</div>
+
+<div class="bottom">
+<div onclick="location='home.html'"><i class="fas fa-home"></i>Home</div>
+<div><i class="fas fa-camera"></i>Scan</div>
+<div onclick="location='cart.html'"><i class="fas fa-shopping-cart"></i>Cart</div>
+<div onclick="location='profile.html'"><i class="fas fa-user"></i>Profile</div>
+</div>
+
+<script>const API_BASE = window.location.protocol === "file:" ? "http://127.0.0.1:5000" : window.location.origin;
+
+let stream=null;
+let selectedFile=null;
+let concerns=[];
+
+function openCamera(){
+    navigator.mediaDevices.getUserMedia({video:{facingMode:"user"},audio:false})
+    .then(s=>{
+        stream=s;
+        const video=document.getElementById("video");
+        video.srcObject=s;
+        video.style.display="block";
+        document.getElementById("previewImg").style.display="none";
+        document.getElementById("previewText").style.display="none";
+        document.getElementById("capture").style.display="block";
+    })
+    .catch(()=>alert("Camera blocked. Use HTTPS/ngrok or Gallery."));
+}
+
+function capturePhoto(){
+    const video=document.getElementById("video");
+    const canvas=document.createElement("canvas");
+    canvas.width=video.videoWidth;
+    canvas.height=video.videoHeight;
+    canvas.getContext("2d").drawImage(video,0,0);
+    canvas.toBlob(blob=>{
+        selectedFile=new File([blob],"camera_scan.png",{type:"image/png"});
+        const url=URL.createObjectURL(blob);
+        document.getElementById("previewImg").src=url;
+        document.getElementById("previewImg").style.display="block";
+        video.style.display="none";
+        document.getElementById("capture").style.display="none";
+        if(stream){stream.getTracks().forEach(t=>t.stop());}
+    });
+}
+
+function openGallery(){
+    document.getElementById("gallery").click();
+}
+
+document.getElementById("gallery").addEventListener("change",e=>{
+    const file=e.target.files[0];
+    if(!file)return;
+    selectedFile=file;
+    const reader=new FileReader();
+    reader.onload=ev=>{
+        document.getElementById("previewImg").src=ev.target.result;
+        document.getElementById("previewImg").style.display="block";
+        document.getElementById("video").style.display="none";
+        document.getElementById("previewText").style.display="none";
+    };
+    reader.readAsDataURL(file);
+});
+
+function toggleConcern(el){
+    el.classList.toggle("active");
+    const text=el.innerText;
+    if(concerns.includes(text)){
+        concerns=concerns.filter(c=>c!==text);
+    }else{
+        concerns.push(text);
+    }
+}
+
+async function analyze(){
+    if(!selectedFile){
+        alert("Choose camera or gallery image");
+        return;
+    }
+
+    if(concerns.length===0){
+        alert("Select at least one concern");
+        return;
+    }
+
+    document.getElementById("loading").style.display="block";
+
+    const formData=new FormData();
+    formData.append("email",localStorage.getItem("userEmail") || "guest@dermassist.com");
+    formData.append("concerns",concerns.join(", "));
+    formData.append("image",selectedFile);
+
+    try{
+        const res=await fetch(`${API_BASE}/scan_ai`,{
+            method:"POST",
+            body:formData
+        });
+
+        const data=await res.json();
+        document.getElementById("loading").style.display="none";
+
+        if(data.status==="success"){
+            document.getElementById("resultBox").style.display="block";
+            document.getElementById("markedImage").src=data.marked_image_url;
+            document.getElementById("resultText").innerText=data.result;
+            document.getElementById("acneCount").innerText=data.acne_count;
+            document.getElementById("severity").innerText=data.severity;
+            document.getElementById("hydration").innerText=data.hydration;
+            document.getElementById("oil").innerText=data.oil_level;
+            document.getElementById("sensitivity").innerText=data.sensitivity;
+            document.getElementById("glow").innerText=data.glow_score;
+            document.getElementById("routine").innerText=data.routine;
+            document.getElementById("doctor").innerText=data.doctor_advice;
+
+            localStorage.setItem("analysisConcern",concerns[0]);
+            localStorage.setItem("analysisShortResult",data.result);
+            localStorage.setItem("analysisTip",data.routine);
+        }else{
+            alert(data.message);
+        }
+    }catch(e){
+        document.getElementById("loading").style.display="none";
+        alert("Cannot connect to AI server");
+    }
+}
+</script>
+</body>
+</html>

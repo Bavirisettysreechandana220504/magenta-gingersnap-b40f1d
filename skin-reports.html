@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Skin Reports - Derm Assist</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+}
+
+body{
+
+background:
+linear-gradient(
+rgba(255,255,255,0.7),
+rgba(255,255,255,0.7)
+),
+url("background.jpg");
+
+background-size:cover;
+background-position:center;
+min-height:100vh;
+
+padding:20px;
+
+}
+
+.container{
+
+max-width:560px;
+margin:auto;
+
+}
+
+.logo{
+
+width:180px;
+display:block;
+margin:auto;
+margin-bottom:15px;
+
+}
+
+.card{
+
+background:rgba(255,255,255,0.9);
+
+padding:22px;
+
+border-radius:28px;
+
+box-shadow:
+0 10px 25px rgba(0,0,0,0.08);
+
+margin-bottom:18px;
+
+}
+
+.title{
+
+text-align:center;
+font-size:28px;
+font-weight:900;
+color:#8a2f66;
+margin-bottom:20px;
+
+}
+
+.report{
+
+background:#fff6fb;
+padding:18px;
+border-radius:20px;
+margin-bottom:16px;
+
+}
+
+.report-title{
+
+font-size:19px;
+font-weight:900;
+color:#8a2f66;
+margin-bottom:10px;
+
+}
+
+.text{
+
+font-size:14px;
+line-height:1.7;
+color:#555;
+margin-bottom:8px;
+
+}
+
+.analysis-img{
+
+width:100%;
+height:230px;
+object-fit:cover;
+border-radius:18px;
+margin-top:12px;
+background:#eee;
+
+}
+
+.score{
+
+margin-top:10px;
+font-weight:800;
+color:#444;
+
+}
+
+.btn{
+
+width:100%;
+padding:15px;
+
+border:none;
+border-radius:20px;
+
+background:linear-gradient(
+135deg,
+#ff7cab,
+#c894ff
+);
+
+color:white;
+font-size:16px;
+font-weight:800;
+cursor:pointer;
+
+}
+
+.back-btn{
+width:42px;
+height:42px;
+border:none;
+border-radius:14px;
+background:white;
+color:#d95b96;
+font-size:18px;
+cursor:pointer;
+box-shadow:0 4px 12px rgba(0,0,0,0.08);
+
+position:fixed;
+top:18px;
+left:18px;
+z-index:999;
+}
+
+.copy{
+
+text-align:center;
+
+font-size:13px;
+
+color:#777;
+
+margin-top:22px;
+margin-bottom:20px;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<button
+class="back-btn"
+onclick="history.back()">
+
+<i class="fas fa-arrow-left"></i>
+
+</button>
+
+<div class="container">
+
+<img
+src="logo.png"
+class="logo">
+
+<div class="card">
+
+<div class="title">
+Skin Reports
+</div>
+
+<div class="report">
+
+<div class="report-title">
+Latest AI Report
+</div>
+
+<div class="text">
+✔ Mild acne detected
+</div>
+
+<div class="text">
+✔ Skin hydration is good
+</div>
+
+<div class="text">
+✔ Slight oil imbalance
+</div>
+
+<div class="text">
+✔ Recommended skincare routine generated
+</div>
+
+<img
+id="reportImage"
+class="analysis-img"
+src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?q=80&w=800">
+
+<div class="score">
+Glow Score : 92%
+</div>
+
+</div>
+
+<button
+class="btn"
+onclick="location.href='profile.html'">
+
+Back To Profile
+
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+/* LOAD IMAGE */
+
+const savedImage =
+
+localStorage.getItem("analysisImage");
+
+if(savedImage){
+
+document.getElementById("reportImage").src =
+savedImage;
+
+}
+
+</script>
+
+</div>
+
+<div class="copy">
+© 2026 Derm Assist • Designed by Sree
+</div>
+
+</body>
+
+</body>
+</html>

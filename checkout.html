@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Derm Assist Checkout</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#f7e9f1;
+min-height:100vh;
+padding:20px;
+}
+
+.container{
+max-width:550px;
+margin:auto;
+}
+
+.top{
+display:flex;
+align-items:center;
+justify-content:space-between;
+margin-bottom:20px;
+}
+
+.back-btn{
+width:45px;
+height:45px;
+border:none;
+border-radius:14px;
+background:white;
+font-size:18px;
+color:#d95b96;
+cursor:pointer;
+}
+
+.logo{
+width:90px;
+}
+
+.title{
+font-size:30px;
+font-weight:900;
+color:#8a2f66;
+text-align:center;
+margin-bottom:8px;
+}
+
+.sub{
+text-align:center;
+color:#666;
+margin-bottom:20px;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:25px;
+margin-bottom:18px;
+box-shadow:0 5px 15px rgba(0,0,0,0.08);
+}
+
+.section{
+font-size:20px;
+font-weight:900;
+color:#8a2f66;
+margin-bottom:16px;
+}
+
+.input{
+width:100%;
+padding:15px;
+border:none;
+outline:none;
+border-radius:16px;
+background:#fff3f8;
+margin-bottom:14px;
+font-size:15px;
+}
+
+.product{
+display:flex;
+gap:14px;
+background:#fff5fa;
+padding:12px;
+border-radius:18px;
+margin-bottom:14px;
+align-items:center;
+}
+
+.product img{
+width:85px;
+height:85px;
+border-radius:18px;
+object-fit:cover;
+}
+
+.product-name{
+font-size:16px;
+font-weight:900;
+color:#444;
+}
+
+.product-price{
+margin-top:5px;
+color:#8a2f66;
+font-weight:900;
+}
+
+.product-qty{
+margin-top:5px;
+font-size:14px;
+color:#666;
+}
+
+.bill{
+margin-top:16px;
+background:#fff5fa;
+padding:18px;
+border-radius:20px;
+}
+
+.row{
+display:flex;
+justify-content:space-between;
+margin-bottom:12px;
+font-size:15px;
+}
+
+.total{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-top:18px;
+padding-top:18px;
+border-top:1px solid #eee;
+}
+
+.total h2{
+color:#8a2f66;
+}
+
+.total-price{
+font-size:30px;
+font-weight:900;
+color:#d95b96;
+}
+
+.payment-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+}
+
+.pay{
+background:#fff5fa;
+padding:18px;
+border-radius:18px;
+text-align:center;
+cursor:pointer;
+border:2px solid transparent;
+}
+
+.pay.active{
+border-color:#d95b96;
+background:#ffe6f1;
+}
+
+.pay i{
+font-size:24px;
+color:#d95b96;
+margin-bottom:10px;
+}
+
+.order-btn{
+width:100%;
+border:none;
+padding:18px;
+border-radius:20px;
+margin-top:20px;
+font-size:16px;
+font-weight:900;
+background:linear-gradient(
+135deg,
+#ff7cab,
+#c894ff
+);
+color:white;
+cursor:pointer;
+}
+
+.empty{
+text-align:center;
+padding:25px;
+font-weight:900;
+color:#8a2f66;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="top">
+
+<button
+class="back-btn"
+onclick="history.back()">
+
+<i class="fas fa-arrow-left"></i>
+
+</button>
+
+<img
+src="logo.png"
+class="logo">
+
+<div style="width:45px"></div>
+
+</div>
+
+<div class="title">
+Secure Checkout
+</div>
+
+<div class="sub">
+Fast & Secure Delivery 🚚
+</div>
+
+<div class="card">
+
+<div class="section">
+Delivery Details
+</div>
+
+<input
+type="text"
+class="input"
+id="name"
+placeholder="Full Name">
+
+<input
+type="tel"
+class="input"
+id="phone"
+placeholder="Phone Number">
+
+<textarea
+class="input"
+id="address"
+placeholder="Delivery Address"
+style="height:110px;resize:none"></textarea>
+
+</div>
+
+<div class="card">
+
+<div class="section">
+Order Summary
+</div>
+
+<div id="orderItems"></div>
+
+<div class="bill">
+
+<div class="row">
+<span>Subtotal</span>
+<span>₹ <span id="subtotal">0</span></span>
+</div>
+
+<div class="row">
+<span>Delivery</span>
+<span style="color:green">FREE</span>
+</div>
+
+<div class="row">
+<span>Platform Fee</span>
+<span>₹ 20</span>
+</div>
+
+<div class="row">
+<span>Discount</span>
+<span style="color:#ff4d6d">- ₹ 50</span>
+</div>
+
+<div class="total">
+
+<h2>Total</h2>
+
+<div class="total-price">
+₹ <span id="total">0</span>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<div class="section">
+Payment Method
+</div>
+
+<div class="payment-grid">
+
+<div
+class="pay active"
+onclick="selectPay(this,'Cash On Delivery')">
+
+<i class="fas fa-money-bill-wave"></i>
+
+<div>COD</div>
+
+</div>
+
+<div
+class="pay"
+onclick="selectPay(this,'UPI')">
+
+<i class="fas fa-mobile-screen"></i>
+
+<div>UPI</div>
+
+</div>
+
+<div
+class="pay"
+onclick="selectPay(this,'Card')">
+
+<i class="fas fa-credit-card"></i>
+
+<div>Card</div>
+
+</div>
+
+<div
+class="pay"
+onclick="selectPay(this,'Wallet')">
+
+<i class="fas fa-wallet"></i>
+
+<div>Wallet</div>
+
+</div>
+
+</div>
+
+<button
+class="order-btn"
+onclick="placeOrder()">
+
+Place Order
+
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+let cart = [];
+
+try{
+
+cart =
+JSON.parse(
+localStorage.getItem("cart")
+) || [];
+
+}catch{
+
+cart = [];
+
+}
+
+const orderItems =
+document.getElementById("orderItems");
+
+const subtotalEl =
+document.getElementById("subtotal");
+
+const totalEl =
+document.getElementById("total");
+
+let subtotal = 0;
+
+if(cart.length === 0){
+
+orderItems.innerHTML = `
+
+<div class="empty">
+Cart is Empty 🛒
+</div>
+
+`;
+
+}
+
+cart.forEach(function(item){
+
+const qty =
+item.qty || 1;
+
+const price =
+parseInt(
+String(item.price)
+.replace("₹","")
+) || 0;
+
+subtotal += price * qty;
+
+orderItems.innerHTML += `
+
+<div class="product">
+
+<img src="${item.img}">
+
+<div>
+
+<div class="product-name">
+${item.name}
+</div>
+
+<div class="product-price">
+₹ ${price}
+</div>
+
+<div class="product-qty">
+Quantity : ${qty}
+</div>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+let finalTotal =
+subtotal + 20 - 50;
+
+if(finalTotal < 0){
+
+finalTotal = subtotal;
+
+}
+
+subtotalEl.innerText =
+subtotal;
+
+totalEl.innerText =
+finalTotal;
+
+let paymentMethod =
+"Cash On Delivery";
+
+function selectPay(el,method){
+
+paymentMethod = method;
+
+document
+.querySelectorAll(".pay")
+.forEach(function(box){
+
+box.classList.remove("active");
+
+});
+
+el.classList.add("active");
+
+}
+
+function placeOrder(){
+
+if(cart.length === 0){
+
+alert("Cart is empty");
+
+return;
+
+}
+
+const name =
+document.getElementById("name")
+.value.trim();
+
+const phone =
+document.getElementById("phone")
+.value.trim();
+
+const address =
+document.getElementById("address")
+.value.trim();
+
+if(
+name === "" ||
+phone === "" ||
+address === ""
+){
+
+alert("Fill all details");
+
+return;
+
+}
+
+const order = {
+
+name:name,
+phone:phone,
+address:address,
+payment:paymentMethod,
+items:cart,
+total:finalTotal,
+date:new Date().toLocaleString()
+
+};
+
+localStorage.setItem(
+"latestOrder",
+JSON.stringify(order)
+);
+
+localStorage.removeItem("cart");
+
+alert("Order Placed Successfully 🎉");
+
+window.location.href =
+"order-success.html";
+
+}
+
+</script>
+
+</body>
+</html>

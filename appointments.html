@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Appointments - Derm Assist</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+}
+
+body{
+
+background:
+linear-gradient(
+rgba(255,255,255,0.7),
+rgba(255,255,255,0.7)
+),
+url("background.jpg");
+
+background-size:cover;
+background-position:center;
+min-height:100vh;
+
+padding:20px;
+
+}
+
+.container{
+
+max-width:560px;
+margin:auto;
+
+}
+
+.logo{
+
+width:180px;
+display:block;
+margin:auto;
+margin-bottom:15px;
+
+}
+
+.card{
+
+background:rgba(255,255,255,0.9);
+
+padding:22px;
+
+border-radius:28px;
+
+box-shadow:
+0 10px 25px rgba(0,0,0,0.08);
+
+margin-bottom:18px;
+
+}
+
+.title{
+
+text-align:center;
+font-size:28px;
+font-weight:900;
+color:#8a2f66;
+margin-bottom:20px;
+
+}
+
+.appointment{
+
+background:#fff6fb;
+padding:18px;
+border-radius:20px;
+margin-bottom:16px;
+
+}
+
+.doc{
+
+font-size:20px;
+font-weight:900;
+color:#8a2f66;
+margin-bottom:8px;
+
+}
+
+.info{
+
+font-size:14px;
+color:#555;
+margin-bottom:6px;
+
+}
+
+.status{
+
+display:inline-block;
+
+padding:8px 14px;
+
+border-radius:30px;
+
+font-size:13px;
+font-weight:800;
+
+background:#dff6e5;
+color:#1f8b4d;
+
+margin-top:10px;
+
+}
+
+.btn{
+
+width:100%;
+padding:15px;
+
+border:none;
+border-radius:20px;
+
+background:linear-gradient(
+135deg,
+#ff7cab,
+#c894ff
+);
+
+color:white;
+font-size:16px;
+font-weight:800;
+cursor:pointer;
+
+}
+
+.back-btn{
+width:42px;
+height:42px;
+border:none;
+border-radius:14px;
+background:white;
+color:#d95b96;
+font-size:18px;
+cursor:pointer;
+box-shadow:0 4px 12px rgba(0,0,0,0.08);
+
+position:fixed;
+top:18px;
+left:18px;
+z-index:999;
+}
+
+.empty{
+
+text-align:center;
+padding:40px 10px;
+
+}
+
+.empty i{
+
+font-size:70px;
+color:#d95b96;
+margin-bottom:18px;
+
+}
+
+.empty h2{
+
+font-size:24px;
+color:#8a2f66;
+margin-bottom:10px;
+
+}
+
+.empty p{
+
+font-size:15px;
+color:#666;
+line-height:1.7;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<button
+class="back-btn"
+onclick="history.back()">
+
+<i class="fas fa-arrow-left"></i>
+
+</button>
+
+<div class="container">
+
+<img
+src="logo.png"
+class="logo">
+
+<div class="card">
+
+<div class="title">
+My Appointments
+</div>
+
+<!-- APPOINTMENTS LIST -->
+<div id="appointmentsList"></div>
+
+<button
+class="btn"
+onclick="location.href='profile.html'">
+
+Back To Profile
+
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+/* =========================
+   GET APPOINTMENTS
+========================= */
+
+let appointments = [];
+
+try{
+
+appointments = JSON.parse(
+localStorage.getItem("appointments")
+) || [];
+
+}catch{
+
+appointments = [];
+
+}
+
+/* =========================
+   DISPLAY APPOINTMENTS
+========================= */
+
+const appointmentsList =
+document.getElementById(
+"appointmentsList"
+);
+
+if(appointments.length === 0){
+
+appointmentsList.innerHTML = `
+
+<div class="empty">
+
+<i class="fas fa-calendar-xmark"></i>
+
+<h2>
+No Appointments Yet
+</h2>
+
+<p>
+
+You have not booked any
+doctor appointments.
+
+</p>
+
+</div>
+
+`;
+
+}else{
+
+appointments.reverse().forEach(function(app){
+
+appointmentsList.innerHTML += `
+
+<div class="appointment">
+
+<div class="doc">
+${app.doctor}
+</div>
+
+<div class="info">
+🏥 ${app.hospital}
+</div>
+
+<div class="info">
+📅 ${app.date}
+</div>
+
+<div class="info">
+⏰ ${app.time}
+</div>
+
+<div class="info">
+💳 ${app.payment}
+</div>
+
+<div class="info">
+📞 ${app.phone}
+</div>
+
+<div class="status">
+${app.status}
+</div>
+
+</div>
+
+`;
+
+});
+
+}
+
+</script>
+
+</body>
+</html>

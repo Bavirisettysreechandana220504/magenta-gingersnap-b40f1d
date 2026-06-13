@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Derm Assist - Login</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<!-- QR LIBRARY -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial;
+}
+
+body{
+    height:100vh;
+    background:url("background.jpg") center/cover no-repeat;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+/* overlay */
+body::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,0.5);
+}
+
+/* card */
+.card{
+    position:relative;
+    width:360px;
+    padding:25px;
+    border-radius:20px;
+    background:rgba(255,255,255,0.2);
+    backdrop-filter:blur(15px);
+    color:white;
+    text-align:center;
+}
+
+/* title */
+h2{
+    margin-bottom:15px;
+}
+
+/* input */
+.input{
+    position:relative;
+    margin:12px 0;
+}
+
+.input input{
+    width:100%;
+    padding:12px 40px;
+    border-radius:12px;
+    border:none;
+}
+
+.input i{
+    position:absolute;
+    left:12px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#ff4f94;
+}
+
+/* button */
+button{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:12px;
+    background:#ff4f94;
+    color:white;
+    font-weight:bold;
+    margin-top:10px;
+}
+
+/* links */
+.link{
+    margin-top:10px;
+    cursor:pointer;
+    font-size:14px;
+}
+
+/* message */
+#msg{
+    margin-top:10px;
+    font-size:14px;
+}
+
+/* QR box */
+.qr-box{
+    margin-top:20px;
+    padding:10px;
+    background:rgba(255,255,255,0.15);
+    border-radius:15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+<h2>DERM ASSIST ✨</h2>
+<p>Glow with Confidence 💖</p>
+
+<div class="input">
+<i class="fas fa-envelope"></i>
+<input id="email" placeholder="Enter Gmail">
+</div>
+
+<div class="input">
+<i class="fas fa-lock"></i>
+<input id="password" type="password" placeholder="Enter Password">
+</div>
+
+<button onclick="login()">Login</button>
+
+<div class="link" onclick="forgotPassword()">Forgot Password?</div>
+
+<div class="link" onclick="location='register.html'">Create Account</div>
+
+<div id="msg"></div>
+
+<!-- QR CODE -->
+<div class="qr-box">
+<p>📱 Scan to open in mobile</p>
+<div id="qrcode"></div>
+</div>
+
+</div>
+
+<script>
+
+const API_BASE = window.location.protocol === "file:" ? "http://127.0.0.1:5000" : window.location.origin;
+
+/* this creates QR automatically based on current URL */
+new QRCode(document.getElementById("qrcode"), {
+    text: window.location.href,
+    width: 120,
+    height: 120
+});
+
+/* validation */
+function validEmail(e){
+return /^[A-Za-z0-9._%+-]+@gmail\.com$/.test(e);
+}
+
+/* LOGIN */
+async function login(){
+
+let email = document.getElementById("email").value.trim();
+let password = document.getElementById("password").value;
+let msg = document.getElementById("msg");
+
+msg.innerText = "";
+
+if(!validEmail(email)){
+msg.innerText="Enter valid Gmail";
+return;
+}
+
+if(!password){
+msg.innerText="Enter password";
+return;
+}
+
+try{
+let res = await fetch(API_BASE + "/login",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({email,password})
+});
+
+let data = await res.json();
+
+if(data.status==="success"){
+msg.style.color="lightgreen";
+msg.innerText="Login successful ✅";
+
+localStorage.setItem("userEmail",email);
+localStorage.setItem("userName",data.name || "");
+
+setTimeout(()=>{
+window.location="home.html";
+},1000);
+
+}else{
+msg.style.color="pink";
+msg.innerText=data.message;
+}
+
+}catch{
+msg.innerText="Server not connected ❌";
+}
+}
+
+/* FORGOT PASSWORD */
+async function forgotPassword(){
+
+let email = prompt("Enter your email");
+
+if(!email) return;
+
+let res = await fetch(API_BASE + "/forgot_password",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({email})
+});
+
+let data = await res.json();
+
+let tokenText = data.token ? `\nDemo reset token: ${data.token}` : "";
+alert(data.message + tokenText);
+}
+
+</script>
+
+</body>
+</html>
