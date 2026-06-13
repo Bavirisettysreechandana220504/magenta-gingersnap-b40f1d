@@ -1207,13 +1207,41 @@ behavior:"smooth"
 
 function openProduct(name){
 
-localStorage.setItem(
-"selectedProduct",
-name
+const product = products.find(
+p => p[0] === name
 );
 
+if(product){
+
+localStorage.setItem(
+"productName",
+product[0]
+);
+
+localStorage.setItem(
+"productPrice",
+product[1]
+);
+
+localStorage.setItem(
+"productType",
+"Recommended Product"
+);
+
+localStorage.setItem(
+"productDesc",
+"Derm Assist AI recommended this product based on your skin analysis."
+);
+
+localStorage.setItem(
+"productImage",
+product[2]
+);
+
+}
+
 window.location =
-"products.html";
+"product-details.html";
 
 }
 
