@@ -1,0 +1,141 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#f7e9f1">
+<title>Derm Assist - Products</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;-webkit-tap-highlight-color:transparent}
+html,body{width:100%;height:100%;overflow:hidden}
+.mobile-frame{width:100vw;height:100vh;position:relative;overflow:hidden;background:url("background.jpg") no-repeat center center/cover}
+.mobile-frame::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg, rgba(255,240,248,.50), rgba(245,230,255,.60));backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.container{position:relative;z-index:1;height:100%;overflow-y:auto;padding:20px;padding-bottom:110px;scrollbar-width:none}
+.container::-webkit-scrollbar{display:none}
+.top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.back-btn{width:42px;height:42px;border-radius:50%;border:none;background:rgba(255,255,255,.88);color:#8a3e67;font-size:16px;box-shadow:0 4px 10px rgba(0,0,0,.08)}
+.page-title{color:#8a3e67;font-size:26px;font-weight:800}
+.profile{width:42px;height:42px;border-radius:50%;background:white;display:flex;align-items:center;justify-content:center;color:#8a3e67;box-shadow:0 4px 10px rgba(0,0,0,.08)}
+.card{background:rgba(255,255,255,.74);border-radius:24px;padding:18px;margin-top:16px;box-shadow:0 6px 15px rgba(0,0,0,.08);backdrop-filter:blur(8px)}
+.card h3{color:#8a3e67;margin-bottom:8px;font-size:18px}
+.card p{color:#6d5a75;line-height:1.5;font-size:14px}
+.selector{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.option{background:white;border:1px solid #efbfd2;border-radius:18px;padding:14px 10px;text-align:center;color:#8a3e67;font-weight:700;box-shadow:0 4px 10px rgba(0,0,0,.06);cursor:pointer}
+.option.active{background:linear-gradient(135deg,#ff7cab,#c894ff);color:white;border-color:transparent}
+.main-btn{width:100%;border:none;border-radius:22px;padding:15px;margin-top:14px;background:linear-gradient(135deg,#ff7cab,#c894ff);color:white;font-size:15px;font-weight:700;box-shadow:0 10px 22px rgba(217,91,150,.28)}
+.products-list{display:none;margin-top:14px}
+.product-card{background:white;border-radius:20px;padding:16px;margin-top:12px;box-shadow:0 5px 12px rgba(0,0,0,.06)}
+.product-card h4{color:#8a3e67;margin-bottom:6px;font-size:16px}
+.product-card p{color:#6d5a75;font-size:13px;line-height:1.5}
+.tag{display:inline-block;margin-top:10px;padding:7px 12px;border-radius:14px;background:#fff0f6;color:#d95b96;font-size:12px;font-weight:700}
+.bottom-nav{position:absolute;bottom:0;left:0;width:100%;background:rgba(255,255,255,.95);display:flex;justify-content:space-around;padding:14px 8px calc(14px + env(safe-area-inset-bottom));border-top-left-radius:24px;border-top-right-radius:24px;box-shadow:0 -4px 14px rgba(0,0,0,.06);z-index:2}
+.nav-item{text-align:center;color:#888;font-size:12px}
+.nav-item i{font-size:18px;margin-bottom:4px}
+.nav-item.active{color:#d95b96}
+</style>
+</head>
+<body>
+<div class="mobile-frame">
+    <div class="container">
+        <div class="top-bar">
+            <button class="back-btn" onclick="goHome()"><i class="fas fa-arrow-left"></i></button>
+            <div class="page-title">Products</div>
+            <div class="profile" onclick="goProfile()"><i class="fas fa-user"></i></div>
+        </div>
+
+        <div class="card">
+            <h3>Find product suggestions</h3>
+            <p>Select your skin concern to see simple product categories you can use.</p>
+
+            <div class="selector">
+                <div class="option" onclick="selectConcern(this,'Acne')">Acne</div>
+                <div class="option" onclick="selectConcern(this,'Dark Spots')">Dark Spots</div>
+                <div class="option" onclick="selectConcern(this,'Dryness')">Dryness</div>
+                <div class="option" onclick="selectConcern(this,'Oily Skin')">Oily Skin</div>
+                <div class="option" onclick="selectConcern(this,'Sensitivity')">Sensitivity</div>
+                <div class="option" onclick="selectConcern(this,'Dullness')">Dullness</div>
+            </div>
+
+            <button class="main-btn" onclick="showProducts()">Show Products</button>
+            <div class="products-list" id="productsList"></div>
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <div class="nav-item" onclick="goHome()"><i class="fas fa-home"></i><div>Home</div></div>
+        <div class="nav-item" onclick="goScan()"><i class="fas fa-camera"></i><div>Scan</div></div>
+        <div class="nav-item active"><i class="fas fa-shopping-bag"></i><div>Products</div></div>
+        <div class="nav-item" onclick="goProfile()"><i class="fas fa-user"></i><div>Profile</div></div>
+    </div>
+</div>
+
+<script>const API_BASE = window.location.protocol === "file:" ? "http://127.0.0.1:5000" : window.location.origin;
+let selectedConcern = "";
+function goHome(){ window.location = "home.html"; }
+function goScan(){ window.location = "scan.html"; }
+function goProfile(){ window.location = "profile.html"; }
+
+function selectConcern(element, concern){
+    document.querySelectorAll(".option").forEach(opt => opt.classList.remove("active"));
+    element.classList.add("active");
+    selectedConcern = concern;
+}
+
+function showProducts(){
+    if(!selectedConcern){ alert("Please select your skin concern."); return; }
+
+    let products = [];
+    if(selectedConcern === "Acne"){
+        products = [
+            {name:"Salicylic Acid Cleanser", desc:"Helps cleanse pores and reduce excess oil.", tag:"Acne Control"},
+            {name:"Oil-Free Moisturizer", desc:"Hydrates without clogging pores.", tag:"Lightweight"},
+            {name:"Spot Treatment", desc:"Targets active breakouts gently.", tag:"Target Care"}
+        ];
+    } else if(selectedConcern === "Dark Spots"){
+        products = [
+            {name:"Vitamin C Serum", desc:"Helps brighten skin and improve uneven tone.", tag:"Brightening"},
+            {name:"SPF 50 Sunscreen", desc:"Protects skin and prevents spot darkening.", tag:"Daily Essential"},
+            {name:"Niacinamide Serum", desc:"Supports even-looking skin tone.", tag:"Tone Care"}
+        ];
+    } else if(selectedConcern === "Dryness"){
+        products = [
+            {name:"Hydrating Cleanser", desc:"Cleanses without stripping moisture.", tag:"Gentle"},
+            {name:"Ceramide Moisturizer", desc:"Supports skin barrier and deep hydration.", tag:"Barrier Care"},
+            {name:"Hyaluronic Acid Serum", desc:"Boosts moisture retention.", tag:"Hydration"}
+        ];
+    } else if(selectedConcern === "Oily Skin"){
+        products = [
+            {name:"Gel Cleanser", desc:"Removes excess oil while keeping skin fresh.", tag:"Oil Control"},
+            {name:"Niacinamide Serum", desc:"Helps balance sebum appearance.", tag:"Balancing"},
+            {name:"Matte Sunscreen", desc:"Sun protection with non-greasy finish.", tag:"Matte SPF"}
+        ];
+    } else if(selectedConcern === "Sensitivity"){
+        products = [
+            {name:"Fragrance-Free Cleanser", desc:"Gentle cleansing for reactive skin.", tag:"Sensitive Care"},
+            {name:"Soothing Moisturizer", desc:"Calms and comforts the skin barrier.", tag:"Soothing"},
+            {name:"Mineral Sunscreen", desc:"Gentler sun protection option.", tag:"Protective"}
+        ];
+    } else if(selectedConcern === "Dullness"){
+        products = [
+            {name:"Glow Serum", desc:"Improves brightness and fresh look.", tag:"Glow Boost"},
+            {name:"Mild Exfoliant", desc:"Helps remove dull surface buildup.", tag:"Weekly Care"},
+            {name:"Hydrating Moisturizer", desc:"Keeps skin soft and healthy-looking.", tag:"Daily Glow"}
+        ];
+    }
+
+    const html = products.map(p => `
+        <div class="product-card">
+            <h4>${p.name}</h4>
+            <p>${p.desc}</p>
+            <div class="tag">${p.tag}</div>
+        </div>
+    `).join("");
+
+    const box = document.getElementById("productsList");
+    box.innerHTML = html;
+    box.style.display = "block";
+}
+</script>
+</body>
+</html>
