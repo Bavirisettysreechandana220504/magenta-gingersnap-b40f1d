@@ -1208,41 +1208,46 @@ behavior:"smooth"
 
 function openProduct(name){
 
-const product = products.find(
-p => p[0] === name
-);
+const productData = {
+"Minimalist Niacinamide Serum": {
+price:"₹599",
+type:"Serum",
+desc:"Niacinamide serum recommended for oil control, acne marks, and skin barrier support.",
+img:"https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=500&q=80"
+},
+"Derma Co Salicylic Face Wash": {
+price:"₹299",
+type:"Face Wash",
+desc:"Salicylic face wash recommended for acne-prone skin and deep pore cleansing.",
+img:"https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=500&q=80"
+},
+"Aqualogica Sunscreen": {
+price:"₹399",
+type:"Sunscreen",
+desc:"Sunscreen recommended for daily sun protection and preventing dark spots.",
+img:"https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=500&q=80"
+},
+"Cetaphil Moisturizer": {
+price:"₹699",
+type:"Moisturizer",
+desc:"Moisturizer recommended for hydration and skin barrier protection.",
+img:"https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=500&q=80"
+}
+};
+
+const product = productData[name];
 
 if(product){
 
-localStorage.setItem(
-"productName",
-product[0]
-);
-
-localStorage.setItem(
-"productPrice",
-product[1]
-);
-
-localStorage.setItem(
-"productType",
-"Recommended Product"
-);
-
-localStorage.setItem(
-"productDesc",
-"Derm Assist AI recommended this product based on your skin analysis."
-);
-
-localStorage.setItem(
-"productImage",
-product[2]
-);
+localStorage.setItem("productName", name);
+localStorage.setItem("productPrice", product.price);
+localStorage.setItem("productType", product.type);
+localStorage.setItem("productDesc", product.desc);
+localStorage.setItem("productImage", product.img);
 
 }
 
-window.location =
-"product-details.html";
+window.location.href = "product-details.html";
 
 }
 
